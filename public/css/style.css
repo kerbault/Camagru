@@ -1,0 +1,41 @@
+/*---------------------------------------------------Basics-----------------------------------------------------------*/
+html {
+    background: #eeeeee;
+    font-family: Helvetica;
+    color: #333333;
+}
+
+h1 {
+
+}
+
+/*---------------------------------------------------NavBar-----------------------------------------------------------*/
+
+.navBar {
+    display: flex;
+    justify-content: space-between;
+    margin: 0px;
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    border-bottom: 3px #333333 solid;
+}
+
+.tab {
+    padding: 14px 20px 21px;
+    font-size: 20px;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: #333333
+}
+
+.navTab {
+    flex-wrap: wrap;
+    display: inline-flex;
+}
+
+.logTab {
+    flex-wrap: wrap;
+    display: inline-flex;
+    justify-content: flex-end;
+}
