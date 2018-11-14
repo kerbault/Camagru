@@ -9,15 +9,18 @@
 
 <div class="navBar">
     <div class="navTab">
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Home</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ"class="tab">link1</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ"class="tab">link2</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ"class="tab">link3</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ"class="tab">link4</a>
+        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ">
+            <img id="homeTab" src="./public/images/home-solid.png" alt="Home" title="Home">
+        </a>
+        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Recent</a>
+        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Popular</a>
+        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Search</a>
+        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Capture</a>
+        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Upload</a>
     </div>
     <div class="logTab">
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">login</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ"class="tab">register</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ"class="tab">logout</a>
+        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Login</a>
+        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Register</a>
+        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Logout</a>
     </div>
 </div>

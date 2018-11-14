@@ -3,13 +3,46 @@ html {
     background: #eeeeee;
     font-family: Helvetica;
     color: #333333;
+    height: 100%;
 }
 
 h1 {
 
 }
 
+body {
+    margin: 0px 8px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: #333333;
+    text-align: center;
+}
+
+p {
+    padding: 0px;
+    margin: 0px;
+}
+
+#footer {
+    flex-shrink: 0;
+}
+
+#content {
+    flex: 1 0 auto;
+}
+
 /*---------------------------------------------------NavBar-----------------------------------------------------------*/
+
+#homeTab {
+    height: 30px;
+    width: 30px;
+    padding: 8px;
+}
 
 .navBar {
     display: flex;
@@ -22,11 +55,15 @@ h1 {
 }
 
 .tab {
-    padding: 14px 20px 21px;
+    padding: 14px 20px;
     font-size: 20px;
     box-sizing: border-box;
-    text-decoration: none;
-    color: #333333
+    transition: all 0.3s ease;
+}
+
+.tab:hover {
+    color: #eeeeee;
+    background-color: #333333;
 }
 
 .navTab {
@@ -38,4 +75,25 @@ h1 {
     flex-wrap: wrap;
     display: inline-flex;
     justify-content: flex-end;
+}
+
+/*---------------------------------------------------Footer-----------------------------------------------------------*/
+
+#copyrightDiv {
+    display: flex;
+    justify-content: center;
+    border-top: 1px #333333 solid;
+    padding: 15px;
+    color: #777777;
+}
+
+#linkDiv {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+.footerLink {
+    margin: 0px 30px;
+    word-break: unset;
 }

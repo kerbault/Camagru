@@ -9,4 +9,4 @@
 //• Un fichier index.php, contenant le point d’entrée de votre site, et situé à la racine
 //de votre arborescence.
 
-require ("view/home.php");
+require("view/camera.php");

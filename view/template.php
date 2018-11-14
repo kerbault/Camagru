@@ -15,9 +15,18 @@
         <title>Camagru</title>
         <link href="./public/css/style.css" rel="stylesheet"/>
         <link href="./public/images/favicon.png" rel="icon">
+        <script src="../public/js/camagru.js"></script>
     </head>
 
+    <header>
+        <?php require("navBar.php") ?>
+    </header>
     <body>
-        <?= $content ?>
+        <div id="content">
+            <?= $content ?>
+        </div>
     </body>
+    <footer id="footer">
+        <?php require("footer.php") ?>
+    </footer>
 </html>
