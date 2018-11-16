@@ -7,11 +7,12 @@
  */
 ob_start(); ?>
 
-    <script src="../public/js/camagru.js"></script>
     <video id="video"></video>
     <button id="startbutton">Prendre une photo</button>
     <canvas id="canvas"></canvas>
     <img src="http://placekitten.com/g/320/261" id="photo" alt="photo">
+
+    <script src="./public/js/camagru.js"></script>
 <?php $content = ob_get_clean(); ?>
 
 <?php require("template.php"); ?>

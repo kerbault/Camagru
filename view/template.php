@@ -13,9 +13,8 @@
     <head>
         <meta charset="UTF-8"/>
         <title>Camagru</title>
-        <link href="./public/css/style.css" rel="stylesheet"/>
-        <link href="./public/images/favicon.png" rel="icon">
-        <script src="../public/js/camagru.js"></script>
+        <link href="public/css/style.css" rel="stylesheet"/>
+        <link href="public/images/favicon.png" rel="icon">
     </head>
 
     <header>

@@ -14,5 +14,5 @@
     <a class="footerLink" href="https://www.youtube.com/watch?v=5_KwV-MAMQ8">About</a>
     <a class="footerLink" href="https://www.youtube.com/watch?v=5_KwV-MAMQ8">Contact</a>
     <a class="footerLink" href="https://www.youtube.com/watch?v=5_KwV-MAMQ8">Help & FAQ</a>
-    <a class="footerLink" href="https://www.youtube.com/watch?v=5_KwV-MAMQ8">Terms of services</a>
+    <a class="footerLink" href="view/TOS.php">Terms of services</a>
 </div>
