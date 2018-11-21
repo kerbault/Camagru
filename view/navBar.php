@@ -9,13 +9,13 @@
 
 <div class="navBar">
     <div class="navTab">
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ">
-            <img id="homeTab" src="./public/images/home-solid.png" alt="Home" title="Home">
-        </a>
+        <!--        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ">-->
+        <!--            <img id="homeTab" src="./public/images/home-solid.png" alt="Home" title="Home">-->
+        <!--        </a>-->
         <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Recent</a>
         <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Popular</a>
         <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Search</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Capture</a>
+        <a href="index.php?action=getCapture" class="tab">Capture</a>
         <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Upload</a>
     </div>
     <div class="logTab">

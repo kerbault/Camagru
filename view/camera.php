@@ -6,13 +6,9 @@
  * Time: 21:45
  */
 ob_start(); ?>
-
-    <video id="video"></video>
-    <button id="startbutton">Prendre une photo</button>
-    <canvas id="canvas"></canvas>
-    <img src="http://placekitten.com/g/320/261" id="photo" alt="photo">
-
-    <script src="./public/js/camagru.js"></script>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="snap">Snap Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
 <?php $content = ob_get_clean(); ?>
 
 <?php require("template.php"); ?>

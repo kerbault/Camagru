@@ -6,6 +6,8 @@
  * Time: 20:46
  */
 ob_start(); ?>
-<?php $content = ob_get_clean(); ?>
 
+    <center><h1>🌟RTFM🌟</h1></center>
+
+<?php $content = ob_get_clean(); ?>
 <?php require("template.php"); ?>
