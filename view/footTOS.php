@@ -71,7 +71,7 @@ ob_start(); ?>
         these Terms will remain in effect. These Terms constitute the entire agreement between us regarding our Service,
         and supersede and replace any prior agreements we might have between us regarding the Service.</p>
 
-    Changes
+    <h1>Changes</h1>
     <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is
         material we will try to provide at least 15 days notice prior to any new terms taking effect. What constitutes a
         material change will be determined at our sole discretion.</p>

@@ -11,8 +11,8 @@
     <p>©2018 kerbault</p>
 </div>
 <div id="linkDiv">
-    <a class="footerLink" href="https://www.youtube.com/watch?v=5_KwV-MAMQ8">About</a>
-    <a class="footerLink" href="https://www.youtube.com/watch?v=5_KwV-MAMQ8">Contact</a>
+    <a class="footerLink" href="index.php?action=getAbout">About</a>
+    <a class="footerLink" href="index.php?action=getContact">Contact</a>
     <a class="footerLink" href="index.php?action=getHelp">Help & FAQ</a>
     <a class="footerLink" href="index.php?action=getTOS">Terms of services</a>
 </div>

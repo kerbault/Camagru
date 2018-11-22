@@ -12,7 +12,6 @@ class ContactManager extends Manager
 {
     public function sendMail($from, $content, $subject)
     {
-        $db = $this->dbConnect();
         $to = 'kerbault.contact@gmail.com';
         $prefix = '[Camagru] ';
 

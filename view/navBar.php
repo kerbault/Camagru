@@ -12,15 +12,15 @@
         <!--        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ">-->
         <!--            <img id="homeTab" src="./public/images/home-solid.png" alt="Home" title="Home">-->
         <!--        </a>-->
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Recent</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Popular</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Search</a>
+        <a href="index.php?action=getRecent" class="tab">Recent</a>
+        <a href="index.php?action=getPopular" class="tab">Popular</a>
+        <a href="index.php?action=" class="tab">Search</a>
         <a href="index.php?action=getCapture" class="tab">Capture</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Upload</a>
+        <a href="index.php?action=getUpload" class="tab">Upload</a>
     </div>
     <div class="logTab">
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Login</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Register</a>
-        <a href="https://www.youtube.com/watch?v=_F0rCIOvqsQ" class="tab">Logout</a>
+        <a href="index.php?action=getLogin" class="tab">Login</a>
+        <a href="index.php?action=getRegister" class="tab">Register</a>
+        <a href="index.php?action=getLogout" class="tab">Logout</a>
     </div>
 </div>

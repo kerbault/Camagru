@@ -26,6 +26,6 @@
         </div>
     </body>
     <footer id="footer">
-        <?php require("footer.php") ?>
+        <?php require("foot.php") ?>
     </footer>
 </html>

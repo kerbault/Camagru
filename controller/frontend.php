@@ -16,4 +16,6 @@ function contactHelp($from, $content, $subject)
     $subject = htmlspecialchars($subject);
     $content = htmlspecialchars($content);
     $sent = $contactManager->sendMail($from, $content, $subject);
+
+    require ('view/footContact.php');
 }

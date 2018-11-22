@@ -9,45 +9,51 @@
 //• Un fichier index.php, contenant le point d’entrée de votre site, et situé à la racine
 //de votre arborescence.
 
-require ('controller/frontend.php');
+require('controller/frontend.php');
 
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
         case 'getAbout':
-            getAbout();
+            require("view/footAbout.php");
             break;
         case 'getContact':
-            getContact();
+            require("view/footContact.php");
             break;
         case 'getHelp':
-            require("view/helpFaq.php");
+            require("view/footHelpFaq.php");
             break;
         case 'getTOS':
-            require("view/TOS.php");
+            require("view/footTOS.php");
             break;
         case 'getRecent':
-            getRecent();
+            require("view/navRecent.php");
             break;
         case 'getPopular':
-            getPopular();
+            require("view/navPopular.php");
             break;
         case 'getCapture':
-            require("view/camera.php");
+            require("view/navCapture.php");
             break;
         case 'getUpload':
-            getUpload();
+            require("view/navUpload.php");
             break;
         case 'getLogin':
-            getLogin();
+            require("view/navLogin.php");
             break;
         case 'getRegister':
-            getRegister();
+            require("view/navRegister.php");
             break;
         case 'getLogout':
-            getLogout();
+            require("view/navRecent.php");
+            break;
+        case 'contactUs':
+            if (!isset($_POST['subject']) || $_POST['subject'] == "")
+            {
+                sendMail();
+            }
             break;
     }
 } else {
 //  recentPosts();
-    require("view/camera.php");
+    require("view/navRecent.php");
 }
