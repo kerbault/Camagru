@@ -8,6 +8,9 @@
 
 //• Un fichier index.php, contenant le point d’entrée de votre site, et situé à la racine
 //de votre arborescence.
+
+require ('controller/frontend.php');
+
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
         case 'getAbout':
