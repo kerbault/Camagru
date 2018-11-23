@@ -7,19 +7,11 @@
  */
 ob_start(); ?>
 
-<center>
-    <div>
-        <h1>Hello Title</h1>
+<h1>About</h1>
 
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-    </div>
-    <img src="https://i.imgur.com/Q4tDgE7.gif">
-</center>
+<p>This website has been made by Kerbault as a school project for "Le 101" school, the initial subject is the following</p><br>
+
+<a href="public/other/camagru.fr.pdf">Camagru.fr.pdf</a>
 
 <?php $content = ob_get_clean(); ?>
 

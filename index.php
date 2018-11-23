@@ -47,10 +47,7 @@ if (isset($_GET['action'])) {
             require("view/navRecent.php");
             break;
         case 'contactUs':
-            if (!isset($_POST['subject']) || $_POST['subject'] == "")
-            {
-                sendMail();
-            }
+            contactHelp($_POST['from'], $_POST['content'], $_POST['subject']);
             break;
     }
 } else {
