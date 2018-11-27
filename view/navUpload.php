@@ -8,19 +8,11 @@
 
 ob_start(); ?>
 
-    <center>
-        <div>
-            <h1>Hello Title</h1>
-
-            <p>Hello content</p>
-            <p>Hello content</p>
-            <p>Hello content</p>
-            <p>Hello content</p>
-            <p>Hello content</p>
-            <p>Hello content</p>
-        </div>
-        <img src="https://i.imgur.com/Q4tDgE7.gif">
-    </center>
+    <form action="./view/upload.php" method="post" enctype="multipart/form-data">
+        Select image to upload:
+        <input type="file" name="fileToUpload" id="fileToUpload">
+        <input type="submit" value="Upload Image" name="submit">
+    </form>
 
 <?php $content = ob_get_clean(); ?>
 
