@@ -49,6 +49,9 @@ if (isset($_GET['action'])) {
         case 'contactUs':
             contactHelp($_POST['from'], $_POST['content'], $_POST['subject']);
             break;
+        case 'uploadThis':
+            uploadPicture();
+            break;
     }
 } else {
 //  recentPosts();
