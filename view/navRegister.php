@@ -8,19 +8,18 @@
 
 ob_start(); ?>
 
-<center>
-    <div>
-        <h1>Hello Title</h1>
+<br>
+<form action="./index.php?action=register" method="post">
+    Login :
+    <input type="text" name="Login" id="Login" required><br>
+    password :
+    <input type="password" name="passwd" id="passwd" required><br>
+    confirm password :
+    <input type="password" name="confirmpasswd" id="confirmpasswd" required><br>
+    email :
+    <input type="email" name="email" id="email" required>
 
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-    </div>
-    <img src="https://i.imgur.com/Q4tDgE7.gif">
-</center>
+</form>
 
 <?php $content = ob_get_clean(); ?>
 
