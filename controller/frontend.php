@@ -14,13 +14,10 @@ require_once('model/UsersManager.php');
 
 function contactHelp($from, $content, $subject)
 {
-    $from = htmlspecialchars($from);
-    $subject = htmlspecialchars($subject);
-    $content = htmlspecialchars($content);
     $to = 'kerbault.contact@gmail.com';
     $prefix = '[Camagru] ';
 
-    $sent = mail($to, $prefix . $subject, $content, $from);
+    $sent = mail($to, $prefix . $subject, $content . $from);
     if ($sent) {
         header('Location: index.php?action=getContact');
     } else {
@@ -44,8 +41,7 @@ function uploadPicture()
             echo "File is an image - " . $check["mime"] . ".";
             $uploadOk = 1;
         } else {
-            echo "File is not an image.";
-            $uploadOk = 0;
+            throw new Exception("File is not an image.");
         }
     }
 // Check if file already exists

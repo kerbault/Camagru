@@ -79,12 +79,12 @@ try {
                 require("view/navRecent.php");
                 break;
             case 'contactUs':
-                if (isset($_POST['form']) && isset($_POST['content']) && isset($_POST['subject'])) {
+                if (isset($_POST['from']) && isset($_POST['content']) && isset($_POST['subject'])) {
                     contactHelp($_POST['from'], $_POST['content'], $_POST['subject']);
-                    break;
                 } else {
                     throw new Exception('Some field are empty, please check again');
                 }
+                break;
             case 'uploadThis':
                 uploadPicture();
                 break;
