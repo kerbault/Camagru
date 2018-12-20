@@ -58,7 +58,7 @@ try {
                 require("view/footTOS.php");
                 break;
             case 'getRecent':
-                require("view/navRecent.php");
+                getRecent();
                 break;
             case 'getPopular':
                 require("view/navPopular.php");
@@ -91,10 +91,12 @@ try {
             case 'register':
                 register();
                 break;
+            default:
+                throw new Exception("The page you're trying to access doesn't exist");
         }
     } else {
         require("view/navRecent.php");
     }
 } catch (Exception $e) {
-    echo 'Erreur : ' . $e->getMessage();
+    message('Error : ' . $e->getMessage());
 }

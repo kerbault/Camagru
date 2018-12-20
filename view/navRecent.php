@@ -8,19 +8,16 @@
 
 ob_start(); ?>
 
-<center>
+<?php
+while ($data = $recent->fetch()) {
+    ?>
     <div>
-        <h1>Hello Title</h1>
-
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
+        <img src="uploads/<?php echo $data['name']; ?>">
     </div>
-    <img src="https://i.imgur.com/Q4tDgE7.gif">
-</center>
+    <?php
+}
+$recent->closeCursor();
+?>
 
 <?php $content = ob_get_clean(); ?>
 

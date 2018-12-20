@@ -10,8 +10,16 @@ require_once('model/Manager.php');
 
 class upload extends Manager
 {
-    public function uploadPicture()
+    public function uploadPictureDb($pictureName)
     {
+        $db = $this->dbConnect();
 
+        $newPost = $db->prepare('INSERT INTO `pictures`(`userID`,`name`,`date`)
+        VALUES(:userID, :name, NOW())');
+
+        $newPost->execute(array(
+            'userID' => 0,
+            'name' => "$pictureName"
+        ));
     }
 }

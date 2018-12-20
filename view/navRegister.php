@@ -18,6 +18,7 @@ ob_start(); ?>
     <input type="password" name="confirmpasswd" id="confirmpasswd" required><br>
     email :
     <input type="email" name="email" id="email" required>
+    <input type="submit" value="Register" name="Register">
 
 </form>
 

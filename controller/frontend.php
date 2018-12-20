@@ -6,9 +6,9 @@
  * Time: 14:12
  */
 
-require_once('model/CameraManager.php');
 require_once('model/UploadManager.php');
 require_once('model/UsersManager.php');
+require_once('model/DisplayManager.php');
 
 //----------------------------------------------Mailing section-------------------------------------------------------//
 
@@ -29,54 +29,42 @@ function contactHelp($from, $content, $subject)
 
 function uploadPicture()
 {
-    $uploadManager = new upload();
-    $target_dir = "uploads/";
-    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-// Check if image file is a actual image or fake image
-    if (isset($_POST["submit"])) {
-        $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-        if ($check !== false) {
-            echo "File is an image - " . $check["mime"] . ".";
-            $uploadOk = 1;
-        } else {
-            throw new Exception("File is not an image.");
-        }
-    }
-// Check if file already exists
-    if (file_exists($target_file)) {
-        echo "Sorry, file already exists.";
-        $uploadOk = 0;
-    }
-// Check file size
-    if ($_FILES["fileToUpload"]["size"] > 500000) {
-        echo "Sorry, your file is too large.";
-        $uploadOk = 0;
-    }
-// Allow certain file formats
-    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-        && $imageFileType != "gif") {
-        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-        $uploadOk = 0;
-    }
-// Check if $uploadOk is set to 0 by an error
-    if ($uploadOk == 0) {
-        throw new Exception('Sorry, your file was not uploaded.');
-// if everything is ok, try to upload file
-    } else {
-        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-            echo "The file " . basename($_FILES["fileToUpload"]["name"]) . " has been uploaded.";
-        } else {
-            throw new Exception('Sorry, there was an error uploading your file.');
-        }
-    }
+    if (isset($_POST['submit'])) {
+        $uploadManager = new upload();
+        $targetDir = "uploads/";
+        $fileName = $_FILES["fileToUpload"]["name"];
+        $fileBasename = substr($fileName, 0, strripos($fileName, '.'));
+        $fileExt = substr($fileName, strripos($fileName, '.'));
+        $fileSize = $_FILES["fileToUpload"]["size"];
 
-    if ($uploadStatus === false) {
-        throw new Exception('Something went wrong with the uploading, please try again later or contact us!');
-    } else {
-        header('Location: index.php');
+        $allowed_file_types = array('.jpg', '.gif', '.png', '.jpeg');
+        $allowedSize = 200000000;
+
+        if (in_array($fileExt, $allowed_file_types) && ($fileSize < $allowedSize)) {
+            $newFileName = $_POST['name'] . $fileExt;
+            if (file_exists($targetDir . $newFileName)) {
+                throw new Exception("You have already uploaded this file.");
+            } else {
+                move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $targetDir . $newFileName);
+                $uploadManager->uploadPictureDb($newFileName);
+                message("File uploaded successfully.");
+            }
+        } elseif (empty($fileBasename)) {
+            echo "Please select a file to upload.";
+        } elseif ($fileSize > $allowedSize) {
+            echo "The file you are trying to upload is too large.";
+        } else {
+            echo "Only these file typs are allowed for upload: " . implode(', ', $allowed_file_types);
+            unlink($_FILES["fileToUpload"]["tmp_name"]);
+        }
     }
+}
+
+function getRecent()
+{
+    $displayManager = new display();
+    $recent = $displayManager->recent();
+    require("view/navRecent.php");
 }
 
 //----------------------------------------------Users Section---------------------------------------------------------//
@@ -130,3 +118,12 @@ function register()
     }
     require('view/navRegister');
 }
+
+//----------------------------------------------Misc Tools Section----------------------------------------------------//
+
+function message($message)
+{
+    $_POST['message'] = $message;
+    require('view/message.php');
+}
+

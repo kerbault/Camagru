@@ -22,6 +22,7 @@
     <?php require("navBar.php") ?>
 </header>
 <body>
+<br>
 <div id="body">
     <?= $content ?>
 </div>
