@@ -61,7 +61,7 @@ try {
                 getRecent();
                 break;
             case 'getPopular':
-                require("view/navPopular.php");
+                getPopular();
                 break;
             case 'getCapture':
                 require("view/navCapture.php");
@@ -76,7 +76,7 @@ try {
                 require("view/navRegister.php");
                 break;
             case 'getLogout':
-                require("view/navRecent.php");
+                require("view/display.php");
                 break;
             case 'contactUs':
                 if (isset($_POST['from']) && isset($_POST['content']) && isset($_POST['subject'])) {
@@ -95,7 +95,7 @@ try {
                 throw new Exception("The page you're trying to access doesn't exist");
         }
     } else {
-        require("view/navRecent.php");
+        getRecent();
     }
 } catch (Exception $e) {
     message('Error : ' . $e->getMessage());

@@ -29,9 +29,9 @@ function contactHelp($from, $content, $subject)
 
 function uploadPicture()
 {
-    if (isset($_POST['submit'])) {
+    if (isset($_POST['submit']) && isset($_FILES["fileToUpload"]["size"])) {
         $uploadManager = new upload();
-        $targetDir = "uploads/";
+        $targetDir = "public/captures/";
         $fileName = $_FILES["fileToUpload"]["name"];
         $fileBasename = substr($fileName, 0, strripos($fileName, '.'));
         $fileExt = substr($fileName, strripos($fileName, '.'));
@@ -50,7 +50,7 @@ function uploadPicture()
                 message("File uploaded successfully.");
             }
         } elseif (empty($fileBasename)) {
-            echo "Please select a file to upload.";
+            throw new Exception("Please select a file to upload.");
         } elseif ($fileSize > $allowedSize) {
             echo "The file you are trying to upload is too large.";
         } else {
@@ -64,7 +64,14 @@ function getRecent()
 {
     $displayManager = new display();
     $recent = $displayManager->recent();
-    require("view/navRecent.php");
+    require("view/display.php");
+}
+
+function getPopular()
+{
+    $displayManager = new display();
+    $recent = $displayManager->popular();
+    require("view/display.php");
 }
 
 //----------------------------------------------Users Section---------------------------------------------------------//

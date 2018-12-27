@@ -7,8 +7,8 @@
  */
 
 ob_start(); ?>
-
-    <p><?php echo $_POST['message']?></p>
+    <br>
+    <p><?= $_POST['message'] ?></p>
 
 <?php $content = ob_get_clean(); ?>
 

@@ -8,6 +8,7 @@
 
 ob_start(); ?>
 
+<br>
 <center>
     <div>
         <h1>Hello Title</h1>

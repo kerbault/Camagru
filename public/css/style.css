@@ -82,6 +82,10 @@ img {
     justify-content: flex-end;
 }
 
+#current {
+    background-color: coral;
+}
+
 /*---------------------------------------------------Footer-----------------------------------------------------------*/
 
 #copyrightDiv {
@@ -94,6 +98,7 @@ img {
 
 #linkDiv {
     display: flex;
+    flex-wrap: wrap;
     max-width: 100%;
     justify-content: center;
     padding-bottom: 10px;
@@ -116,10 +121,14 @@ img {
 
 .footerLink {
     margin: 0px 30px;
-    word-break: unset;
 }
 
 /*---------------------------------------------------Capture----------------------------------------------------------*/
+
+#capturePage{
+    display: flex;
+    justify-content: space-around;
+}
 
 #video {
     border: 1px solid #666666;
@@ -128,6 +137,7 @@ img {
 }
 
 #photo {
+    object-fit: cover;
     border: 1px solid #666666;
     width: 600px;
     height: 450px;
@@ -143,6 +153,7 @@ img {
 
 .output {
     width: 600px;
+    object-fit: cover;
 }
 
 .captureButton {
@@ -158,3 +169,61 @@ img {
     font-size: 25px;
     color: rgb(238, 238, 238);
 }
+
+/*---------------------------------------------------Display----------------------------------------------------------*/
+
+.display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    margin: 0px -20px;
+}
+
+.preview {
+    object-fit: cover;
+    width: 300px;
+    height: 225px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 7px #616161;
+}
+
+.card {
+    background-color: #ffffff;
+    box-shadow: 1px 1px 4px #333333;
+    border-radius: 10px;
+    padding: 5px;
+    width: 300px;
+    height: auto;
+    margin: 10px;
+}
+
+.likeNcomment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.nLike {
+    color: #ff8d8e;
+}
+
+.nComment {
+    color: #7dd8ff;
+}
+
+.pLike, .pComment {
+    height: 30px;
+    margin: 5px;
+}
+
+.likeCount, .commentCount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.commentCount {
+    margin-left: auto
+}
+

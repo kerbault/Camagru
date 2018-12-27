@@ -6,7 +6,6 @@
  * Time: 18:23
  */
 ?>
-<br>
 <div id="copyrightDiv">
     <p>©2018 kerbault</p>
 </div>

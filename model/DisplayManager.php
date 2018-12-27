@@ -14,7 +14,15 @@ class display extends Manager
     {
         $db = $this->dbConnect();
 
-        $recent = $db->query('SELECT * FROM `pictures`');
+        $recent = $db->query('SELECT * FROM `pictures` ORDER BY `id` DESC LIMIT 50');
+        return $recent;
+    }
+
+    public function popular()
+    {
+        $db = $this->dbConnect();
+
+        $recent = $db->query('SELECT * FROM `pictures` ORDER BY `likeCount` DESC LIMIT 50');
         return $recent;
     }
 
