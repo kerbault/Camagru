@@ -125,7 +125,7 @@ img {
 
 /*---------------------------------------------------Capture----------------------------------------------------------*/
 
-#capturePage{
+#capturePage {
     display: flex;
     justify-content: space-around;
 }

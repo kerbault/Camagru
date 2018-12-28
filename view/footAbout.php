@@ -11,7 +11,7 @@ ob_start(); ?>
 
 <p>This website has been made by Kerbault as a school project for "Le 101" school, the initial subject is the following</p><br>
 
-<a href="public/other/camagru.fr.pdf">Camagru.fr.pdf</a>
+<a href="public/other/camagru.fr.pdf" target="_blank">Camagru.fr.pdf</a>
 
 <?php $content = ob_get_clean(); ?>
 
