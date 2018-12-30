@@ -25,10 +25,6 @@
             <?php if (isset($_GET['action']) && $_GET['action'] == 'getCapture') { ?>
                 id="current"
             <?php } ?>>Capture</a>
-        <a href="index.php?action=getUpload" class="tab"
-            <?php if (isset($_GET['action']) && $_GET['action'] == 'getUpload') { ?>
-                id="current"
-            <?php } ?>>Upload</a>
     </div>
     <div class="logTab">
         <a href="index.php?action=getLogin" class="tab"

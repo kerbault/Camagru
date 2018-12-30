@@ -4,6 +4,7 @@ html {
     color: #333333;
     height: 100%;
     font-family: Helvetica;
+    min-width: 310px;
 }
 
 h1 {
@@ -15,6 +16,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    width: 100%;
 }
 
 a {

@@ -29,16 +29,19 @@ function contactHelp($from, $content, $subject)
 
 function uploadPicture()
 {
-    if (isset($_POST['submit']) && isset($_FILES["fileToUpload"]["size"])) {
+    ob_get_contents();
+    ob_end_clean();
+
+    $allowedSize = 8000000;
+    $allowed_file_types = array('.jpg', '.gif', '.png', '.jpeg');
+    $targetDir = "public/captures/";
+
+    if (isset($_POST['submit']) && isset($_POST['name']) && isset($_FILES) && $_FILES["fileToUpload"]["size"] != 0) {
         $uploadManager = new upload();
-        $targetDir = "public/captures/";
         $fileName = $_FILES["fileToUpload"]["name"];
         $fileBasename = substr($fileName, 0, strripos($fileName, '.'));
         $fileExt = substr($fileName, strripos($fileName, '.'));
         $fileSize = $_FILES["fileToUpload"]["size"];
-
-        $allowed_file_types = array('.jpg', '.gif', '.png', '.jpeg');
-        $allowedSize = 200000000;
 
         if (in_array($fileExt, $allowed_file_types) && ($fileSize < $allowedSize)) {
             $newFileName = $_POST['name'] . $fileExt;
@@ -52,11 +55,13 @@ function uploadPicture()
         } elseif (empty($fileBasename)) {
             throw new Exception("Please select a file to upload.");
         } elseif ($fileSize > $allowedSize) {
-            echo "The file you are trying to upload is too large.";
+            throw new Exception("The file you are trying to upload is too large.");
         } else {
-            echo "Only these file typs are allowed for upload: " . implode(', ', $allowed_file_types);
+            throw new Exception("Only these file typs are allowed for upload: " . implode(', ', $allowed_file_types));
             unlink($_FILES["fileToUpload"]["tmp_name"]);
         }
+    } else {
+        throw new Exception('Something went wrong with the upload, please try again or contact us.');
     }
 }
 
