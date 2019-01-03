@@ -40,6 +40,7 @@
 //    echo 'Erreur : ' . $e->getMessage();
 //}
 
+require('view/session.php');
 require('controller/frontend.php');
 
 try {
@@ -64,8 +65,12 @@ try {
                 getPopular();
                 break;
             case 'getCapture':
-                require("view/navCapture.php");
-                break;
+                if ($_SESSION['status'] > 0) {
+                    require("view/navCapture.php");
+                    break;
+                } else {
+                    throw new Exception("Please, Log in or register to access this page");
+                }
             case 'getUpload':
                 require("view/navUpload.php");
                 break;
@@ -90,6 +95,9 @@ try {
                 break;
             case 'register':
                 register();
+                break;
+            case 'login':
+                login();
                 break;
             default:
                 throw new Exception("The page you're trying to access doesn't exist");

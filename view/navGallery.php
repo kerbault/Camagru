@@ -6,7 +6,8 @@
  * Time: 20:38
  */
 
-ob_start(); ?>
+ob_start();
+if (preg_match('/Camagru$/', getcwd())) { ?>
 
     <br>
     <center>
@@ -23,6 +24,9 @@ ob_start(); ?>
         <img src="https://i.imgur.com/Q4tDgE7.gif">
     </center>
 
-<?php $content = ob_get_clean(); ?>
+    <?php $content = ob_get_clean(); ?>
 
-<?php require("template.php"); ?>
+    <?php require("template.php");
+} else {
+    header('Location: ../index.php');
+} ?>

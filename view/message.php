@@ -10,6 +10,10 @@ ob_start(); ?>
     <br>
     <p><?= $_POST['message'] ?></p>
 
-<?php $content = ob_get_clean(); ?>
+<?php $content = ob_get_clean();
+if (preg_match('/Camagru$/', getcwd())) { ?>
 
-<?php require("template.php"); ?>
+    <?php require("template.php");
+} else {
+    header('Location: ../index.php');
+} ?>

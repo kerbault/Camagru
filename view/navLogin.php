@@ -6,23 +6,32 @@
  * Time: 21:30
  */
 
-ob_start(); ?>
+ob_start();
+if (preg_match('/Camagru$/', getcwd())) { ?>
 
-<br>
-<center>
-    <div>
-        <h1>Hello Title</h1>
-
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
+    <br>
+    <div class="center">
+        <div class="logForm">
+            <form style="width: 100%" action="./index.php?action=login" method="post">
+                <p>Name</p>
+                <input type="text" class="logInput" name="Login" id="Login" placeholder="ex : PaulAmploi91"
+                       pattern="[a-zA-Z0-9]{4,50}"
+                       title="Must be alphanumeric and contain more than 3 characters"
+                       required>
+                <p>Password</p>
+                <input type="password" class="logInput" name="passwd" id="passwd" placeholder="ex : NoTh4tEz"
+                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}"
+                       title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                       required>
+                <a href="public/other/camagru.fr.pdf"><p style="text-align: right">Forgot account?</p></a>
+                <input type="submit" class="logSubmit" value="Login" name="Login">
+            </form>
+        </div>
     </div>
-    <img src="https://i.imgur.com/Q4tDgE7.gif">
-</center>
 
-<?php $content = ob_get_clean(); ?>
+    <?php $content = ob_get_clean(); ?>
 
-<?php require("template.php"); ?>
+    <?php require("template.php");
+} else {
+    header('Location: ../index.php');
+} ?>
