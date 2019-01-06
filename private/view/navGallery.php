@@ -2,14 +2,14 @@
 /**
  * Created by PhpStorm.
  * User: kerbault
- * Date: 16/11/2018
- * Time: 20:46
+ * Date: 22/11/2018
+ * Time: 20:38
  */
-ob_start();
-if (preg_match('/Camagru$/', getcwd())) { ?>
 
+ob_start(); ?>
+
+    <br>
     <center>
-        <h1>Help & Faq</h1>
         <div>
             <h1>Hello Title</h1>
 
@@ -23,9 +23,6 @@ if (preg_match('/Camagru$/', getcwd())) { ?>
         <img src="https://i.imgur.com/Q4tDgE7.gif">
     </center>
 
-    <?php $content = ob_get_clean(); ?>
+<?php $content = ob_get_clean(); ?>
 
-    <?php require("template.php");
-} else {
-    header('Location: ../index.php');
-} ?>
+<?php require("template.php"); ?>

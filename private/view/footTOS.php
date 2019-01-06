@@ -5,8 +5,7 @@
  * Date: 16/11/2018
  * Time: 20:46
  */
-ob_start();
-if (preg_match('/Camagru$/', getcwd())) { ?>
+ob_start(); ?>
 
     <h1>Terms of Service ("Terms")</h1>
     <p>Last updated: November 16, 2018
@@ -83,8 +82,5 @@ if (preg_match('/Camagru$/', getcwd())) { ?>
     <h1>Contact Us</h1>
     <p>If you have any questions about these Terms, please contact us.</p>
     <br>
-    <?php $content = ob_get_clean(); ?>
-    <?php require("template.php");
-} else {
-    header('Location: ../index.php');
-} ?>
+<?php $content = ob_get_clean();
+require("template.php"); ?>

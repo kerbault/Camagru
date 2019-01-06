@@ -6,9 +6,9 @@
  * Time: 14:12
  */
 
-require_once('model/UploadManager.php');
-require_once('model/UsersManager.php');
-require_once('model/DisplayManager.php');
+require_once('private/model/UploadManager.php');
+require_once('private/model/UsersManager.php');
+require_once('private/model/DisplayManager.php');
 
 //----------------------------------------------Mailing section-------------------------------------------------------//
 
@@ -23,6 +23,20 @@ function contactHelp($from, $content, $subject)
     } else {
         throw new Exception('Something went wrong, Check if there is no empty field or try again later');
     }
+}
+
+function verificationMail($to, $validKey)
+{
+    $subject = 'Welcome on Camagru';
+    $content = 'Welcome on Camagru, please clic on the following link : ';
+    $link = 'http://localhost:8008/01_progress/Camagru/index.php?action=verify&verifyId=' . $validKey;
+    $sent = mail($to, $subject, $content . $link);
+    if ($sent) {
+        throw new Exception('A mail has been sent to verify your account, please open the link given inside');
+    } else {
+        throw new Exception('Something went wrong, Check if there is no empty field or try again later');
+    }
+
 }
 
 //----------------------------------------------Picture section-------------------------------------------------------//
@@ -50,7 +64,8 @@ function uploadPicture()
             } elseif (empty($fileBasename)) {
                 throw new Exception("Please select a file to upload.");
             } elseif (!in_array($fileExt, $allowed_file_types)) {
-                throw new Exception("Only these file typs are allowed for upload: " . implode(', ', $allowed_file_types));
+                throw new Exception("Only these file typs are allowed for upload: " .
+                    implode(', ', $allowed_file_types));
                 unlink($_FILES["fileToUpload"]["tmp_name"]);
             } elseif (file_exists($targetDir . $newFileName)) {
                 throw new Exception("You have already uploaded this file.");
@@ -62,9 +77,11 @@ function uploadPicture()
         } else {
             switch ($_FILES['fileToUpload']['error']) {
                 case UPLOAD_ERR_INI_SIZE:
-                    throw new Exception("The uploaded file exceeds the upload_max_filesize directive in php.ini");
+                    throw new Exception("The uploaded file exceeds the upload_max_filesize directive in 
+                                        php.ini");
                 case UPLOAD_ERR_FORM_SIZE:
-                    throw new Exception("The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form");
+                    throw new Exception("The uploaded file exceeds the MAX_FILE_SIZE directive that was 
+                                        specified in the HTML form");
                 case UPLOAD_ERR_PARTIAL:
                     throw new Exception("The uploaded file was only partially uploaded");
                 case UPLOAD_ERR_NO_FILE:
@@ -88,19 +105,19 @@ function getRecent()
 {
     $displayManager = new display();
     $recent = $displayManager->recent();
-    require("view/display.php");
+    require("private/view/display.php");
 }
 
 function getPopular()
 {
     $displayManager = new display();
     $recent = $displayManager->popular();
-    require("view/display.php");
+    require("private/view/display.php");
 }
 
 //----------------------------------------------Users Section---------------------------------------------------------//
 
-function checkValidity($login, $email, $passwd, $confirmpasswd, $registerManager)
+function checkDuplicate($login, $email, $passwd, $confirmpasswd, $registerManager)
 {
     $wrong = 0;
     $users = $registerManager->checkValidity();
@@ -120,19 +137,21 @@ function checkValidity($login, $email, $passwd, $confirmpasswd, $registerManager
     return $wrong;
 }
 
-
 function register()
 {
     $registerManager = new user();
-    $login = $_POST['Login'];
-    $passwd = password_hash($_POST['passwd'], PASSWORD_DEFAULT);
-    $email = $_POST['email'];
-    $valid = checkValidity($login, $email, $_POST['passwd'], $_POST['confirmpasswd'], $registerManager);
+    $login = htmlspecialchars($_POST['Login']);
+    $email = htmlspecialchars($_POST['email']);
+    $tmpPasswd = htmlspecialchars($_POST['passwd']);
+    $passwd = password_hash($tmpPasswd, PASSWORD_DEFAULT);
+    $confirmPasswd = htmlspecialchars($_POST['confirmpasswd']);
+    $valid = checkDuplicate($login, $email, $tmpPasswd, $confirmPasswd, $registerManager);
+    $validkey = hash('sha1', (round(microtime(true) * 1000) . rand(100, 999)));
 
     switch ($valid) {
         case 0:
-            $registerManager->register($login, $email, $passwd);
-            break;
+            $registerManager->register($login, $email, $passwd, $validkey);
+            verificationMail($email, $validkey);
         case 1:
             throw new Exception('Login already used');
         case 2:
@@ -145,8 +164,64 @@ function register()
             throw new Exception('Login already used and confirmed password is different from the original ');
         case 7:
             throw new Exception('Login and email already used and confirmed password is different from the original ');
+        default:
+            throw new Exception('Something unexpected happened, please try again or Contact us');
     }
-    require('view/navRegister.php');
+    require('private/view/navRegister.php');
+}
+
+function login()
+{
+    $loginManager = new user();
+    $login = htmlspecialchars($_POST['user']);
+    $tmpPasswd = htmlspecialchars($_POST['passwd']);
+    $passwd = htmlspecialchars($tmpPasswd, PASSWORD_DEFAULT);
+    $users = $loginManager->login();
+
+    foreach ($users as $tmp) {
+        if ($tmp['login'] == $login) {
+
+            if (password_verify($passwd, $tmp['password'])) {
+                if ($tmp['status'] < 0) {
+                    throw new Exception('Your account is actually banned');
+                } elseif ($tmp['status'] == 0) {
+                    throw new Exception('Your account is not active yet, please check the mail we sent during the registration.');
+                } else {
+                    $_SESSION['status'] = $tmp['status'];
+                    $_SESSION['user'] = $login;
+                    header('Location: index.php?action=getRecent');
+                }
+            } else {
+                throw new Exception('wrong password');
+            }
+        }
+    }
+    throw new Exception('wrong login');
+}
+
+function verifyAccount($verifyId)
+{
+    $verifyManager = new user();
+    $users = $verifyManager->verifyId();
+
+    foreach ($users as $tmp) {
+        if ($tmp['validkey'] == $verifyId) {
+            if ($tmp['status'] == 0) {
+                $verifyManager->changeStatus($tmp['id'], 1);
+                throw new Exception('Your account is now verified, you may now log in');
+            } else {
+                throw new Exception('Your account has been verified already');
+            }
+        }
+    }
+    throw new Exception('We connot activate your account, please Contact us');
+}
+
+function logout()
+{
+    $_SESSION['status'] = 0;
+    $_SESSION['user'] = "";
+    header('Location: index.php?action=getRecent');
 }
 
 //----------------------------------------------Misc Tools Section----------------------------------------------------//
@@ -154,6 +229,6 @@ function register()
 function message($message)
 {
     $_POST['message'] = $message;
-    require('view/message.php');
+    require('private/view/message.php');
 }
 

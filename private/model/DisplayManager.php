@@ -6,7 +6,7 @@
  * Time: 22:42
  */
 
-require_once('model/Manager.php');
+require_once('private/model/Manager.php');
 
 class display extends Manager
 {

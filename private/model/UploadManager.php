@@ -6,7 +6,7 @@
  * Time: 17:35
  */
 
-require_once('model/Manager.php');
+require_once('private/model/Manager.php');
 
 class upload extends Manager
 {

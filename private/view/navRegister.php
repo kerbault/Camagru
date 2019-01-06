@@ -6,8 +6,7 @@
  * Time: 20:26
  */
 
-ob_start();
-if (preg_match('/Camagru$/', getcwd())) { ?>
+ob_start(); ?>
 
     <br>
     <div class="center">
@@ -39,9 +38,7 @@ if (preg_match('/Camagru$/', getcwd())) { ?>
             </form>
         </div>
     </div>
-    <?php $content = ob_get_clean(); ?>
 
-    <?php require("template.php");
-} else {
-    header('Location: ../index.php');
-} ?>
+<?php $content = ob_get_clean(); ?>
+
+<?php require("template.php"); ?>

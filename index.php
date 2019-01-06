@@ -10,7 +10,7 @@
 //de votre arborescence.
 
 //<?php
-//require('controller/frontend.php');
+//require('private/controller/frontend.php');
 //
 //try {
 //    if (isset($_GET['action'])) {
@@ -40,23 +40,23 @@
 //    echo 'Erreur : ' . $e->getMessage();
 //}
 
-require('view/session.php');
-require('controller/frontend.php');
+require('private/view/session.php');
+require('private/controller/frontend.php');
 
 try {
     if (isset($_GET['action'])) {
         switch ($_GET['action']) {
             case 'getAbout':
-                require("view/footAbout.php");
+                require("private/view/footAbout.php");
                 break;
             case 'getContact':
-                require("view/footContact.php");
+                require("private/view/footContact.php");
                 break;
             case 'getHelp':
-                require("view/footHelpFaq.php");
+                require("private/view/footHelpFaq.php");
                 break;
             case 'getTOS':
-                require("view/footTOS.php");
+                require("private/view/footTOS.php");
                 break;
             case 'getRecent':
                 getRecent();
@@ -66,22 +66,22 @@ try {
                 break;
             case 'getCapture':
                 if ($_SESSION['status'] > 0) {
-                    require("view/navCapture.php");
+                    require("private/view/navCapture.php");
                     break;
                 } else {
                     throw new Exception("Please, Log in or register to access this page");
                 }
             case 'getUpload':
-                require("view/navUpload.php");
+                require("private/view/navUpload.php");
                 break;
             case 'getLogin':
-                require("view/navLogin.php");
+                require("private/view/navLogin.php");
                 break;
             case 'getRegister':
-                require("view/navRegister.php");
+                require("private/view/navRegister.php");
                 break;
             case 'getLogout':
-                require("view/display.php");
+                logout();
                 break;
             case 'contactUs':
                 if (isset($_POST['from']) && isset($_POST['content']) && isset($_POST['subject'])) {
@@ -99,6 +99,13 @@ try {
             case 'login':
                 login();
                 break;
+            case 'verify':
+                if (isset($_GET['verifyId'])) {
+                    verifyAccount($_GET['verifyId']);
+                } else {
+                    throw new Exception('Some field are empty, please check again');
+                }
+                break;
             default:
                 throw new Exception("The page you're trying to access doesn't exist");
         }
@@ -106,5 +113,5 @@ try {
         getRecent();
     }
 } catch (Exception $e) {
-    message('Error : ' . $e->getMessage());
+    message($e->getMessage());
 }

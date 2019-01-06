@@ -5,7 +5,7 @@
  * Date: 12/11/2018
  * Time: 18:12
  */
-if (preg_match('/Camagru$/', getcwd())) { ?>
+?>
 
     <!DOCTYPE html>
 
@@ -30,6 +30,4 @@ if (preg_match('/Camagru$/', getcwd())) { ?>
         <?php require("foot.php") ?>
     </footer>
     </html>
-<?php } else {
-    header('Location: ../index.php');
-} ?>
+
