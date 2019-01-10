@@ -9,6 +9,7 @@
 require_once('private/model/UploadManager.php');
 require_once('private/model/UsersManager.php');
 require_once('private/model/DisplayManager.php');
+require_once('private/model/CommentManager.php');
 
 //----------------------------------------------Mailing section-------------------------------------------------------//
 
@@ -104,15 +105,30 @@ function uploadPicture()
 function getRecent()
 {
     $displayManager = new display();
-    $recent = $displayManager->recent();
+    $display = $displayManager->recent();
     require("private/view/display.php");
 }
 
 function getPopular()
 {
     $displayManager = new display();
-    $recent = $displayManager->popular();
+    $display = $displayManager->popular();
     require("private/view/display.php");
+}
+
+function getOne($pictureId)
+{
+    $displayManager = new display();
+    $pictureTmp = $displayManager->focus($pictureId);
+
+
+    $commentManager = new comments();
+    $commentsTmp = $commentManager->getComments($pictureId);
+
+    $usersManager = new user();
+    $users = $usersManager->getUser();
+
+    require("private/view/displayOne.php");
 }
 
 //----------------------------------------------Users Section---------------------------------------------------------//
@@ -188,6 +204,7 @@ function login()
                     throw new Exception('Your account is not active yet, please check the mail we sent during the registration.');
                 } else {
                     $_SESSION['status'] = $tmp['status'];
+                    $_SESSION['id'] = $tmp['id'];
                     $_SESSION['user'] = $login;
                     header('Location: index.php?action=getRecent');
                 }
@@ -221,7 +238,28 @@ function logout()
 {
     $_SESSION['status'] = 0;
     $_SESSION['user'] = "";
+    $_SESSION['id'] = -1;
     header('Location: index.php?action=getRecent');
+}
+
+//----------------------------------------------Comment section-------------------------------------------------------//
+
+function addComment($content, $id)
+{
+    if ($_SESSION['id'] > 0) {
+        $commentsManager = new comments();
+        $affectedLines = $commentsManager->postComment($id, $_SESSION['id'], $content);
+        header('location: index.php?action=getOne&id=' . $id);
+    } else {
+        throw new Exception("You need to login or register to post a comment");
+    }
+}
+
+function remComment()
+{
+    $displayManager = new display();
+    $display = $displayManager->recent();
+    require("private/view/display.php");
 }
 
 //----------------------------------------------Misc Tools Section----------------------------------------------------//

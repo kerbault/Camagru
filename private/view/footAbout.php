@@ -14,6 +14,6 @@ ob_start(); ?>
 
 <a href="public/other/camagru.fr.pdf" target="_blank">Camagru.fr.pdf</a>
 
-<?php $content = ob_get_clean(); ?>
+<?php $content = ob_get_clean();
 
-<?php require("template.php"); ?>
+require("template.php"); ?>

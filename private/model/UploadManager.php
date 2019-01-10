@@ -13,12 +13,13 @@ class upload extends Manager
     public function uploadPictureDb($pictureName)
     {
         $db = $this->dbConnect();
+        $userId = $_SESSION['id'];
 
         $newPost = $db->prepare('INSERT INTO `pictures`(`userID`,`name`,`date`)
         VALUES(:userID, :name, NOW())');
 
         $newPost->execute(array(
-            'userID' => 0,
+            'userID' => "$userId",
             'name' => "$pictureName"
         ));
     }

@@ -19,7 +19,7 @@ body {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: underline;
     color: #333333;
     text-align: center;
     transition: all 0.3s ease;
@@ -50,6 +50,9 @@ img {
 .center {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
 }
 
 /*---------------------------------------------------NavBar-----------------------------------------------------------*/
@@ -71,6 +74,7 @@ img {
 }
 
 .tab {
+    text-decoration: none;
     padding: 14px 20px;
     font-size: 20px;
     box-sizing: border-box;
@@ -198,7 +202,7 @@ img {
     box-shadow: 0px 0px 7px #616161;
 }
 
-.card {
+.card, .focusCard {
     background-color: #ffffff;
     box-shadow: 1px 1px 4px #333333;
     border-radius: 10px;
@@ -206,6 +210,18 @@ img {
     width: 300px;
     height: auto;
     margin: 10px;
+}
+
+.focusCard {
+    min-width: 300px;
+    max-width: 610px;
+    width: 100%;
+    padding: 12px;
+}
+
+.focusPicture {
+    border-radius: 5px;
+    box-shadow: 0px 0px 7px #616161;
 }
 
 .likeNcomment {
@@ -228,7 +244,7 @@ img {
     margin: 5px;
 }
 
-.likeCount, .commentCount {
+.likeCount, .commentCount, .author, .postDate {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -238,7 +254,15 @@ img {
     margin-left: auto
 }
 
-/*---------------------------------------------------Log-Reg----------------------------------------------------------*/
+#comment {
+    width: 100%;
+    max-width: 600px;
+    height: 50px;
+    resize: vertical;
+    border: 1px solid #666666;
+}
+
+/*---------------------------------------------------Login-Register---------------------------------------------------*/
 
 .logForm {
     display: flex;
@@ -261,7 +285,7 @@ img {
     box-sizing: border-box;
 }
 
-.logSubmit {
+.submit {
     width: 100%;
     background-color: #4CAF50;
     color: white;
@@ -270,8 +294,9 @@ img {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.logSubmit :hover {
+.submit:hover {
     background-color: #45a049;
 }

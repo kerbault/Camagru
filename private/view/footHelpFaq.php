@@ -22,6 +22,6 @@ ob_start(); ?>
     <img src="https://i.imgur.com/Q4tDgE7.gif">
 </center>
 
-<?php $content = ob_get_clean(); ?>
+<?php $content = ob_get_clean();
 
-<?php require("template.php"); ?>
+require("template.php"); ?>

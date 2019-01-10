@@ -58,6 +58,13 @@ try {
             case 'getTOS':
                 require("private/view/footTOS.php");
                 break;
+            case 'getOne':
+                if (isset($_GET['id'])) {
+                    getOne($_GET['id']);
+                    break;
+                } else {
+                    throw new Exception('Some field are empty, please check again');
+                }
             case 'getRecent':
                 getRecent();
                 break;
@@ -65,12 +72,8 @@ try {
                 getPopular();
                 break;
             case 'getCapture':
-                if ($_SESSION['status'] > 0) {
-                    require("private/view/navCapture.php");
-                    break;
-                } else {
-                    throw new Exception("Please, Log in or register to access this page");
-                }
+                require("private/view/navCapture.php");
+                break;
             case 'getUpload':
                 require("private/view/navUpload.php");
                 break;
@@ -106,6 +109,12 @@ try {
                     throw new Exception('Some field are empty, please check again');
                 }
                 break;
+            case 'addComment':
+                if (isset($_POST['content']) && isset($_POST['id'])){
+                    addComment($_POST['content'], $_POST['id']);
+                } else{
+                    throw new Exception('Some field are empty, please check again');
+                }
             default:
                 throw new Exception("The page you're trying to access doesn't exist");
         }

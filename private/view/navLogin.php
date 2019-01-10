@@ -14,7 +14,7 @@ ob_start(); ?>
         <form style="width: 100%" action="./index.php?action=login" method="post">
             <p>Name</p>
             <input type="text" class="logInput" name="user" id="user"
-                   pattern="[a-zA-Z0-9]{4,50}"
+                   pattern="[a-zA-Z0-9]{4,25}"
                    title="Must be alphanumeric and contain more than 3 characters"
                    required>
             <p>Password</p>
@@ -23,7 +23,7 @@ ob_start(); ?>
                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                    required>
             <a href="public/other/camagru.fr.pdf"><p style="text-align: right">Forgot account?</p></a>
-            <input type="submit" class="logSubmit" value="Login" name="Login">
+            <input type="submit" class="submit" value="Login" name="Login">
         </form>
     </div>
 </div>

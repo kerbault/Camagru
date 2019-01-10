@@ -6,32 +6,31 @@
  * Time: 18:23
  */
 
-ob_start(); ?>
+ob_start();
 
-<?php
-
-if (isset($recent)) { ?>
+if (isset($display)) { ?>
     <br>
     <div class="display">
         <?php
-        while ($data = $recent->fetch()) {
+        while ($data = $display->fetch()) {
             ?>
             <div class="card">
-                <img class="preview" src="public/captures/<?= $data['name']; ?>">
+                <a href="index.php?action=getOne&id=<?= $data['id']; ?>">
+                    <img class="preview" src="public/captures/<?= $data['name']; ?>"></a>
                 <div class="likeNcomment">
                     <div class="likeCount">
-                        <img class="pLike" src="./public/images/home-solid.png">
+                        <img class="pLike" src="./public/images/star_Filled.png">
                         <p class="nLike"><?= $data['likeCount'] ?></p>
                     </div>
                     <div class="commentCount">
-                        <p class="nComment"><?= $data['likeCount'] ?></p>
-                        <img class="pComment" src="./public/images/home-solid.png">
+                        <p class="nComment"><?= $data['commentCount'] ?></p>
+                        <img class="pComment" src="./public/images/conversationFilled.png">
                     </div>
                 </div>
             </div>
             <?php
         }
-        $recent->closeCursor();
+        $display->closeCursor();
         ?>
     </div>
     <?php
@@ -40,8 +39,6 @@ if (isset($recent)) { ?>
     throw new Exception("Ooops Something went wrong, please try again of contact us for more help");
 }
 
-?>
+$content = ob_get_clean();
 
-<?php $content = ob_get_clean(); ?>
-
-<?php require("template.php"); ?>
+require("template.php"); ?>

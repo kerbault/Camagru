@@ -26,10 +26,10 @@ ob_start(); ?>
     </div>
     <br>
     <div>
-        <input type="submit" id="send" value="Send">
+        <input class="submit" type="submit" id="send" value="Send">
     </div>
 </form>
 
-<?php $content = ob_get_clean(); ?>
+<?php $content = ob_get_clean();
 
-<?php require("template.php"); ?>
+require("template.php"); ?>

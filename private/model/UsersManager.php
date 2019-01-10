@@ -33,7 +33,7 @@ class user extends Manager
     public function login()
     {
         $db = $this->dbConnect();
-        $users = $db->query('SELECT `login`,`password`,`status` FROM `users`');
+        $users = $db->query('SELECT `id`, `login`,`password`,`status` FROM `users`');
         return $users;
     }
 
@@ -52,5 +52,13 @@ class user extends Manager
             'status' => $id,
             'id' => $status
         ));
+    }
+
+    public function getUser()
+    {
+        $db = $this->dbConnect();
+        $req = $db->query('SELECT `id`, `login` FROM `users`');
+
+        return ($req);
     }
 }

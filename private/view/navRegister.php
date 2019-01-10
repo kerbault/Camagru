@@ -14,7 +14,7 @@ ob_start(); ?>
             <form style="width: 100%" action="./index.php?action=register" method="post">
                 <p>Name</p>
                 <input type="text" class="logInput" name="Login" id="Login" placeholder="ex : PaulAmploi91"
-                       pattern="[a-zA-Z0-9]{4,50}"
+                       pattern="[a-zA-Z0-9]{4,25}"
                        title="Must be alphanumeric and contain more than 3 characters"
                        required>
                 <p>Password</p>
@@ -33,7 +33,7 @@ ob_start(); ?>
                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,255}$"
                        title="This email adress is invalid"
                        required>
-                <input type="submit" class="logSubmit" value="Register" name="Register">
+                <input type="submit" class="submit" value="Register" name="Register">
 
             </form>
         </div>
