@@ -8,75 +8,107 @@
 
 ob_start();
 
-if (isset($pictureTmp) && isset($commentsTmp)) {
-    $picture = $pictureTmp->fetch()
-    ?>
+if (isset($picture) && isset($commentsTmp) && isset($liked)) {
+	?>
 
-    <br>
-    <div class="center">
-        <div class="focusCard">
+	<br>
+	<div class="center">
+		<!-----------------------------------------Picture-Section------------------------------------------------------------->
+		<div class="focusCard">
 
-            <img class="focusPicture" src="public/captures/<?= $picture['name']; ?>">
-            <div class="likeNcomment">
-                <div class="likeCount">
-                    <img class="pLike" src="./public/images/star_Filled.png">
-                    <p class="nLike"><?= $picture['likeCount'] ?></p>
-                </div>
-                <div class="commentCount">
-                    <p class="nComment"><?= $picture['commentCount'] ?></p>
-                    <img class="pComment" src="./public/images/conversationFilled.png">
-                </div>
-            </div>
+			<img class="focusPicture" src="public/captures/<?= $picture['name']; ?>">
+			<div class="likeNcomment">
+				<div class="likeCount">
+					<?php if ($liked) { ?>
+						<form action="./index.php?action=dislike" method="post">
+							<input type="hidden" name="pictureId" value="<?= $picture['id'] ?>">
+							<button class="likeButton"><img class="pLike" src="./public/images/star_Filled.png">
+							</button>
+						</form>
+					<?php } else { ?>
+						<form action="./index.php?action=like" method="post">
+							<input type="hidden" name="pictureId" value="<?= $picture['id'] ?>">
+							<button class="likeButton"><img class="pLike" src="./public/images/star_Empty.png">
+							</button>
+						</form>
+					<?php } ?>
+					<p class="nLike"><?= $picture['likeCount'] ?></p>
+				</div>
+				<div class="commentCount">
+					<p class="nComment"><?= $picture['commentCount'] ?></p>
+					<img class="pComment" src="./public/images/conversationFilled.png">
+				</div>
+			</div>
 
-            <div class="postDate">
-                <p>Posted the <?= $picture['formatDate'] ?></p>
-            </div>
-            <div class="author">
-                <p>by <?= $picture['likeCount'] ?></p>
-            </div>
+			<div class="postDateFocus">
+				<p class="date">the <?= $picture['formatDate'] ?></p>
+			</div>
 
+			<div class="removeNBy">
 
-            <div class="center">
-                <a href="index.php?action=removePicture"
-                   onclick="return confirm('Are you sure to remove this picture and all the comments associated ?');">Remove</a>
-            </div>
-        </div>
-        <?php
-        while ($comments = $commentsTmp->fetch()) {
-            ?>
-            <div class="comments">
-                <div class="postDate">
-                    <p>Posted the <?= $comments['formatDate'] ?></p>
-                </div>
-                <div class="author">
-                    <p>by <?php if (isset($comments['likeCount'])) {
-                            echo $comments['likeCount'];
-                        } else {
-                            echo "Deleted Account";
-                        } ?></p>
-                </div>
-            </div>
-            <?php
-        }
-        $commentsTmp->closeCursor();
-        ?>
-        <div class="focusCard">
-            <form action="index.php?action=addComment" method="post">
-                <div>
-                    <label for="content">Message</label><br>
-                    <textarea id="comment" name="content" required></textarea>
-                </div>
-                <div>
-                    <input type="hidden" name="id" value=<?= $picture['id'] ?>>
-                    <input class="submit" type="submit" id="send" value="Post">
-                </div>
-            </form>
-        </div>
-    </div>
-    <?php
+				<?php if ($_SESSION['id'] === $picture['userID'] || $_SESSION['status'] == 2) { ?>
+					<form action="./index.php?action=remPicture" method="post">
+					<input type="hidden" name="userId" value="<?= $picture['userID'] ?>">
+					<input type="hidden" name="pictureId" value="<?= $picture['id'] ?>">
+					<button onclick="return confirm('Are you sure to remove this picture and all the comments associated ?');">
+						Remove
+					</button>
+					</form><?php
+				} ?>
+				<p style="margin-left: auto">by <?= $picture['likeCount'] ?></p>
+			</div>
+		</div>
+		<!-----------------------------------------Comments-Section------------------------------------------------------------>
+		<?php
+		while ($comments = $commentsTmp->fetch()) {
+			?>
+			<div class="commentCard">
+				<div>
+					<p class="date">the <?= $comments['formatDate'] ?></p>
+				</div>
+				<br>
+				<div>
+					<p style="text-align: left"> <?= htmlspecialchars($comments['content']) ?></p>
+				</div>
+				<br>
+				<div class="removeNBy">
+					<?php if ($_SESSION['user'] === $comments['user'] || $_SESSION['status'] > 1) { ?>
+						<form action="./index.php?action=remComment" method="post">
+						<input type="hidden" name="user" value="<?= $comments['user'] ?>">
+						<input type="hidden" name="commentId" value="<?= $comments['id'] ?>">
+						<input type="hidden" name="pictureId" value="<?= $picture['id'] ?>">
+						<button onclick="return confirm('Are you sure to remove this comment ?');">
+							Remove
+						</button>
+						</form><?php
+					} ?>
+					<p style="margin-left: auto">by <?= $comments['user'] ?></p>
+				</div>
+			</div>
+			<?php
+		}
+		$commentsTmp->closeCursor();
+		?>
+		<!-----------------------------------------Post-Comment---------------------------------------------------------------->
+		<?php if ($_SESSION['status'] > 0) { ?>
+			<div class="focusCard">
+				<form action="index.php?action=addComment" method="post">
+					<div>
+						<label for="content">Comment</label><br>
+						<textarea id="comment" name="content" maxlength="500" required></textarea>
+					</div>
+					<div>
+						<input type="hidden" name="id" value=<?= $picture['id'] ?>>
+						<input class="submit" type="submit" id="send" value="Post">
+					</div>
+				</form>
+			</div>
+		<?php } ?>
+	</div>
+	<?php
 
 } else {
-    throw new Exception("Ooops Something went wrong, please try again of contact us for more help");
+	throw new Exception("Ooops Something went wrong, please try again of contact us for more help");
 }
 
 $content = ob_get_clean();

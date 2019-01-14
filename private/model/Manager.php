@@ -8,11 +8,12 @@
 
 class Manager
 {
-    protected function dbConnect()
-    {
-        $db = new PDO('mysql:host=mysql;dbname=Camagru;charset=utf8', 'root', '');
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	protected function dbConnect()
+	{
 
-        return $db;
-    }
+		$db = new PDO('mysql:host=mysql;dbname=Camagru;charset=utf8', 'root', '');
+		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+		return $db;
+	}
 }

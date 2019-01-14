@@ -6,23 +6,66 @@
  * Time: 20:38
  */
 
-ob_start(); ?>
+ob_start();
 
-    <br>
-    <center>
-        <div>
-            <h1>Hello Title</h1>
+if (isset($myPostTmp) && isset($myFavsTmp)) { ?>
+	<br>
+	<h1>Posted</h1>
+	<div class="display">
+		<?php
+		while ($data = $myPostTmp->fetch()) {
+			?>
+			<div class="card">
+				<a href="index.php?action=getOne&id=<?= $data['id']; ?>">
+					<img class="preview" src="public/captures/<?= $data['name']; ?>"></a>
+				<div class="likeNcomment">
+					<div class="likeCount">
+						<img class="pLike" src="./public/images/star_Filled.png">
+						<p class="nLike"><?= $data['likeCount'] ?></p>
+					</div>
+					<div class="commentCount">
+						<p class="nComment"><?= $data['commentCount'] ?></p>
+						<img class="pComment" src="./public/images/conversationFilled.png">
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+		$myPostTmp->closeCursor();
+		?>
+	</div>
 
-            <p>Hello content</p>
-            <p>Hello content</p>
-            <p>Hello content</p>
-            <p>Hello content</p>
-            <p>Hello content</p>
-            <p>Hello content</p>
-        </div>
-        <img src="https://i.imgur.com/Q4tDgE7.gif">
-    </center>
+	<h1>Faved</h1>
+	<div class="display">
+		<?php
+		while ($data = $myFavsTmp->fetch()) {
+			?>
+			<div class="card">
+				<a href="index.php?action=getOne&id=<?= $data['id']; ?>">
+					<img class="preview" src="public/captures/<?= $data['name']; ?>"></a>
+				<div class="likeNcomment">
+					<div class="likeCount">
+						<img class="pLike" src="./public/images/star_Filled.png">
+						<p class="nLike"><?= $data['likeCount'] ?></p>
+					</div>
+					<div class="commentCount">
+						<p class="nComment"><?= $data['commentCount'] ?></p>
+						<img class="pComment" src="./public/images/conversationFilled.png">
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+		$myFavsTmp->closeCursor();
+		?>
+	</div>
 
-<?php $content = ob_get_clean(); ?>
+	<?php
+
+} else {
+	throw new Exception("Ooops Something went wrong, please try again of contact us for more help");
+}
+
+$content = ob_get_clean(); ?>
 
 <?php require("template.php"); ?>
