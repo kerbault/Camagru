@@ -151,7 +151,7 @@ function getGallery()
 
 function remPicture($userId, $pictureId)
 {
-	if (($userId === $_SESSION['id'] && $_SESSION['status'] > 0) || $_SESSION['status'] > 1) {
+	if (($userId === $_SESSION['id'] && $_SESSION['status'] > 1) || $_SESSION['status'] > 2) {
 		$uploadManager = new upload();
 		$deleted = $uploadManager->remPicture($pictureId);
 
@@ -188,6 +188,17 @@ function checkDuplicate($login, $email, $passwd, $confirmpasswd, $registerManage
 		$wrong += 4;
 	}
 	return $wrong;
+}
+
+function getSettings()
+{
+	if ($_SESSION['status'] > 1) {
+		$usersManager = new user();
+		$users = $usersManager->listUsers();
+		require('private/view/navSettings.php');
+	} else {
+		throw new Exception('your account is not active yet or blocked, please verify before contacting us');
+	}
 }
 
 function register()
@@ -243,7 +254,7 @@ function login()
 			if (password_verify($passwd, $tmp['password'])) {
 				if ($tmp['status'] < 0) {
 					throw new Exception('Your account is actually banned');
-				} elseif ($tmp['status'] == 0) {
+				} elseif ($tmp['status'] == 1) {
 					throw new Exception('Your account is not active yet, please check the mail we sent during the registration.');
 				} else {
 					$_SESSION['status'] = $tmp['status'];
@@ -261,13 +272,13 @@ function login()
 
 function verifyAccount($verifyId)
 {
-	$verifyManager = new user();
-	$users = $verifyManager->verifyId();
+	$userManager = new user();
+	$users = $userManager->verifyId();
 
 	foreach ($users as $tmp) {
 		if ($tmp['validkey'] == $verifyId) {
 			if ($tmp['status'] == 0) {
-				$verifyManager->changeStatus($tmp['id'], 1);
+				$userManager->changeStatus($tmp['id'], 2);
 				throw new Exception('Your account is now verified, you may now log in');
 			} else {
 				throw new Exception('Your account has been verified already');
@@ -289,7 +300,7 @@ function logout()
 
 function addComment($content, $pictureId)
 {
-	if ($_SESSION['status'] > 0 && $_SESSION['id'] > 0) {
+	if ($_SESSION['status'] > 1 && $_SESSION['id'] > 0) {
 		$commentsManager = new comments();
 		$commentsManager->postComment($pictureId, $_SESSION['user'], $content);
 		header('location: index.php?action=getOne&id=' . $pictureId);
@@ -300,7 +311,7 @@ function addComment($content, $pictureId)
 
 function remComment($commentId, $user, $pictureId)
 {
-	if (($user === $_SESSION['user'] && $_SESSION['status'] > 0) || $_SESSION['status'] > 1) {
+	if (($user === $_SESSION['user'] && $_SESSION['status'] > 1) || $_SESSION['status'] > 2) {
 		$commentsManager = new comments();
 		$commentsManager->remComment($commentId, $pictureId);
 		header('location: index.php?action=getOne&id=' . $pictureId);
@@ -315,7 +326,7 @@ function like($pictureId)
 	$checkLikeTmp = $commentsManager->checkLike($_SESSION['id'], $pictureId);
 	$checkLike = $checkLikeTmp->fetch();
 
-	if ($_SESSION['status'] < 1 && $_SESSION['id'] < 0) {
+	if ($_SESSION['status'] < 2 || $_SESSION['id'] < 1) {
 		throw new Exception("You need a valid account to like this picture");
 	}
 
@@ -334,7 +345,7 @@ function dislike($pictureId)
 	$checkLikeTmp = $commentsManager->checkLike($_SESSION['id'], $pictureId);
 	$checkLike = $checkLikeTmp->fetch();
 
-	if ($_SESSION['status'] < 1 && $_SESSION['id'] < 0) {
+	if ($_SESSION['status'] < 2 || $_SESSION['id'] < 1) {
 		throw new Exception("You need a valid account to dislike this picture");
 	}
 

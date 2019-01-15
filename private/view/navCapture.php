@@ -7,7 +7,7 @@
  */
 ob_start();
 
-if ($_SESSION['status'] > 0) {
+if ($_SESSION['status'] > 1) {
     ?>
 
     <br>

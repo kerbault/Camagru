@@ -56,6 +56,9 @@ try {
 			case 'getGallery':
 				getGallery();
 				break;
+			case 'getSettings':
+				getSettings();
+				break;
 //--------------------------------------------------actions-section---------------------------------------------------//
 			case 'getLogout':
 				logout();

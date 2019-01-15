@@ -31,7 +31,7 @@ a:hover {
 p {
     padding: 0px;
     margin: 0px;
-    word-break: break-all;
+    overflow-wrap: break-word;
 }
 
 img {
@@ -259,18 +259,19 @@ img {
     margin-left: auto
 }
 
-.removeNBy{
+.removeNBy {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
+
 .likeButton {
     padding: 0px;
     background-color: rgba(255, 255, 255, 0);
     border: none;
 }
 
-.date{
+.date {
     text-align: left;
     color: #666666;
     font-size: 11px;
@@ -284,9 +285,9 @@ img {
     border: 1px solid #666666;
 }
 
-/*---------------------------------------------------Login-Register---------------------------------------------------*/
+/*---------------------------------------------------Login-Register-settings------------------------------------------*/
 
-.logForm {
+.logForm{
     display: flex;
     justify-content: center;
     background-color: #ffffff;
@@ -295,6 +296,11 @@ img {
     width: 100%;
     max-width: 600px;
     padding: 20px;
+}
+
+.settingContent{
+    display: flex;
+    justify-content: space-between;
 }
 
 .logInput {
@@ -321,4 +327,69 @@ img {
 
 .submit:hover {
     background-color: #45a049;
+}
+
+/*---------------------------------------------------Pretty-switch----------------------------------------------------*/
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 17px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 17px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }
