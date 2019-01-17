@@ -44,13 +44,22 @@ class user extends Manager
 		return $users;
 	}
 
+	public function verifyStatus($userID)
+	{
+		$db = $this->dbConnect();
+		$statusTmp = $db->prepare('SELECT `status` FROM `users` WHERE `id` = ?');
+		$statusTmp->execute(array($userID));
+		$status = $statusTmp->fetch();
+		return $status;
+	}
+
 	public function changeStatus($id, $status)
 	{
 		$db = $this->dbConnect();
 		$req = $db->prepare('UPDATE `users` SET `status` = :status WHERE `id` = :id');
 		$req->execute(array(
-			'status' => $id,
-			'id' => $status
+			'status' => $status,
+			'id' => $id
 		));
 	}
 

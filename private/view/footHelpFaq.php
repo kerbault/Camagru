@@ -7,20 +7,12 @@
  */
 ob_start(); ?>
 
-<center>
-    <h1>Help & Faq</h1>
-    <div>
-        <h1>Hello Title</h1>
+<div class="container">
+	<video autoplay="true" class="js-stream">
 
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-        <p>Hello content</p>
-    </div>
-    <img src="https://i.imgur.com/Q4tDgE7.gif">
-</center>
+	</video>
+</div>
+<script src="public/js/capture.js"></script>
 
 <?php $content = ob_get_clean();
 

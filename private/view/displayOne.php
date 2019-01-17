@@ -46,7 +46,7 @@ if (isset($picture) && isset($commentsTmp) && isset($liked)) {
 
 			<div class="removeNBy">
 
-				<?php if ($_SESSION['id'] === $picture['userID'] || $_SESSION['status'] > 2) { ?>
+				<?php if ($_SESSION['id'] === $picture['userID'] || verifyStatus() > 2) { ?>
 					<form action="./index.php?action=remPicture" method="post">
 					<input type="hidden" name="userId" value="<?= $picture['userID'] ?>">
 					<input type="hidden" name="pictureId" value="<?= $picture['id'] ?>">
@@ -72,7 +72,7 @@ if (isset($picture) && isset($commentsTmp) && isset($liked)) {
 				</div>
 				<br>
 				<div class="removeNBy">
-					<?php if ($_SESSION['user'] === $comments['user'] || $_SESSION['status'] > 2) { ?>
+					<?php if ($_SESSION['user'] === $comments['user'] || verifyStatus() > 2) { ?>
 						<form action="./index.php?action=remComment" method="post">
 						<input type="hidden" name="user" value="<?= $comments['user'] ?>">
 						<input type="hidden" name="commentId" value="<?= $comments['id'] ?>">
@@ -90,7 +90,7 @@ if (isset($picture) && isset($commentsTmp) && isset($liked)) {
 		$commentsTmp->closeCursor();
 		?>
 		<!-----------------------------------------Post-Comment---------------------------------------------------------------->
-		<?php if ($_SESSION['status'] > 1) { ?>
+		<?php if (verifyStatus() > 1) { ?>
 			<div class="focusCard">
 				<form action="index.php?action=addComment" method="post">
 					<div>

@@ -12,10 +12,6 @@ if (!isset($_SESSION['user'])) {
     $_SESSION['user'] = "";
 }
 
-if (!isset($_SESSION['status'])) {
-    $_SESSION['status'] = 0;
-}
-
 if (!isset($_SESSION['id'])) {
     $_SESSION['id'] = 0;
 }

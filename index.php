@@ -9,8 +9,18 @@
 //• Un fichier index.php, contenant le point d’entrée de votre site, et situé à la racine
 //de votre arborescence.
 
-require('private/view/session.php');
-require('private/controller/frontend.php');
+require_once('private/view/session.php');
+
+require_once('private/model/UploadManager.php');
+require_once('private/model/UsersManager.php');
+require_once('private/model/DisplayManager.php');
+require_once('private/model/CommentManager.php');
+
+require_once('private/controller/mailing.php');
+require_once('private/controller/galleries.php');
+require_once('private/controller/pictures.php');
+require_once('private/controller/users.php');
+require_once('private/controller/misc.php');
 
 try {
 	if (isset($_GET['action'])) {
@@ -85,6 +95,12 @@ try {
 				} else {
 					throw new Exception('Some field are empty, please check again');
 				}
+				break;
+			case 'changeStatus':
+				changeStatus();
+				break;
+			case 'changePasswd':
+				changePassword($id, $newPassword);
 				break;
 			case 'remPicture':
 				if (isset($_POST['userId']) && isset($_POST['pictureId'])) {
