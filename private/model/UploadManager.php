@@ -13,33 +13,33 @@ class upload extends Manager
 	public function uploadPictureDb($pictureName)
 	{
 		$db = $this->dbConnect();
-		$userId = $_SESSION['id'];
+		$userID = $_SESSION['userID'];
 
 		$newPost = $db->prepare('INSERT INTO `pictures`(`userID`,`name`,`date`)
         VALUES(:userID, :name, NOW())');
 
 		$newPost->execute(array(
-			'userID' => "$userId",
+			'userID' => "$userID",
 			'name' => "$pictureName"
 		));
 	}
 
-	public function remPicture($pictureId)
+	public function remPicture($pictureID)
 	{
 		$db = $this->dbConnect();
 
-		$selected = $db->prepare('SELECT `name` FROM `pictures` WHERE `id` = ?');
-		$selected->execute(array($pictureId));
+		$selected = $db->prepare('SELECT `name` FROM `pictures` WHERE `ID` = ?');
+		$selected->execute(array($pictureID));
 		$deleted = $selected->fetch();
 
 		$likes = $db->prepare('DELETE FROM `likes` WHERE `pictureID` = ?');
-		$likes->execute(array($pictureId));
+		$likes->execute(array($pictureID));
 
 		$comments = $db->prepare('DELETE FROM `comments` WHERE `pictureID` = ?');
-		$comments->execute(array($pictureId));
+		$comments->execute(array($pictureID));
 
-		$picture = $db->prepare('DELETE FROM `pictures` WHERE `id` = ?');
-		$picture->execute(array($pictureId));
+		$picture = $db->prepare('DELETE FROM `pictures` WHERE `ID` = ?');
+		$picture->execute(array($pictureID));
 
 		return ($deleted);
 	}

@@ -8,10 +8,6 @@
 
 session_start();
 
-if (!isset($_SESSION['user'])) {
-    $_SESSION['user'] = "";
-}
-
-if (!isset($_SESSION['id'])) {
-    $_SESSION['id'] = 0;
+if (!isset($_SESSION['userID'])) {
+	$_SESSION['userID'] = 0;
 }

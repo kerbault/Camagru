@@ -13,88 +13,106 @@ class user extends Manager
 	public function checkValidity()
 	{
 		$db = $this->dbConnect();
-		$users = $db->query('SELECT `login`,`email` FROM `users`');
+
+		$users = $db->query('SELECT `user`,`email` FROM `users`');
+
 		return $users;
 	}
 
-	public function register($login, $email, $passwd, $validkey)
+	public function register($user, $email, $passwd, $validkey)
 	{
 		$db = $this->dbConnect();
-		$req = $db->prepare('INSERT INTO `users`(`login`,`password`,`email`,`creationDate`, `validkey`)
-                                        VALUES (:login, :password, :email, NOW(), :validkey)');
-		$req->execute(array(
-			'login' => $login,
+
+		$insert = $db->prepare('INSERT INTO `users`(`user`,`password`,`email`,`creationDate`, `validkey`)
+               	                        VALUES (:user, :password, :email, NOW(), :validkey)');
+		$req = $insert->execute(array(
+			'user'     => $user,
 			'password' => $passwd,
-			'email' => $email,
+			'email'    => $email,
 			'validkey' => $validkey
 		));
+
+		return ($req);
 	}
 
-	public function login()
+	public function login($user)
 	{
 		$db = $this->dbConnect();
-		$users = $db->query('SELECT `id`, `login`,`password`,`status` FROM `users`');
-		return $users;
+
+		$loginTmp = $db->prepare('SELECT `ID`,`user`,`password`,`status` FROM `users` WHERE `user` = ?');
+		$loginTmp->execute(array($user));
+		$login = $loginTmp->fetch();
+
+		return $login;
 	}
 
-	public function verifyId()
+	public function verifyKey($user)
 	{
 		$db = $this->dbConnect();
-		$users = $db->query('SELECT `id`, `status`, `validkey` FROM `users`');
-		return $users;
+
+		$verifyTmp = $db->prepare('SELECT `ID`, `status`, `validkey` FROM `users` WHERE `user` = ?');
+		$verifyTmp->execute(array($user));
+		$verify = $verifyTmp->fetch();
+
+		return $verify;
 	}
 
 	public function verifyStatus($userID)
 	{
 		$db = $this->dbConnect();
-		$statusTmp = $db->prepare('SELECT `status` FROM `users` WHERE `id` = ?');
+
+		$statusTmp = $db->prepare('SELECT `status` FROM `users` WHERE `ID` = ?');
 		$statusTmp->execute(array($userID));
 		$status = $statusTmp->fetch();
+
 		return $status;
 	}
 
-	public function changeStatus($id, $status)
+	public function changeStatus($userID, $status)
 	{
 		$db = $this->dbConnect();
-		$req = $db->prepare('UPDATE `users` SET `status` = :status WHERE `id` = :id');
-		$req->execute(array(
+
+		$update = $db->prepare('UPDATE `users` SET `status` = :status WHERE `ID` = :ID');
+		$req = $update->execute(array(
 			'status' => $status,
-			'id' => $id
+			'ID'     => $userID
 		));
+
+		return ($req);
 	}
 
-	public function changePassword($id, $newPassword)
+	public function changePassword($userID, $newPassword)
 	{
 		$db = $this->dbConnect();
-		$req = $db->prepare('UPDATE `users` SET `password` = :newPassword WHERE `id` = :id');
-		$req->execute(array(
-			'status' => $id,
-			'id' => $newPassword
+
+		$update = $db->prepare('UPDATE `users` SET `password` = :newPassword WHERE `ID` = :userID');
+		$req = $update->execute(array(
+			'status'      => $userID,
+			'newPassword' => $newPassword
 		));
+
+		return ($req);
 	}
 
-	public function changeNotification($id, $newPassword)
+	public function changeNotif($userID, $notifStatus)
 	{
 		$db = $this->dbConnect();
-		$req = $db->prepare('UPDATE `users` SET `password` = :newPassword WHERE `id` = :id');
-		$req->execute(array(
-			'status' => $id,
-			'id' => $newPassword
+
+		$update = $db->prepare('UPDATE `users` SET `notification` = :notification WHERE `ID` = :userID');
+		$req = $update->execute(array(
+			'userID'       => $userID,
+			'notification' => $notifStatus
 		));
+
+		return ($req);
 	}
 
 	public function listUsers()
 	{
 		$db = $this->dbConnect();
-		$users = $db->query('SELECT `id`, `login`,`status` FROM `users`');
+
+		$users = $db->query('SELECT `ID`, `user`,`status`,`notification` FROM `users`');
+
 		return $users;
-	}
-
-	public function getUser()
-	{
-		$db = $this->dbConnect();
-		$req = $db->query('SELECT `id`, `login` FROM `users`');
-
-		return ($req);
 	}
 }

@@ -307,7 +307,7 @@
 //     window.addEventListener('load', startup, false);
 // })();
 
-var video = document.getElementsByClassName('js-stream')[0];
+var video = document.getElementById('video');
 
 if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({video: true})

@@ -14,7 +14,8 @@ class display extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `id` DESC LIMIT 50');
+		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `ID` DESC LIMIT 50');
+
 		return $recent;
 	}
 
@@ -23,15 +24,19 @@ class display extends Manager
 		$db = $this->dbConnect();
 
 		$popular = $db->query('SELECT * FROM `pictures` ORDER BY `likeCount` DESC LIMIT 50');
+
 		return $popular;
 	}
 
-	public function focus($pictureId)
+	public function focus($pictureID)
 	{
 		$db = $this->dbConnect();
 
-		$pictureTmp = $db->prepare('SELECT `id`, `userID`, `likeCount`, `commentCount`, `name`, DATE_FORMAT(`date`, \'%d %M %Y at %Hh%im\') AS formatDate FROM `pictures` WHERE `id` = ?');
-		$pictureTmp->execute(array($pictureId));
+		$pictureTmp = $db->prepare('SELECT `ID`, `userID`, `likeCount`, `commentCount`, `name`, 
+DATE_FORMAT(`date`, \'%d %M %Y at %Hh%im\') AS formatDate 
+FROM `pictures` 
+WHERE `ID` = ?');
+		$pictureTmp->execute(array($pictureID));
 
 		return $pictureTmp;
 	}
@@ -40,7 +45,8 @@ class display extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `id` DESC LIMIT 50');
+		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `ID` DESC LIMIT 50');
+
 		return $recent;
 	}
 
@@ -48,23 +54,30 @@ class display extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `id` DESC LIMIT 50');
+		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `ID` DESC LIMIT 50');
+
 		return $recent;
 	}
 
-	public function myPost()
+	public function userPosts($userID)
 	{
 		$db = $this->dbConnect();
 
-		$myPost = $db->query('SELECT * FROM `pictures` ORDER BY `id` DESC LIMIT 50');
-		return $myPost;
+		$userPostsTmp =
+			$db->prepare('SELECT * FROM `pictures` WHERE `userID` = ? ORDER BY `ID` DESC LIMIT 50 ');
+		$userPostsTmp->execute(array($userID));
+
+		return $userPostsTmp;
 	}
 
-	public function myFavs()
+	public function userFavs($userID)
 	{
 		$db = $this->dbConnect();
 
-		$myFavs = $db->query('SELECT * FROM `pictures` ORDER BY `id` DESC LIMIT 50');
-		return $myFavs;
+		$userFavsTmp =
+			$db->prepare('SELECT * FROM `pictures` WHERE `userID` = ? ORDER BY `ID` DESC LIMIT 50 ');
+		$userFavsTmp->execute(array($userID));
+
+		return $userFavsTmp;
 	}
 }

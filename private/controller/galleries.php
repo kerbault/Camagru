@@ -7,25 +7,24 @@
  */
 
 
-
 function getRecent()
 {
 	$displayManager = new display();
 	$display = $displayManager->recent();
-	require("private/view/display.php");
+	require("private/view/navRecentPopular.php");
 }
 
 function getPopular()
 {
 	$displayManager = new display();
 	$display = $displayManager->popular();
-	require("private/view/display.php");
+	require("private/view/navRecentPopular.php");
 }
 
-function getOne($pictureId)
+function getOne($pictureID)
 {
 	$displayManager = new display();
-	$pictureTmp = $displayManager->focus($pictureId);
+	$pictureTmp = $displayManager->focus($pictureID);
 	$picture = $pictureTmp->fetch();
 
 	if ($picture == NULL) {
@@ -33,26 +32,39 @@ function getOne($pictureId)
 	}
 
 	$commentsManager = new comments();
-	$commentsTmp = $commentsManager->getComments($pictureId);
+	$commentsTmp = $commentsManager->getComments($pictureID);
 
-	$checkLikeTmp = $commentsManager->checkLike($_SESSION['id'], $pictureId);
+	$checkLikeTmp = $commentsManager->checkLike($_SESSION['userID'], $pictureID);
 	$liked = $checkLikeTmp->fetch();
 
 	$usersManager = new user();
-	$users = $usersManager->getUser();
+	$users = $usersManager->listUsers();
 
 	require("private/view/displayOne.php");
 }
 
-function getGallery()
+
+function getGallery($userID)
 {
-	if ($_SESSION['user'] != "") {
-		$displayManager = new display();
-		$myPostTmp = $displayManager->myPost();
-		$myFavsTmp = $displayManager->myPost();
-		require("private/view/navGallery.php");
-	} else {
-		throw new Exception("You need an account to access this page");
+	$displayManager = new display();
+
+	$userPostsTmp = $displayManager->userPosts($userID);
+	$userPosts = $userPostsTmp->fetch();
+
+
+	$userFavsTmp = $displayManager->userFavs($userID);
+	$userFavs = $userFavsTmp->fetch();
+
+	if ($userPosts === NULL && $userFavs === NULL) {
+		throw new Exception("This gallery doesn't exist or it's empty");
 	}
+
+	$userPostsTmp->closeCursor();
+	$userPostsTmp->execute();
+
+	$userFavsTmp->closeCursor();
+	$userFavsTmp->execute();
+
+	require("private/view/navGallery.php");
 }
 

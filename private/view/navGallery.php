@@ -8,63 +8,63 @@
 
 ob_start();
 
-if (isset($myPostTmp) && isset($myFavsTmp)) { ?>
+//if (isset($userPostsTmp) && isset($userFavsTmp)) { ?>
 	<br>
 	<h1>Posted</h1>
 	<div class="display">
 		<?php
-		while ($data = $myPostTmp->fetch()) {
+		while ($userPosts = $userPostsTmp->fetch()) {
 			?>
 			<div class="card">
-				<a href="index.php?action=getOne&id=<?= $data['id']; ?>">
-					<img class="preview" src="public/captures/<?= $data['name']; ?>"></a>
+				<a href="index.php?action=getOne&pictureID=<?= $userPosts['ID']; ?>">
+					<img class="preview" src="public/captures/<?= $userPosts['name']; ?>"></a>
 				<div class="likeNcomment">
 					<div class="likeCount">
 						<img class="pLike" src="./public/images/star_Filled.png">
-						<p class="nLike"><?= $data['likeCount'] ?></p>
+						<p class="nLike"><?= $userPosts['likeCount'] ?></p>
 					</div>
 					<div class="commentCount">
-						<p class="nComment"><?= $data['commentCount'] ?></p>
+						<p class="nComment"><?= $userPosts['commentCount'] ?></p>
 						<img class="pComment" src="./public/images/conversationFilled.png">
 					</div>
 				</div>
 			</div>
 			<?php
 		}
-		$myPostTmp->closeCursor();
+		$userPostsTmp->closeCursor();
 		?>
 	</div>
 
 	<h1>Faved</h1>
 	<div class="display">
 		<?php
-		while ($data = $myFavsTmp->fetch()) {
+		while ($userFavs = $userFavsTmp->fetch()) {
 			?>
 			<div class="card">
-				<a href="index.php?action=getOne&id=<?= $data['id']; ?>">
-					<img class="preview" src="public/captures/<?= $data['name']; ?>"></a>
+				<a href="index.php?action=getOne&pictureID=<?= $userFavs['ID']; ?>">
+					<img class="preview" src="public/captures/<?= $userFavs['name']; ?>"></a>
 				<div class="likeNcomment">
 					<div class="likeCount">
 						<img class="pLike" src="./public/images/star_Filled.png">
-						<p class="nLike"><?= $data['likeCount'] ?></p>
+						<p class="nLike"><?= $userFavs['likeCount'] ?></p>
 					</div>
 					<div class="commentCount">
-						<p class="nComment"><?= $data['commentCount'] ?></p>
+						<p class="nComment"><?= $userFavs['commentCount'] ?></p>
 						<img class="pComment" src="./public/images/conversationFilled.png">
 					</div>
 				</div>
 			</div>
 			<?php
 		}
-		$myFavsTmp->closeCursor();
+		$userFavsTmp->closeCursor();
 		?>
 	</div>
 
-	<?php
+<?php
 
-} else {
-	throw new Exception("Ooops Something went wrong, please try again of contact us for more help");
-}
+//} else {
+//	throw new Exception("Ooops Something went wrong, please try again of contact us for more help");
+//}
 
 $content = ob_get_clean(); ?>
 

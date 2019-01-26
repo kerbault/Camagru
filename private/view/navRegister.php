@@ -13,7 +13,7 @@ ob_start(); ?>
         <div class="logForm">
             <form style="width: 100%" action="./index.php?action=register" method="post">
                 <p>Name</p>
-                <input type="text" class="logInput" name="Login" id="Login" placeholder="ex : PaulAmploi91"
+                <input type="text" class="logInput" name="user" id="user" placeholder="ex : PaulAmploi91"
                        pattern="[a-zA-Z0-9]{4,25}"
                        title="Must be alphanumeric and contain more than 3 characters"
                        required>

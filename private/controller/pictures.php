@@ -66,79 +66,106 @@ function uploadPicture()
 	}
 }
 
-function remPicture($userId, $pictureId)
+function remPicture($userID, $pictureID)
 {
-	if (($userId === $_SESSION['id'] && verifyStatus() > 1) || verifyStatus() > 2) {
-		$uploadManager = new upload();
-		$deleted = $uploadManager->remPicture($pictureId);
+	if (isset($_POST['userID']) && isset($_POST['pictureID'])) {
 
-		if ($deleted['name'] != "") {
-			try {
-				unlink('./public/captures/' . $deleted['name']);
-				header('location: index.php');
-			} catch (Exception $e) {
-				throw new Exception("Hahem problem");
+		$userID = $_POST['userID'];
+		$pictureID = $_POST['pictureID'];
+
+		if (($userID === $_SESSION['userID'] && verifyStatus() > 1) || verifyStatus() > 2) {
+			$uploadManager = new upload();
+			$deleted = $uploadManager->remPicture($pictureID);
+
+			if ($deleted['name'] != "") {
+				try {
+					unlink('./public/captures/' . $deleted['name']);
+					header('location: index.php');
+				} catch (Exception $e) {
+					throw new Exception("Hahem problem");
+				}
 			}
+		} else {
+			throw new Exception("You don't have the rights to remove this picture");
 		}
+
 	} else {
-		throw new Exception("You don't have the rights to remove this picture");
+		throw new Exception('Some field are empty, please check again4');
 	}
 }
 
-function addComment($content, $pictureId)
+function addComment()
 {
-	if (verifyStatus() > 1 && $_SESSION['id'] > 0) {
-		$commentsManager = new comments();
-		$commentsManager->postComment($pictureId, $_SESSION['user'], $content);
-		header('location: index.php?action=getOne&id=' . $pictureId);
+	if (isset($_POST['content']) && isset($_POST['ID'])) {
+
+		$content = $_POST['content'];
+		$pictureID = $_POST['ID'];
+
+		if (verifyStatus() > 1 && $_SESSION['userID'] > 0) {
+			$commentsManager = new comments();
+			$commentsManager->postComment($pictureID, $_SESSION['userID'], $content);
+			header('location: index.php?action=getOne&pictureID=' . $pictureID);
+		} else {
+			throw new Exception("You need a valid account to post a comment");
+		}
+
 	} else {
-		throw new Exception("You need a valid account to post a comment");
+		throw new Exception('Some field are empty, please check again5');
 	}
 }
 
-function remComment($commentId, $user, $pictureId)
+function remComment()
 {
-	if (($user === $_SESSION['user'] && verifyStatus() > 1) || verifyStatus() > 2) {
-		$commentsManager = new comments();
-		$commentsManager->remComment($commentId, $pictureId);
-		header('location: index.php?action=getOne&id=' . $pictureId);
+	if (isset($_POST['user']) && isset($_POST['commentID']) && isset($_POST['pictureID'])) {
+
+		$user = $_POST['user'];
+		$commentID = $_POST['commentID'];
+		$pictureID = $_POST['pictureID'];
+
+		if (($user === $_SESSION['userID'] && verifyStatus() > 1) || verifyStatus() > 2) {
+			$commentsManager = new comments();
+			$commentsManager->remComment($commentID, $pictureID);
+			header('location: index.php?action=getOne&pictureID=' . $pictureID);
+		} else {
+			throw new Exception("You don't have the right to remove this comment");
+		}
+
 	} else {
-		throw new Exception("You don't have the right to remove this comment");
+		throw new Exception('Some field test are empty, please check again');
 	}
 }
 
-function like($pictureId)
+function like($pictureID)
 {
 	$commentsManager = new comments();
-	$checkLikeTmp = $commentsManager->checkLike($_SESSION['id'], $pictureId);
+	$checkLikeTmp = $commentsManager->checkLike($_SESSION['userID'], $pictureID);
 	$checkLike = $checkLikeTmp->fetch();
 
-	if (verifyStatus() < 2 || $_SESSION['id'] < 1) {
+	if (verifyStatus() < 2 || $_SESSION['userID'] < 1) {
 		throw new Exception("You need a valid account to like this picture");
 	}
 
 	if (!$checkLike) {
-		$commentsManager->like($_SESSION['id'], $pictureId);
-		header('location: index.php?action=getOne&id=' . $pictureId);
+		$commentsManager->like($_SESSION['userID'], $pictureID);
+		header('location: index.php?action=getOne&pictureID=' . $pictureID);
 	} else {
 		throw new Exception("You already liked this picture");
 	}
 }
 
-
-function dislike($pictureId)
+function dislike($pictureID)
 {
 	$commentsManager = new comments();
-	$checkLikeTmp = $commentsManager->checkLike($_SESSION['id'], $pictureId);
+	$checkLikeTmp = $commentsManager->checkLike($_SESSION['userID'], $pictureID);
 	$checkLike = $checkLikeTmp->fetch();
 
-	if (verifyStatus() < 2 || $_SESSION['id'] < 1) {
+	if (verifyStatus() < 2 || $_SESSION['userID'] < 1) {
 		throw new Exception("You need a valid account to dislike this picture");
 	}
 
 	if ($checkLike) {
-		$commentsManager->dislike($_SESSION['id'], $pictureId);
-		header('location: index.php?action=getOne&id=' . $pictureId);
+		$commentsManager->dislike($_SESSION['userID'], $pictureID);
+		header('location: index.php?action=getOne&pictureID=' . $pictureID);
 	} else {
 		throw new Exception("You already disliked this picture");
 	}
