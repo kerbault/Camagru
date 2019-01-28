@@ -17,7 +17,7 @@ class display extends Manager
 		$recent = $db->query('SELECT	pictures.ID as pictureID,
 												name,
 												likeCount,
-												commentCountv   										
+												commentCount   										
 										FROM `pictures`
 										INNER JOIN users ON users.ID = pictures.userID 
 										ORDER BY pictures.ID DESC LIMIT 50');
