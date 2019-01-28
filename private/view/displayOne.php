@@ -57,7 +57,7 @@ if (isset($picture) && isset($commentsTmp) && isset($liked)) {
 					</button>
 					</form><?php
 				} ?>
-				<p style="margin-left: auto">by <?= $picture['userID'] ?></p>
+				<p style="margin-left: auto">by <?= $picture['user'] ?></p>
 			</div>
 		</div>
 		<!--------------------Comments-Section------------------------------------------------------------>

@@ -15,7 +15,7 @@ if (isset($display)) { ?>
 		while ($data = $display->fetch()) {
 			?>
 			<div class="card">
-				<a href="index.php?action=getOne&pictureID=<?= $data['ID']; ?>">
+				<a href="index.php?action=getOne&pictureID=<?= $data['pictureID']; ?>">
 					<img class="preview" src="public/captures/<?= $data['name']; ?>"></a>
 				<div class="likeNcomment">
 					<div class="likeCount">
