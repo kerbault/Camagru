@@ -23,6 +23,8 @@ require_once('private/controller/users.php');
 require_once('private/controller/misc.php');
 
 try {
+	require_once('private/config/setup.php');
+
 	if (isset($_GET['action'])) {
 		switch ($_GET['action']) {
 //-----------------------------------------display-section-----------------------------------------------//
@@ -63,6 +65,13 @@ try {
 			case 'getRegister':
 				require("private/view/navRegister.php");
 				break;
+			case 'getMyGallery':
+				if (isset($_GET['userID'])) {
+					getGallery($_GET['userID']);
+				} else {
+					throw new Exception('Some field are empty, please check again1');
+				}
+				break;
 			case 'getGallery':
 				if (isset($_GET['userID'])) {
 					getGallery($_GET['userID']);
@@ -73,6 +82,10 @@ try {
 			case 'getSettings':
 				getSettings();
 				break;
+			case 'forgetLogin':
+				require("private/view/forgetLogin.php");
+				break;
+
 //-----------------------------------------actions-section-----------------------------------------------//
 			case 'getLogout':
 				logout();
@@ -88,7 +101,7 @@ try {
 				break;
 			case 'login':
 				if (isset($_POST['user']) && isset($_POST['passwd'])) {
-					login(htmlspecialchars($_POST['user']), htmlspecialchars($_POST['passwd']));
+					login($_POST['user'], $_POST['passwd']);
 					break;
 				} else {
 					throw new Exception('Some field are empty, please check again7');
@@ -108,8 +121,14 @@ try {
 					throw new Exception('Some field are empty, please check again7');
 				}
 			case 'changePasswd':
-				changePassword();
-				break;
+				if (isset($_POST['oldPasswd']) && isset($_POST['newPasswd']) &&
+					isset($_POST['confirmpasswd'])) {
+					changePassword($_POST['oldPasswd'], $_POST['newPasswd'], $_POST['confirmpasswd']);
+					break;
+				} else {
+					throw new Exception('Fuck you');
+
+				}
 			case 'changeNotif':
 				if (isset($_SESSION['userID']) && isset($_POST['notifStatus'])) {
 					changeNotif($_SESSION['userID'], $_POST['notifStatus']);
@@ -119,6 +138,30 @@ try {
 					break;
 				} else {
 					throw new Exception('Some field are empty, please check again6');
+				}
+			case 'resetAccount1st':
+				if (isset($_POST['email'])) {
+					forgetLogin($_POST['email']);
+					break;
+				} else {
+					throw new Exception('Some field are empty, please check again6');
+				}
+			case 'resetAccount2nd':
+				if (isset($_GET['user']) && isset($_GET['verifyKey'])) {
+					Require("private/view/resetPassword.php");
+					break;
+				} else {
+					throw new Exception('Some field are empty, please check again7');
+				}
+			case 'resetAccount3rd':
+				if (isset($_POST['passwd']) && isset($_POST['confirmpasswd']) &&
+					isset($_POST['userName']) && isset($_POST['verifyKey'])) {
+					resetPassword($_POST['userName'], $_POST['verifyKey'], $_POST['passwd'],
+								  $_POST['confirmpasswd']
+					);
+					break;
+				} else {
+					throw new Exception('Some field are empty, please check again7');
 				}
 			case 'remPicture':
 				remPicture();

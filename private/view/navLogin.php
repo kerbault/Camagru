@@ -22,7 +22,7 @@ ob_start(); ?>
                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}"
                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
                    required>
-            <a href="public/other/camagru.fr.pdf"><p style="text-align: right">Forgot account?</p></a>
+            <a href="index.php?action=forgetLogin"><p style="text-align: right">Forgot account?</p></a>
             <input type="submit" class="submit" value="Login" name="Login">
         </form>
     </div>

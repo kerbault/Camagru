@@ -12,9 +12,10 @@ if (isset($display)) { ?>
 	<br>
 	<div class="display">
 		<?php
+		$postCount = 0;
 		while ($data = $display->fetch()) {
 			?>
-			<div class="card">
+			<div class="item">
 				<a href="index.php?action=getOne&pictureID=<?= $data['pictureID']; ?>">
 					<img class="preview" src="public/captures/<?= $data['name']; ?>"></a>
 				<div class="likeNcomment">
@@ -29,10 +30,16 @@ if (isset($display)) { ?>
 				</div>
 			</div>
 			<?php
-		}
-		$display->closeCursor();
-		?>
+			$postCount++;
+		} ?>
 	</div>
+	<button class="submit" id="load-more-posts"
+			<?php if ($postCount <= 6) { ?>style="display: none" <?php } ?>>Load More Posts
+	</button>
+	<?php
+	$display->closeCursor();
+	?>
+	<script src="public/js/loadMore.js"></script>
 	<?php
 
 } else {

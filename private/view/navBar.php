@@ -40,10 +40,10 @@
 				<?php } ?>>Register</a>
 
 		<?php } else { ?>
-			<a href="index.php?action=getGallery&userID=<?= $_SESSION['userID'] ?>" class="tab"
-				<?php if (isset($_GET['action']) && $_GET['action'] == 'getGallery') { ?>
+			<a href="index.php?action=getMyGallery&userID=<?= $_SESSION['userID'] ?>" class="tab"
+				<?php if (isset($_GET['action']) && $_GET['action'] == 'getMyGallery') { ?>
 					id="current"
-				<?php } ?>>Gallery</a>
+				<?php } ?>>My Gallery</a>
 
 			<a href="index.php?action=getSettings" class="tab"
 				<?php if (isset($_GET['action']) && $_GET['action'] == 'getSettings') { ?>
@@ -57,4 +57,3 @@
 		<?php } ?>
 	</div>
 </div>
-

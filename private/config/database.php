@@ -6,14 +6,11 @@
  * Time: 18:05
  */
 
-//Un fichier config/database.php, contenant la configuration de votre base de
-//données qui sera instanciée via PDO au format suivant :
-//$> cat config/database.php
-
-//<?php
-//$DB_DSN = ...;
-//$DB_USER = ...;
-//$DB_PASSWORD = ...;
+$DB_BASE      = 'Camagru';
+$DB_DSN_LIGHT = 'mysql:host=mysql';
+$DB_DSN       = $DB_DSN_LIGHT . ';dbname=' . $DB_BASE;
+$DB_USER      = 'root';
+$DB_PASSWORD  = 'root';
 
 //Le DSN (Data Source Name) contient les informations requises pour se connecter à la
 //base, par exemple ’mysql:dbname=testdb;host=127.0.0.1’. En général, un DSN est

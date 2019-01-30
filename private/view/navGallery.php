@@ -10,12 +10,13 @@ ob_start();
 
 //if (isset($userPostsTmp) && isset($userFavsTmp)) { ?>
 	<br>
-	<h1>Posted</h1>
+	<h1 id="postTitle"><?= $userName['user'] ?>'s Posts</h1>
 	<div class="display">
 		<?php
+		$postCount = 0;
 		while ($userPosts = $userPostsTmp->fetch()) {
 			?>
-			<div class="card">
+			<div class="item">
 				<a href="index.php?action=getOne&pictureID=<?= $userPosts['ID']; ?>">
 					<img class="preview" src="public/captures/<?= $userPosts['name']; ?>"></a>
 				<div class="likeNcomment">
@@ -30,17 +31,26 @@ ob_start();
 				</div>
 			</div>
 			<?php
+			$postCount++;
 		}
-		$userPostsTmp->closeCursor();
-		?>
+		if ($postCount == 0) {
+			?>
+			<p>Empty</p>
+			<?php
+		} ?>
 	</div>
 
-	<h1>Faved</h1>
-	<div class="display">
+	<button class="submit" id="load-more-posts"
+			<?php if ($postCount <= 6) { ?>style="display: none" <?php } ?>>Load More Posts
+	</button>
+
+	<h1 id="favTitle"><?= $userName['user'] ?>'s Favs</h1>
+	<div class="displayFav">
 		<?php
+		$postCount = 0;
 		while ($userFavs = $userFavsTmp->fetch()) {
 			?>
-			<div class="card">
+			<div class="itemFav">
 				<a href="index.php?action=getOne&pictureID=<?= $userFavs['ID']; ?>">
 					<img class="preview" src="public/captures/<?= $userFavs['name']; ?>"></a>
 				<div class="likeNcomment">
@@ -55,17 +65,24 @@ ob_start();
 				</div>
 			</div>
 			<?php
+			$postCount++;
+		}
+		if ($postCount == 0) {
+			?>
+			<p>Empty</p>
+			<?php
 		}
 		$userFavsTmp->closeCursor();
 		?>
 	</div>
 
+	<button class="submit" id="load-more-favs"
+			<?php if ($postCount <= 6) { ?>style="display: none" <?php } ?>>Load More Favs
+	</button>
+
+	<script src="public/js/loadMore.js"></script>
+	<script src="public/js/loadMoreFav.js"></script>
 <?php
+$content = ob_get_clean();
 
-//} else {
-//	throw new Exception("Ooops Something went wrong, please try again of contact us for more help");
-//}
-
-$content = ob_get_clean(); ?>
-
-<?php require("template.php"); ?>
+require("template.php"); ?>

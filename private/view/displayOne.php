@@ -57,7 +57,11 @@ if (isset($picture) && isset($commentsTmp) && isset($liked)) {
 					</button>
 					</form><?php
 				} ?>
-				<p style="margin-left: auto">by <?= $picture['user'] ?></p>
+				<div class="byDiv">
+					<p>by&nbsp;</p>
+					<a href="index.php?action=getGallery&userID=<?= $picture['userID'] ?>"> <?=
+						$picture['user'] ?></a>
+				</div>
 			</div>
 		</div>
 		<!--------------------Comments-Section------------------------------------------------------------>
@@ -84,7 +88,11 @@ if (isset($picture) && isset($commentsTmp) && isset($liked)) {
 						</button>
 						</form><?php
 					} ?>
-					<p style="margin-left: auto">by <?= $comments['user'] ?></p>
+					<div class="byDiv">
+						<p>by&nbsp;</p>
+						<a href="index.php?action=getGallery&userID=<?= $comments['userID'] ?>"> <?=
+							$comments['user'] ?></a>
+					</div>
 				</div>
 			</div>
 			<?php
@@ -101,6 +109,7 @@ if (isset($picture) && isset($commentsTmp) && isset($liked)) {
 					</div>
 					<div>
 						<input type="hidden" name="ID" value=<?= $picture['ID'] ?>>
+						<input type="hidden" name="userID" value="<?= $picture['userID'] ?>">
 						<input class="submit" type="submit" id="send" value="Post">
 					</div>
 				</form>

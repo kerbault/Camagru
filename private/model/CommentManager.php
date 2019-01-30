@@ -14,16 +14,16 @@ class comments extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$comments =
-			$db->prepare('	SELECT	comments.ID AS ID,
-											users.user AS user,
-											pictureID,
-											userID,
-											content,
-											DATE_FORMAT(`commentDate`, \'%d %M %Y at %Hh%im\') AS formatDate
-									FROM comments INNER JOIN users ON users.ID = comments.userID 
-									WHERE pictureID = ?
-									ORDER BY commentDate ASC');
+		$comments = $db->prepare('	SELECT	comments.ID AS ID,
+													users.user AS user,
+													pictureID,
+													userID,
+													content,
+													DATE_FORMAT(`commentDate`, \'%d %M %Y at %Hh%im\') AS formatDate
+											FROM comments 
+											INNER JOIN users ON users.ID = comments.userID 
+											WHERE pictureID = ?
+											ORDER BY commentDate ASC');
 		$comments->execute(array($pictureID));
 
 		return $comments;
@@ -33,24 +33,37 @@ class comments extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$comments =
-			$db->prepare('INSERT INTO comments(pictureID, userID, content, `commentDate`) VALUES(?, ?, ?, NOW())');
-		$comments->execute(array($pictureID, $userID, $content));
+		$comments = $db->prepare('	INSERT INTO	comments(pictureID, 
+														userID, 
+														content, 
+														`commentDate`) 
+											VALUES(:pictureID, :userID, :content, NOW())');
+		$comments->execute(array(
+							   'pictureID' => $pictureID,
+							   'userID'    => $userID,
+							   'content'   => $content
+						   ));
 
-		$addComment =
-			$db->prepare('UPDATE `pictures` SET `commentCount` = `commentCount` + 1 WHERE `ID` = ?');
+		$addComment = $db->prepare('	UPDATE `pictures` 
+								  				SET `commentCount` = `commentCount` + 1 
+								  				WHERE `ID` = ?');
 		$addComment->execute(array($pictureID));
+
+
 	}
 
 	public function remComment($commentID, $pictureID)
 	{
 		$db = $this->dbConnect();
 
-		$comments = $db->prepare('DELETE FROM comments WHERE ID = ?');
+		$comments = $db->prepare('	DELETE FROM comments 
+											WHERE ID = ?');
 		$comments->execute(array($commentID));
 
 		$addComment =
-			$db->prepare('UPDATE `pictures` SET `commentCount` = `commentCount` - 1 WHERE `ID` = ?');
+			$db->prepare('	UPDATE `pictures` 
+									SET `commentCount` = `commentCount` - 1 
+									WHERE `ID` = ?');
 		$addComment->execute(array($pictureID));
 	}
 
@@ -58,12 +71,13 @@ class comments extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$liked =
-			$db->prepare('SELECT * FROM `likes` WHERE `userID` = :userID AND `pictureID` = :pictureID');
+		$liked = $db->prepare('	SELECT * 
+										  	FROM `likes` 
+											WHERE `userID` = :userID AND `pictureID` = :pictureID');
 		$liked->execute(array(
-			'userID'    => $userID,
-			'pictureID' => $pictureID
-		));
+							'userID'    => $userID,
+							'pictureID' => $pictureID
+						));
 
 		return $liked;
 
@@ -73,14 +87,16 @@ class comments extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$like =
-			$db->prepare('INSERT INTO `likes`(`userID`, `pictureID`, `likeDate`) VALUES(:userID, :pictureID, NOW())');
+		$like = $db->prepare('	INSERT INTO	`likes` (`userID`, `pictureID`, `likeDate`) 
+										VALUES(:userID, :pictureID, NOW())');
 		$like->execute(array(
-			'userID'    => $userID,
-			'pictureID' => $pictureID
-		));
+						   'userID'    => $userID,
+						   'pictureID' => $pictureID
+					   ));
 
-		$addLike = $db->prepare('UPDATE `pictures` SET `likeCount` = `likeCount` + 1 WHERE `ID` = ?');
+		$addLike = $db->prepare('	UPDATE `pictures` 
+											SET `likeCount` = `likeCount` + 1 
+											WHERE `ID` = ?');
 		$addLike->execute(array($pictureID));
 	}
 
@@ -88,13 +104,30 @@ class comments extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$like = $db->prepare('DELETE FROM `likes` WHERE `userID` = :userID AND `pictureID` = :pictureID');
+		$like = $db->prepare('	DELETE FROM `likes` 
+										WHERE `userID` = :userID AND `pictureID` = :pictureID');
 		$like->execute(array(
-			'userID'    => $userID,
-			'pictureID' => $pictureID
-		));
+						   'userID'    => $userID,
+						   'pictureID' => $pictureID
+					   ));
 
-		$remLike = $db->prepare('UPDATE `pictures` SET `likeCount` = `likeCount` - 1 WHERE `ID` = ?');
+		$remLike = $db->prepare('	UPDATE `pictures` 
+											SET `likeCount` = `likeCount` - 1 
+											WHERE `ID` = ?');
 		$remLike->execute(array($pictureID));
 	}
+
+	public function notification($userID)
+	{
+		$db = $this->dbConnect();
+
+		$userTmp = $db->prepare('	SELECT	`email`,
+													`notification`													   										
+											FROM 	`users`
+											WHERE 	`ID` = ?');
+		$userTmp->execute(array($userID));
+
+		return ($userTmp);
+	}
 }
+

@@ -6,5 +6,16 @@
  * Time: 18:03
  */
 
-//Un fichier config/setup.php, capable de créer ou recréer le schéma de la base de
-//données, en utilisant les infos contenues dans le fichier config/database.php.
+include('database.php');
+
+try {
+	$db = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+	$create_db = file_get_contents('private/config/Camagru.sql');
+	$db->exec($create_db);
+	$db = null;
+} catch (PDOException $e) {
+	echo "Connection failed: " . $e->getMessage();
+}
+?>

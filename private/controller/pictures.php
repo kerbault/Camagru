@@ -11,18 +11,18 @@ function uploadPicture()
 	ob_get_contents();
 	ob_end_clean();
 
-	$allowedSize = 2000000;
+	$allowedSize        = 2000000;
 	$allowed_file_types = array('.jpg', '.gif', '.png', '.jpeg');
-	$targetDir = "public/captures/";
+	$targetDir          = "public/captures/";
 
 	if (isset($_POST['submit']) && isset($_POST['name']) && isset($_FILES['fileToUpload']['error'])) {
 		if ($_FILES['fileToUpload']['error'] == 0) {
 			$uploadManager = new upload();
-			$fileName = $_FILES["fileToUpload"]["name"];
-			$fileBasename = substr($fileName, 0, strripos($fileName, '.'));
-			$fileExt = substr($fileName, strripos($fileName, '.'));
-			$fileSize = $_FILES["fileToUpload"]["size"];
-			$newFileName = $_POST['name'] . $fileExt;
+			$fileName      = $_FILES["fileToUpload"]["name"];
+			$fileBasename  = substr($fileName, 0, strripos($fileName, '.'));
+			$fileExt       = substr($fileName, strripos($fileName, '.'));
+			$fileSize      = $_FILES["fileToUpload"]["size"];
+			$newFileName   = $_POST['name'] . $fileExt;
 
 			if ($fileSize > $allowedSize) {
 				throw new Exception("The uploaded file exceeds the allowed limit.");
@@ -30,7 +30,7 @@ function uploadPicture()
 				throw new Exception("Please select a file to upload.");
 			} elseif (!in_array($fileExt, $allowed_file_types)) {
 				throw new Exception("Only these file typs are allowed for upload: " .
-					implode(', ', $allowed_file_types));
+									implode(', ', $allowed_file_types));
 				unlink($_FILES["fileToUpload"]["tmp_name"]);
 			} elseif (file_exists($targetDir . $newFileName)) {
 				throw new Exception("You have already uploaded this file.");
@@ -70,12 +70,12 @@ function remPicture($userID, $pictureID)
 {
 	if (isset($_POST['userID']) && isset($_POST['pictureID'])) {
 
-		$userID = $_POST['userID'];
+		$userID    = $_POST['userID'];
 		$pictureID = $_POST['pictureID'];
 
 		if (($userID === $_SESSION['userID'] && verifyStatus() > 1) || verifyStatus() > 2) {
 			$uploadManager = new upload();
-			$deleted = $uploadManager->remPicture($pictureID);
+			$deleted       = $uploadManager->remPicture($pictureID);
 
 			if ($deleted['name'] != "") {
 				try {
@@ -98,12 +98,14 @@ function addComment()
 {
 	if (isset($_POST['content']) && isset($_POST['ID'])) {
 
-		$content = $_POST['content'];
+		$content   = $_POST['content'];
 		$pictureID = $_POST['ID'];
+		$userID    = $_POST['userID'];
 
 		if (verifyStatus() > 1 && $_SESSION['userID'] > 0) {
 			$commentsManager = new comments();
 			$commentsManager->postComment($pictureID, $_SESSION['userID'], $content);
+			notifyComment($userID, $pictureID);
 			header('location: index.php?action=getOne&pictureID=' . $pictureID);
 		} else {
 			throw new Exception("You need a valid account to post a comment");
@@ -118,7 +120,7 @@ function remComment()
 {
 	if (isset($_POST['user']) && isset($_POST['commentID']) && isset($_POST['pictureID'])) {
 
-		$user = $_POST['user'];
+		$user      = $_POST['user'];
 		$commentID = $_POST['commentID'];
 		$pictureID = $_POST['pictureID'];
 
@@ -138,8 +140,8 @@ function remComment()
 function like($pictureID)
 {
 	$commentsManager = new comments();
-	$checkLikeTmp = $commentsManager->checkLike($_SESSION['userID'], $pictureID);
-	$checkLike = $checkLikeTmp->fetch();
+	$checkLikeTmp    = $commentsManager->checkLike($_SESSION['userID'], $pictureID);
+	$checkLike       = $checkLikeTmp->fetch();
 
 	if (verifyStatus() < 2 || $_SESSION['userID'] < 1) {
 		throw new Exception("You need a valid account to like this picture");
@@ -156,8 +158,8 @@ function like($pictureID)
 function dislike($pictureID)
 {
 	$commentsManager = new comments();
-	$checkLikeTmp = $commentsManager->checkLike($_SESSION['userID'], $pictureID);
-	$checkLike = $checkLikeTmp->fetch();
+	$checkLikeTmp    = $commentsManager->checkLike($_SESSION['userID'], $pictureID);
+	$checkLike       = $checkLikeTmp->fetch();
 
 	if (verifyStatus() < 2 || $_SESSION['userID'] < 1) {
 		throw new Exception("You need a valid account to dislike this picture");

@@ -30,7 +30,7 @@ function getSettings()
 {
 	if (verifyStatus() > 1) {
 		$usersManager = new user();
-		$users = $usersManager->listUsers();
+		$users        = $usersManager->listUsers();
 		require('private/view/navSettings.php');
 	} else {
 		throw new Exception('your account is not active yet or blocked, please verify before contacting us');
@@ -40,12 +40,12 @@ function getSettings()
 function register()
 {
 	$registerManager = new user();
-	$user = htmlspecialchars($_POST['user']);
-	$email = htmlspecialchars($_POST['email']);
-	$tmpPasswd = htmlspecialchars($_POST['passwd']);
-	$passwd = password_hash($tmpPasswd, PASSWORD_DEFAULT);
-	$confirmPasswd = htmlspecialchars($_POST['confirmpasswd']);
-	$validkey = hash('sha1', (round(microtime(true) * 1000) . rand(100, 999)));
+	$user            = htmlspecialchars($_POST['user']);
+	$email           = htmlspecialchars($_POST['email']);
+	$tmpPasswd       = htmlspecialchars($_POST['passwd']);
+	$passwd          = password_hash($tmpPasswd, PASSWORD_DEFAULT);
+	$confirmPasswd   = htmlspecialchars($_POST['confirmpasswd']);
+	$validkey        = hash('sha1', (round(microtime(true) * 1000) . rand(100, 999)));
 
 	if (preg_match('/[a-zA-Z0-9]{4,25}/', $user) == FALSE ||
 		preg_match('/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}/', $tmpPasswd) == FALSE ||
@@ -78,9 +78,12 @@ function register()
 
 function login($user, $passwd)
 {
-	$userManager = new user();
 
-	$user = $userManager->login($user);
+	$passwd = htmlspecialchars($passwd);
+	$user   = htmlspecialchars($user);
+
+	$userManager = new user();
+	$user        = $userManager->login($user);
 
 	if (password_verify($passwd, $user['password'])) {
 		if ($user['status'] < 0) {
@@ -105,7 +108,7 @@ function logout()
 function verifyAccount($user, $verifyKey)
 {
 	$userManager = new user();
-	$verify = $userManager->verifyKey($user);
+	$verify      = $userManager->verifyKey($user);
 
 	if ($verify['validkey'] == $verifyKey) {
 		if ($verify['status'] == 1) {
@@ -123,7 +126,7 @@ function verifyStatus()
 {
 	if ($_SESSION['userID'] > 0) {
 		$userManager = new user();
-		$status = $userManager->verifyStatus($_SESSION['userID']);
+		$status      = $userManager->verifyStatus($_SESSION['userID']);
 
 		return ($status['status']);
 	};
@@ -137,7 +140,7 @@ function changeStatus($userID, $status)
 		}
 
 		$userManager = new user();
-		$req = $userManager->changeStatus($userID, $status);
+		$req         = $userManager->changeStatus($userID, $status);
 
 		if ($req) {
 			header('Location: index.php?action=getSettings');
@@ -150,15 +153,90 @@ function changeStatus($userID, $status)
 
 }
 
-function changePassword()
+function changePassword($oldPassword, $newPassword, $confirmPasswd)
 {
 
+	$oldPassword   = htmlspecialchars($oldPassword);
+	$newPassword   = htmlspecialchars($newPassword);
+	$confirmPasswd = htmlspecialchars($confirmPasswd);
+
+	if ($newPassword === $confirmPasswd) {
+
+		$userManager = new user();
+
+		$userTmp = $userManager->getUserByID($_SESSION['userID']);
+		$user    = $userTmp->fetch();
+
+		if (password_verify($oldPassword, $user['password'])) {
+			$safePassword = password_hash($newPassword, PASSWORD_DEFAULT);
+			$userManager->changePassword($_SESSION['userID'], $safePassword);
+			message("Password changed with success");
+		} else {
+			throw new Exception('wrong password');
+		}
+	} else {
+		throw new Exception('Confirmed password is different from the new one');
+
+	}
+}
+
+function resetPassword($userName, $verifyKey, $newPassword, $confirmPasswd)
+{
+	$userName      = htmlspecialchars($userName);
+	$verifyKey     = htmlspecialchars($verifyKey);
+	$newPassword   = htmlspecialchars($newPassword);
+	$confirmPasswd = htmlspecialchars($confirmPasswd);
+
+	$userManager = new user();
+	$verify      = $userManager->verifyKey($userName);
+
+	if ($verify['validkey'] == $verifyKey) {
+
+
+		if ($newPassword === $confirmPasswd) {
+
+			$userManager = new user();
+
+			$userTmp = $userManager->getUserByName($userName);
+			$user    = $userTmp->fetch();
+
+			if ($verifyKey == $user['validkey']) {
+				$safePassword = password_hash($newPassword, PASSWORD_DEFAULT);
+				$userManager->changePassword($user['ID'], $safePassword);
+				message("Password changed with success");
+			} else {
+				throw new Exception('wrong password');
+			}
+		} else {
+			throw new Exception('Confirmed password is different from the new one');
+
+		}
+	} else {
+		throw new Exception('We connot verify your account, please Contact us');
+	}
 }
 
 function changeNotif($userID, $notifStatus)
 {
 	$userManager = new user();
-	$req = $userManager->changeNotif($userID, $notifStatus);
+	$req         = $userManager->changeNotif($userID, $notifStatus);
 
 	header('Location: index.php?action=getSettings');
+}
+
+function forgetLogin($email)
+{
+	$email = htmlspecialchars($email);
+
+	$userManager = new user();
+	$userTmp     = $userManager->getUserByEmail($email);
+	$user        = $userTmp->fetch();
+	$validkey    = hash('sha1', (round(microtime(true) * 1000) . rand(100, 999)));
+
+	if ($user) {
+		$userManager->changeValidKey($user['ID'], $validkey);
+		mailLogin($user['email'], $user['user'], $validkey);
+	}
+	message('A mail has been sent to reset your password if this one is found in our database');
+
 }

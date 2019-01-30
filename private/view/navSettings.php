@@ -41,13 +41,13 @@ if (isset($users) && verifyStatus() > 1) ?>
 	<div class="logForm">
 		<form style="width: 100%" action="./index.php?action=changePasswd" method="post">
 			<p>Old password</p>
-			<input type="password" class="logInput" name="passwd" id="oldPasswd"
+			<input type="password" class="logInput" name="oldPasswd" id="oldPasswd"
 				   placeholder="ex : NoTh4tEz"
 				   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}"
 				   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
 				   required>
 			<p>New password</p>
-			<input type="password" class="logInput" name="passwd" id="newPasswd"
+			<input type="password" class="logInput" name="newPasswd" id="newPasswd"
 				   placeholder="ex : NoTh4tEz"
 				   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}"
 				   title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"

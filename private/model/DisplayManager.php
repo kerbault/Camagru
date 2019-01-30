@@ -15,12 +15,12 @@ class display extends Manager
 		$db = $this->dbConnect();
 
 		$recent = $db->query('SELECT	pictures.ID as pictureID,
-												name,
+												pictures.name,
 												likeCount,
 												commentCount   										
 										FROM `pictures`
 										INNER JOIN users ON users.ID = pictures.userID 
-										ORDER BY pictures.ID DESC LIMIT 50');
+										ORDER BY pictures.ID DESC');
 
 		return $recent;
 	}
@@ -29,10 +29,13 @@ class display extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$popular = $db->query('SELECT * 
+		$popular = $db->query('SELECT pictures.ID as pictureID,
+												pictures.name,
+												likeCount,
+												commentCount 
 										 FROM `pictures`
 										 INNER JOIN users ON users.ID = pictures.userID 
-										 ORDER BY `likeCount` DESC LIMIT 50');
+										 ORDER BY `likeCount` DESC');
 
 		return $popular;
 	}
@@ -60,7 +63,7 @@ class display extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `ID` DESC LIMIT 50');
+		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `ID` DESC');
 
 		return $recent;
 	}
@@ -69,7 +72,7 @@ class display extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `ID` DESC LIMIT 50');
+		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `ID` DESC');
 
 		return $recent;
 	}
@@ -82,7 +85,7 @@ class display extends Manager
 			$db->prepare('SELECT * 
 									FROM `pictures` 
 									WHERE `userID` = ? 
-									ORDER BY `ID` DESC LIMIT 50 ');
+									ORDER BY `ID` DESC');
 		$userPostsTmp->execute(array($userID));
 
 		return $userPostsTmp;
@@ -95,9 +98,10 @@ class display extends Manager
 		$userFavsTmp =
 			$db->prepare('SELECT * 
 									FROM `likes`
+									INNER JOIN users ON users.ID = likes.userID
 									INNER JOIN pictures ON pictures.ID = likes.pictureID
 									WHERE likes.userID = ? 
-									ORDER BY `likeDate` DESC LIMIT 50 ');
+									ORDER BY `likeDate` DESC');
 		$userFavsTmp->execute(array($userID));
 
 		return $userFavsTmp;
