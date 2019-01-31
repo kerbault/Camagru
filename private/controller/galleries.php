@@ -9,16 +9,16 @@
 
 function getRecent()
 {
-	$galleriesManager = new galleries();
-	$recentPopular    = $galleriesManager->recent();
+	$galleriesManager  = new galleries();
+	$recentPopularList = $galleriesManager->recent();
 
 	require("private/view/navRecentPopular.php");
 }
 
 function getPopular()
 {
-	$galleriesManager = new galleries();
-	$recentPopular    = $galleriesManager->popular();
+	$galleriesManager  = new galleries();
+	$recentPopularList = $galleriesManager->popular();
 
 	require("private/view/navRecentPopular.php");
 }
@@ -34,13 +34,11 @@ function getOne($pictureID)
 	}
 
 	$commentsManager = new comments();
-	$commentsTmp     = $commentsManager->getComments($pictureID);
+	$commentsList    = $commentsManager->getComments($pictureID);
 
-	$checkLikeTmp = $commentsManager->checkLike($_SESSION['userID'], $pictureID);
+	$likesManager = new likes();
+	$checkLikeTmp = $likesManager->checkLike($_SESSION['userID'], $pictureID);
 	$liked        = $checkLikeTmp->fetch();
-
-	$usersManager = new users();
-	$users        = $usersManager->listUsers();
 
 	require("private/view/displayOne.php");
 }
@@ -50,25 +48,25 @@ function getGallery($userID)
 	$galleriesManager = new galleries();
 
 	$usersManager = new users();
-	$userNameTmp = $usersManager->getUserByID($userID);
-	$userName    = $userNameTmp->fetch();
+	$userNameTmp  = $usersManager->getUserByID($userID);
+	$userName     = $userNameTmp->fetch();
 
 
-	$userPostsTmp = $galleriesManager->userPosts($userID);
-	$userPosts    = $userPostsTmp->fetch();
+	$userPostsList = $galleriesManager->userPosts($userID);
+	$userPosts     = $userPostsList->fetch();
 
-	$userFavsTmp = $galleriesManager->userFavs($userID);
-	$userFavs    = $userFavsTmp->fetch();
+	$userFavsList = $galleriesManager->userFavs($userID);
+	$userFavs     = $userFavsList->fetch();
 
 	if ($userPosts == NULL && $userFavs == NULL) {
 		throw new Exception("This gallery doesn't exist or it's empty");
 	}
 
-	$userPostsTmp->closeCursor();
-	$userPostsTmp->execute();
+	$userPostsList->closeCursor();
+	$userPostsList->execute();
 
-	$userFavsTmp->closeCursor();
-	$userFavsTmp->execute();
+	$userFavsList->closeCursor();
+	$userFavsList->execute();
 
 	require("private/view/navGallery.php");
 }

@@ -13,19 +13,21 @@ ob_start();
 	<div class="display">
 		<?php
 		$postCount = 0;
-		while ($userPosts = $userPostsTmp->fetch()) {
+		Foreach ($userPostsList as $userPost) {
 			?>
-			<div class="item">
-				<a href="index.php?action=getOne&pictureID=<?= $userPosts['ID']; ?>">
-					<img class="preview" src="public/captures/<?= $userPosts['name']; ?>"></a>
+			<div class="item visually-hidden">
+				<a href="index.php?action=getOne&pictureID=<?= $userPost['ID']; ?>">
+					<img class="preview" src="public/captures/<?= $userPost['name']; ?>"
+						 title="<?= $userPost['name']; ?>" alt="<?= $userPost['name']; ?>"></a>
 				<div class="likeNcomment">
 					<div class="likeCount">
-						<img class="pLike" src="./public/images/star_Filled.png">
-						<p class="nLike"><?= $userPosts['likeCount'] ?></p>
+						<img class="pLike" src="./public/images/star_Filled.png" title="Liked" alt="Liked">
+						<p class="nLike"><?= $userPost['likeCount'] ?></p>
 					</div>
 					<div class="commentCount">
-						<p class="nComment"><?= $userPosts['commentCount'] ?></p>
-						<img class="pComment" src="./public/images/conversationFilled.png">
+						<p class="nComment"><?= $userPost['commentCount'] ?></p>
+						<img class="pComment" src="./public/images/conversationFilled.png" title="Comments"
+							 alt="Comments">
 					</div>
 				</div>
 			</div>
@@ -47,19 +49,20 @@ ob_start();
 	<div class="displayFav">
 		<?php
 		$postCount = 0;
-		while ($userFavs = $userFavsTmp->fetch()) {
+		Foreach ($userFavsList as $userFav) {
 			?>
-			<div class="itemFav">
-				<a href="index.php?action=getOne&pictureID=<?= $userFavs['ID']; ?>">
-					<img class="preview" src="public/captures/<?= $userFavs['name']; ?>"></a>
+			<div class="itemFav visually-hidden-fav">
+				<a href="index.php?action=getOne&pictureID=<?= $userFav['ID']; ?>">
+					<img class="preview" src="public/captures/<?= $userFav['name']; ?>"></a>
 				<div class="likeNcomment">
 					<div class="likeCount">
-						<img class="pLike" src="./public/images/star_Filled.png">
-						<p class="nLike"><?= $userFavs['likeCount'] ?></p>
+						<img class="pLike" src="./public/images/star_Filled.png" title="Liked" alt="Liked">
+						<p class="nLike"><?= $userFav['likeCount'] ?></p>
 					</div>
 					<div class="commentCount">
-						<p class="nComment"><?= $userFavs['commentCount'] ?></p>
-						<img class="pComment" src="./public/images/conversationFilled.png">
+						<p class="nComment"><?= $userFav['commentCount'] ?></p>
+						<img class="pComment" src="./public/images/conversationFilled.png" title="Comments"
+							 alt="Comments">
 					</div>
 				</div>
 			</div>
@@ -71,7 +74,7 @@ ob_start();
 			<p>Empty</p>
 			<?php
 		}
-		$userFavsTmp->closeCursor();
+		$userFavsList->closeCursor();
 		?>
 	</div>
 

@@ -22,7 +22,7 @@ if (verifyStatus() > 1) {
 				</canvas>
 
 				<div class="output">
-					<img id="photo" alt="The screen capture will appear in this box.">
+					<img id="photo" title="your picture" alt="The screen capture will appear in this box.">
 					<input class="captureButton" id="save" type="submit" value="Save" name="submit"
 						   required>
 					<input type="hidden" name="name"

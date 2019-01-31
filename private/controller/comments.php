@@ -10,7 +10,7 @@ function addComment($content, $pictureID, $userID)
 {
 	$content = htmlspecialchars($content);
 
-	if (verifyStatus() > 1 && $_SESSION['userID'] > 0) {
+	if (verifyStatus() > 1) {
 		$commentsManager = new comments();
 		$commentsManager->postComment($pictureID, $_SESSION['userID'], $content);
 		notifyComment($userID, $pictureID);
@@ -22,7 +22,7 @@ function addComment($content, $pictureID, $userID)
 
 function remComment($userID, $commentID, $pictureID)
 {
-	if ($userID === $_SESSION['userID'] && verifyStatus() > 1) {
+	if (($userID === $_SESSION['userID'] && verifyStatus() > 1) || verifyStatus() > 1) {
 		$commentsManager = new comments();
 		$commentsManager->remComment($commentID, $pictureID);
 		header('location: index.php?action=getOne&pictureID=' . $pictureID);

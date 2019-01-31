@@ -131,6 +131,10 @@ img {
 	border: 1px solid #666666;
 }
 
+#send {
+	width: 253px;
+}
+
 .footerLink {
 	margin: 0px 30px;
 }

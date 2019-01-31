@@ -11,18 +11,20 @@
 
 require_once('private/view/session.php');
 
-require_once('private/model/CommentsManager.php');
-require_once('private/model/GalleriesManager.php');
-require_once('private/model/Manager.php');
-require_once('private/model/MiscManager.php');
-require_once('private/model/PicturesManager.php');
-require_once('private/model/UsersManager.php');
-
 require_once('private/controller/comments.php');
 require_once('private/controller/galleries.php');
+require_once('private/controller/likes.php');
 require_once('private/controller/misc.php');
 require_once('private/controller/pictures.php');
 require_once('private/controller/users.php');
+
+require_once('private/model/CommentsManager.php');
+require_once('private/model/GalleriesManager.php');
+require_once('private/model/Manager.php');
+require_once('private/model/likesManager.php');
+require_once('private/model/PicturesManager.php');
+require_once('private/model/UsersManager.php');
+
 
 try {
 	require_once('private/config/setup.php');
@@ -90,8 +92,8 @@ try {
 				logout();
 				break;
 			case 'contactUs':
-				if (isset($_POST['from']) && isset($_POST['content']) && isset($_POST['subject'])) {
-					contactHelp($_POST['subject'], $_POST['from'], $_POST['content']);
+				if (isset($_POST['subject']) && isset($_POST['content']) && isset($_POST['from'])) {
+					contactHelp($_POST['subject'], $_POST['content'], $_POST['from']);
 					break;
 				} else {
 					throw new Exception('Some field are empty in contactUs, please check');

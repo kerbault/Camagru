@@ -8,24 +8,25 @@
 
 ob_start();
 
-if (isset($recentPopular)) { ?>
+if (isset($recentPopularList)) { ?>
 	<br>
 	<div class="display">
 		<?php
 		$postCount = 0;
-		while ($picture = $recentPopular->fetch()) {
+		Foreach ($recentPopularList as $picture) {
 			?>
-			<div class="item">
+			<div class="item visually-hidden">
 				<a href="index.php?action=getOne&pictureID=<?= $picture['pictureID']; ?>">
 					<img class="preview" src="public/captures/<?= $picture['name']; ?>"></a>
 				<div class="likeNcomment">
 					<div class="likeCount">
-						<img class="pLike" src="./public/images/star_Filled.png">
+						<img class="pLike" src="./public/images/star_Filled.png" title="Liked" alt="Liked">
 						<p class="nLike"><?= $picture['likeCount'] ?></p>
 					</div>
 					<div class="commentCount">
 						<p class="nComment"><?= $picture['commentCount'] ?></p>
-						<img class="pComment" src="./public/images/conversationFilled.png">
+						<img class="pComment" src="./public/images/conversationFilled.png" title="Comments"
+							 alt="Comments">
 					</div>
 				</div>
 			</div>
@@ -37,7 +38,7 @@ if (isset($recentPopular)) { ?>
 			<?php if ($postCount <= 6) { ?>style="display: none" <?php } ?>>Load More Posts
 	</button>
 	<?php
-	$recentPopular->closeCursor();
+	$recentPopularList->closeCursor();
 	?>
 	<script src="public/js/loadMore.js"></script>
 	<?php

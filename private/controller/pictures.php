@@ -62,7 +62,7 @@ function uploadPicture($fileNameBase, $fileToUpload)
 
 function remPicture($userID, $pictureID)
 {
-	if ($userID === $_SESSION['userID'] && verifyStatus() > 1) {
+	if (($userID === $_SESSION['userID'] && verifyStatus() > 1) || verifyStatus() > 2) {
 		$picturesManager = new pictures();
 		$deleted         = $picturesManager->remPicture($pictureID);
 

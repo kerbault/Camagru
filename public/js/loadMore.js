@@ -6,8 +6,8 @@ var parent = document.querySelector('div.display'),
 
 
 [].forEach.call(items, function (item, index) {
-    if (index > maxItems - 1) {
-        item.classList.add(hiddenClass);
+    if (index < maxItems) {
+        item.classList.remove(hiddenClass);
     }
 });
 

@@ -10,20 +10,50 @@ require_once('private/model/Manager.php');
 
 class users extends Manager
 {
-	public function checkValidity()
+	public function listUsers()
 	{
 		$db = $this->dbConnect();
 
-		$users = $db->query('SELECT `user`,`email` FROM `users`');
+		$users = $db->query('SELECT `ID`, `user`, `email`, `notification` FROM `users`');
 
 		return $users;
+	}
+
+	public function getUserByID($userID)
+	{
+		$db = $this->dbConnect();
+
+		$userNameTmp = $db->prepare('SELECT * FROM `users` WHERE `ID` = ?');
+		$userNameTmp->execute(array($userID));
+
+		return $userNameTmp;
+	}
+
+	public function getUserByName($user)
+	{
+		$db = $this->dbConnect();
+
+		$userNameTmp = $db->prepare('SELECT * FROM `users` WHERE `user` = ?');
+		$userNameTmp->execute(array($user));
+
+		return $userNameTmp;
+	}
+
+	public function getUserByEmail($email)
+	{
+		$db = $this->dbConnect();
+
+		$userNameTmp = $db->prepare('SELECT `ID`, `user`, `email` FROM `users` WHERE `email` = ?');
+		$userNameTmp->execute(array($email));
+
+		return $userNameTmp;
 	}
 
 	public function register($user, $email, $passwd, $validkey)
 	{
 		$db = $this->dbConnect();
 
-		$insert = $db->prepare('	INSERT INTO `users`(`user`,`password`,`email`,`creationDate`, `validkey`)
+		$insert = $db->prepare('	INSERT INTO `users`(`user`, `password`, `email`, `creationDate`, `validkey`)
                	                        	VALUES (:user, :password, :email, NOW(), :validkey)');
 		$req    = $insert->execute(array(
 									   'user'     => $user,
@@ -38,7 +68,8 @@ class users extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$loginTmp = $db->prepare('SELECT `ID`,`user`,`password`,`status` FROM `users` WHERE `user` = ?');
+		$loginTmp =
+			$db->prepare('SELECT `ID`, `user`, `password`, `status` FROM `users` WHERE `user` = ?');
 		$loginTmp->execute(array($user));
 		$login = $loginTmp->fetch();
 
@@ -49,7 +80,8 @@ class users extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$verifyTmp = $db->prepare('SELECT `ID`, `status`, `validkey` FROM `users` WHERE `user` = ?');
+		$verifyTmp =
+			$db->prepare('SELECT `ID`, `user`, `status`, `validkey` FROM `users` WHERE `user` = ?');
 		$verifyTmp->execute(array($user));
 		$verify = $verifyTmp->fetch();
 
@@ -113,44 +145,5 @@ class users extends Manager
 									   'userID'   => $userID
 								   ));
 		return ($req);
-	}
-
-	public function listUsers()
-	{
-		$db = $this->dbConnect();
-
-		$users = $db->query('SELECT `ID`, `user`,`status`,`notification` FROM `users`');
-
-		return $users;
-	}
-
-	public function getUserByID($userID)
-	{
-		$db = $this->dbConnect();
-
-		$userNameTmp = $db->prepare('SELECT * FROM `users` WHERE `ID` = ?');
-		$userNameTmp->execute(array($userID));
-
-		return $userNameTmp;
-	}
-
-	public function getUserByName($user)
-	{
-		$db = $this->dbConnect();
-
-		$userNameTmp = $db->prepare('SELECT * FROM `users` WHERE `user` = ?');
-		$userNameTmp->execute(array($user));
-
-		return $userNameTmp;
-	}
-
-	public function getUserByEmail($email)
-	{
-		$db = $this->dbConnect();
-
-		$userNameTmp = $db->prepare('SELECT `ID`, `user`,`email` FROM `users` WHERE `email` = ?');
-		$userNameTmp->execute(array($email));
-
-		return $userNameTmp;
 	}
 }

@@ -68,42 +68,33 @@ class galleries extends Manager
 		return $recent;
 	}
 
-	public function faved()
-	{
-		$db = $this->dbConnect();
-
-		$recent = $db->query('SELECT * FROM `pictures` ORDER BY `ID` DESC');
-
-		return $recent;
-	}
-
 	public function userPosts($userID)
 	{
 		$db = $this->dbConnect();
 
-		$userPostsTmp =
+		$userPostsList =
 			$db->prepare('SELECT * 
 									FROM `pictures` 
 									WHERE `userID` = ? 
 									ORDER BY `ID` DESC');
-		$userPostsTmp->execute(array($userID));
+		$userPostsList->execute(array($userID));
 
-		return $userPostsTmp;
+		return $userPostsList;
 	}
 
 	public function userFavs($userID)
 	{
 		$db = $this->dbConnect();
 
-		$userFavsTmp =
+		$userFavsList =
 			$db->prepare('SELECT * 
 									FROM `likes`
 									INNER JOIN users ON users.ID = likes.userID
 									INNER JOIN pictures ON pictures.ID = likes.pictureID
 									WHERE likes.userID = ? 
 									ORDER BY `likeDate` DESC');
-		$userFavsTmp->execute(array($userID));
+		$userFavsList->execute(array($userID));
 
-		return $userFavsTmp;
+		return $userFavsList;
 	}
 }

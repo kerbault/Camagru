@@ -6,17 +6,16 @@
  * Time: 16:53
  */
 
-function checkDuplicate($user, $email, $passwd, $confirmpasswd, $usersManager)
+function checkDuplicate($userName, $email, $passwd, $confirmpasswd, $usersManager)
 {
-	$wrong = 0;
-	$users = $usersManager->checkValidity();
+	$wrong     = 0;
+	$usersList = $usersManager->listUsers();
 
-	foreach ($users as $tmp) {
-		if ($tmp['user'] == $user) {
+	foreach ($usersList as $user) {
+		if ($user['user'] == $userName) {
 			$wrong += 1;
 		}
-
-		if ($tmp['email'] == $email) {
+		if ($user['email'] == $email) {
 			$wrong += 2;
 		}
 	}
@@ -30,7 +29,7 @@ function getSettings()
 {
 	if (verifyStatus() > 1) {
 		$usersManager = new users();
-		$users        = $usersManager->listUsers();
+		$usersList    = $usersManager->listUsers();
 		require('private/view/navSettings.php');
 	} else {
 		throw new Exception('your account is not active yet or blocked, please verify before contacting us');
@@ -39,25 +38,25 @@ function getSettings()
 
 function register()
 {
-	$usersManager = new users();
-	$user            = htmlspecialchars($_POST['user']);
-	$email           = htmlspecialchars($_POST['email']);
-	$tmpPasswd       = htmlspecialchars($_POST['passwd']);
-	$passwd          = password_hash($tmpPasswd, PASSWORD_DEFAULT);
-	$confirmPasswd   = htmlspecialchars($_POST['confirmpasswd']);
-	$validkey        = hash('sha1', (round(microtime(true) * 1000) . rand(100, 999)));
+	$usersManager  = new users();
+	$userName      = htmlspecialchars($_POST['user']);
+	$email         = htmlspecialchars($_POST['email']);
+	$tmpPasswd     = htmlspecialchars($_POST['passwd']);
+	$passwd        = password_hash($tmpPasswd, PASSWORD_DEFAULT);
+	$confirmPasswd = htmlspecialchars($_POST['confirmpasswd']);
+	$validkey      = hash('sha1', (round(microtime(true) * 1000) . rand(100, 999)));
 
-	if (preg_match('/[a-zA-Z0-9]{4,25}/', $user) == FALSE ||
+	if (preg_match('/[a-zA-Z0-9]{4,25}/', $userName) == FALSE ||
 		preg_match('/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,50}/', $tmpPasswd) == FALSE ||
 		preg_match('/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,255}$/', $email) == FALSE) {
 		throw new Exception('I know what you did there and it won\'t work');
 	}
 
-	$valid = checkDuplicate($user, $email, $tmpPasswd, $confirmPasswd, $usersManager);
+	$valid = checkDuplicate($userName, $email, $tmpPasswd, $confirmPasswd, $usersManager);
 	switch ($valid) {
 		case 0:
-			$usersManager->register($user, $email, $passwd, $validkey);
-			verificationMail($email, $user, $validkey);
+			$usersManager->register($userName, $email, $passwd, $validkey);
+			verificationMail($email, $userName, $validkey);
 		case 1:
 			throw new Exception('user already used');
 		case 2:
@@ -76,14 +75,14 @@ function register()
 	require('private/view/navRegister.php');
 }
 
-function login($user, $passwd)
+function login($userName, $passwd)
 {
 
-	$passwd = htmlspecialchars($passwd);
-	$user   = htmlspecialchars($user);
+	$passwd   = htmlspecialchars($passwd);
+	$userName = htmlspecialchars($userName);
 
 	$usersManager = new users();
-	$user        = $usersManager->login($user);
+	$user         = $usersManager->login($userName);
 
 	if (password_verify($passwd, $user['password'])) {
 		if ($user['status'] < 0) {
@@ -108,12 +107,13 @@ function logout()
 function verifyAccount($user, $verifyKey)
 {
 	$usersManager = new users();
-	$verify      = $usersManager->verifyKey($user);
+	$verify       = $usersManager->verifyKey($user);
 
 	if ($verify['validkey'] == $verifyKey) {
 		if ($verify['status'] == 1) {
 			$usersManager->changeStatus($verify['ID'], 2);
 			$usersManager->changeValidKey($verify['ID'], 0);
+			mkdir('public/captures/' . $verify['ID'] . "_" . $verify['user']);
 			message('Your account is now verified, you may now log in');
 		} else {
 			throw new Exception('Your account has been verified already');
@@ -127,9 +127,11 @@ function verifyStatus()
 {
 	if ($_SESSION['userID'] > 0) {
 		$usersManager = new users();
-		$status      = $usersManager->verifyStatus($_SESSION['userID']);
+		$status       = $usersManager->verifyStatus($_SESSION['userID']);
 
 		return ($status['status']);
+	} else {
+		return (0);
 	};
 }
 
@@ -141,7 +143,7 @@ function changeStatus($userID, $status)
 		}
 
 		$usersManager = new users();
-		$req         = $usersManager->changeStatus($userID, $status);
+		$req          = $usersManager->changeStatus($userID, $status);
 
 		if ($req) {
 			header('Location: index.php?action=getSettings');
@@ -189,7 +191,7 @@ function resetPassword($userName, $verifyKey, $newPassword, $confirmPasswd)
 	$confirmPasswd = htmlspecialchars($confirmPasswd);
 
 	$usersManager = new users();
-	$verify      = $usersManager->verifyKey($userName);
+	$verify       = $usersManager->verifyKey($userName);
 
 	if ($verify['validkey'] == $verifyKey && $verify['validkey'] != 0) {
 		if ($newPassword === $confirmPasswd) {
@@ -219,7 +221,7 @@ function resetPassword($userName, $verifyKey, $newPassword, $confirmPasswd)
 function changeNotif($userID, $notifStatus)
 {
 	$usersManager = new users();
-	$req         = $usersManager->changeNotif($userID, $notifStatus);
+	$req          = $usersManager->changeNotif($userID, $notifStatus);
 
 	header('Location: index.php?action=getSettings');
 }
@@ -229,9 +231,9 @@ function forgetLogin($email)
 	$email = htmlspecialchars($email);
 
 	$usersManager = new users();
-	$userTmp     = $usersManager->getUserByEmail($email);
-	$user        = $userTmp->fetch();
-	$validkey    = hash('sha1', (round(microtime(true) * 1000) . rand(100, 999)));
+	$userTmp      = $usersManager->getUserByEmail($email);
+	$user         = $userTmp->fetch();
+	$validkey     = hash('sha1', (round(microtime(true) * 1000) . rand(100, 999)));
 
 	if ($user) {
 		$usersManager->changeValidKey($user['ID'], $validkey);
@@ -240,3 +242,22 @@ function forgetLogin($email)
 	message('A mail has been sent to reset your password if this one is found in our database');
 
 }
+
+//delete_files('/path/for/the/directory/');
+//
+///*
+// * php delete function that deals with directories recursively
+// */
+//function delete_files($target) {
+//	if(is_dir($target)){
+//		$files = glob( $target . '*', GLOB_MARK ); //GLOB_MARK adds a slash to directories returned
+//
+//		foreach( $files as $file ){
+//			delete_files( $file );
+//		}
+//
+//		rmdir( $target );
+//	} elseif(is_file($target)) {
+//		unlink( $target );
+//	}
+//}

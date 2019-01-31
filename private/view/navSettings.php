@@ -8,7 +8,7 @@
 
 ob_start();
 
-if (isset($users) && verifyStatus() > 1) ?>
+if (isset($usersList) && verifyStatus() > 1) ?>
 
 <div class="center">
 	<h1>Preferences</h1>
@@ -18,16 +18,16 @@ if (isset($users) && verifyStatus() > 1) ?>
 				<p>Mail notifications :</p>
 				<label class="switch">
 					<input type="checkbox"<?php
-					while ($data = $users->fetch()) {
-						if ($data['ID'] === $_SESSION['userID']) {
-							if ($data['notification'] == 1) {
+					Foreach ($usersList as $user) {
+						if ($user['ID'] === $_SESSION['userID']) {
+							if ($user['notification'] == 1) {
 								?>
 								checked="checked"
 								<?php
 							}
 						}
 					}
-					$users->closeCursor();
+					$usersList->closeCursor();
 					?> value="1" name="notifStatus">
 					<span class="slider round"></span>
 				</label>
@@ -73,13 +73,13 @@ if (isset($users) && verifyStatus() > 1) ?>
 						<select name="userID">
 							<option value="0">Select user:</option>
 							<?php
-							$users->execute();
-							while ($data = $users->fetch()) {
+							$usersList->execute();
+							Foreach ($usersList as $user) {
 								?>
-								<option value="<?= $data['ID'] ?>"><?= $data['ID'] . " " . $data['user']
+								<option value="<?= $user['ID'] ?>"><?= $user['ID'] . " " . $user['user']
 								?></option><?php
 							}
-							$users->closeCursor();
+							$usersList->closeCursor();
 							?>
 						</select>
 					</div>
