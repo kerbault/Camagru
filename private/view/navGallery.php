@@ -7,8 +7,7 @@
  */
 
 ob_start();
-
-//if (isset($userPostsTmp) && isset($userFavsTmp)) { ?>
+?>
 	<br>
 	<h1 id="postTitle"><?= $userName['user'] ?>'s Posts</h1>
 	<div class="display">

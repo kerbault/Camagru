@@ -80,7 +80,7 @@ if (isset($picture) && isset($commentsTmp) && isset($liked)) {
 				<div class="removeNBy">
 					<?php if ($_SESSION['userID'] === $comments['userID'] || verifyStatus() > 2) { ?>
 						<form action="./index.php?action=remComment" method="post">
-						<input type="hidden" name="user" value="<?= $comments['userID'] ?>">
+						<input type="hidden" name="userID" value="<?= $comments['userID'] ?>">
 						<input type="hidden" name="commentID" value="<?= $comments['ID'] ?>">
 						<input type="hidden" name="pictureID" value="<?= $picture['ID'] ?>">
 						<button onclick="return confirm('Are you sure to remove this comment ?');">

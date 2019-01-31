@@ -11,16 +11,18 @@
 
 require_once('private/view/session.php');
 
-require_once('private/model/UploadManager.php');
+require_once('private/model/CommentsManager.php');
+require_once('private/model/GalleriesManager.php');
+require_once('private/model/Manager.php');
+require_once('private/model/MiscManager.php');
+require_once('private/model/PicturesManager.php');
 require_once('private/model/UsersManager.php');
-require_once('private/model/DisplayManager.php');
-require_once('private/model/CommentManager.php');
 
-require_once('private/controller/mailing.php');
+require_once('private/controller/comments.php');
 require_once('private/controller/galleries.php');
+require_once('private/controller/misc.php');
 require_once('private/controller/pictures.php');
 require_once('private/controller/users.php');
-require_once('private/controller/misc.php');
 
 try {
 	require_once('private/config/setup.php');
@@ -44,7 +46,7 @@ try {
 				if (isset($_GET['pictureID'])) {
 					getOne($_GET['pictureID']);
 				} else {
-					throw new Exception('Some field are empty, please check again1');
+					throw new Exception('Some field are empty in getOne, please check');
 				}
 				break;
 			case 'getRecent':
@@ -56,9 +58,6 @@ try {
 			case 'getCapture':
 				require("private/view/navCapture.php");
 				break;
-			case 'getUpload':
-				require("private/view/navUpload.php");
-				break;
 			case 'getLogin':
 				require("private/view/navLogin.php");
 				break;
@@ -69,14 +68,14 @@ try {
 				if (isset($_GET['userID'])) {
 					getGallery($_GET['userID']);
 				} else {
-					throw new Exception('Some field are empty, please check again1');
+					throw new Exception('Some field are empty in getMyGallery, please check');
 				}
 				break;
 			case 'getGallery':
 				if (isset($_GET['userID'])) {
 					getGallery($_GET['userID']);
 				} else {
-					throw new Exception('Some field are empty, please check again1');
+					throw new Exception('Some field are empty in getGallery, please check');
 				}
 				break;
 			case 'getSettings':
@@ -91,11 +90,12 @@ try {
 				logout();
 				break;
 			case 'contactUs':
-				contactHelp();
-				break;
-			case 'uploadThis':
-				uploadPicture();
-				break;
+				if (isset($_POST['from']) && isset($_POST['content']) && isset($_POST['subject'])) {
+					contactHelp($_POST['subject'], $_POST['from'], $_POST['content']);
+					break;
+				} else {
+					throw new Exception('Some field are empty in contactUs, please check');
+				}
 			case 'register':
 				register();
 				break;
@@ -104,21 +104,21 @@ try {
 					login($_POST['user'], $_POST['passwd']);
 					break;
 				} else {
-					throw new Exception('Some field are empty, please check again7');
+					throw new Exception('Some field are empty in contactUs, please check');
 				}
 			case 'verify':
 				if (isset($_GET['user']) && isset($_GET['verifyKey'])) {
 					verifyAccount(htmlspecialchars($_GET['user']), htmlspecialchars($_GET['verifyKey']));
 					break;
 				} else {
-					throw new Exception('Some field are empty, please check again7');
+					throw new Exception('Some field are empty in verify, please check');
 				}
 			case 'changeStatus':
 				if (isset($_POST['userID']) && isset($_POST['newStatus'])) {
 					changeStatus($_POST['userID'], $_POST['newStatus']);
 					break;
 				} else {
-					throw new Exception('Some field are empty, please check again7');
+					throw new Exception('Some field are empty in changeStatus, please check');
 				}
 			case 'changePasswd':
 				if (isset($_POST['oldPasswd']) && isset($_POST['newPasswd']) &&
@@ -137,54 +137,73 @@ try {
 					changeNotif($_SESSION['userID'], 0);
 					break;
 				} else {
-					throw new Exception('Some field are empty, please check again6');
+					throw new Exception('Some field are empty in changeNotif, please check');
 				}
 			case 'resetAccount1st':
 				if (isset($_POST['email'])) {
 					forgetLogin($_POST['email']);
 					break;
 				} else {
-					throw new Exception('Some field are empty, please check again6');
+					throw new Exception('Some field are empty in resetAccount1st, please check');
 				}
 			case 'resetAccount2nd':
 				if (isset($_GET['user']) && isset($_GET['verifyKey'])) {
 					Require("private/view/resetPassword.php");
 					break;
 				} else {
-					throw new Exception('Some field are empty, please check again7');
+					throw new Exception('Some field are empty in resetAccount2nd, please check');
 				}
 			case 'resetAccount3rd':
 				if (isset($_POST['passwd']) && isset($_POST['confirmpasswd']) &&
 					isset($_POST['userName']) && isset($_POST['verifyKey'])) {
+
 					resetPassword($_POST['userName'], $_POST['verifyKey'], $_POST['passwd'],
-								  $_POST['confirmpasswd']
-					);
+								  $_POST['confirmpasswd']);
 					break;
 				} else {
-					throw new Exception('Some field are empty, please check again7');
+					throw new Exception('Some field are empty in resetAccount3rd, please check');
+				}
+			case 'uploadThis':
+				if (isset($_POST['name']) && isset($_FILES['fileToUpload'])) {
+					uploadPicture($_POST['name'], $_FILES['fileToUpload']);
+					break;
+				} else {
+					throw new Exception("Some field are empty in uploadThis, please check");
 				}
 			case 'remPicture':
-				remPicture();
-				break;
+				if (isset($_POST['userID']) && isset($_POST['pictureID'])) {
+					remPicture($_POST['userID'], $_POST['pictureID']);
+					break;
+				} else {
+					throw new Exception("Some field are empty in remPicture, please check");
+				}
 			case 'addComment':
-				addComment();
-				break;
+				if (isset($_POST['content']) && isset($_POST['ID']) && isset($_POST['userID'])) {
+					addComment($_POST['content'], $_POST['ID'], $_POST['userID']);
+					break;
+				} else {
+					throw new Exception('Some field are empty in addComment, please check');
+				}
 			case 'remComment':
-				remComment();
-				break;
+				if (isset($_POST['userID']) && isset($_POST['commentID']) && isset($_POST['pictureID'])) {
+					remComment($_POST['userID'], $_POST['commentID'], $_POST['pictureID']);
+					break;
+				} else {
+					throw new Exception('Some field test are empty, please check again');
+				}
 			case 'like':
 				if (isset($_POST['pictureID'])) {
 					like($_POST['pictureID']);
 					break;
 				} else {
-					throw new Exception('Some field are empty, please check again6');
+					throw new Exception('Some field are empty in like, please check');
 				}
 			case 'dislike':
 				if (isset($_POST['pictureID'])) {
 					dislike($_POST['pictureID']);
 					break;
 				} else {
-					throw new Exception('Some field are empty, please check again7');
+					throw new Exception('Some field are empty in dislike, please check');
 				}
 			default:
 				throw new Exception("The page you're trying to access doesn't exist");

@@ -8,20 +8,20 @@
 
 require_once('private/model/Manager.php');
 
-class upload extends Manager
+class pictures extends Manager
 {
 	public function uploadPictureDb($pictureName)
 	{
-		$db = $this->dbConnect();
+		$db     = $this->dbConnect();
 		$userID = $_SESSION['userID'];
 
 		$newPost = $db->prepare('INSERT INTO `pictures`(`userID`,`name`,`date`)
         VALUES(:userID, :name, NOW())');
 
 		$newPost->execute(array(
-			'userID' => "$userID",
-			'name' => "$pictureName"
-		));
+							  'userID' => "$userID",
+							  'name'   => "$pictureName"
+						  ));
 	}
 
 	public function remPicture($pictureID)

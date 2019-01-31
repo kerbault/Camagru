@@ -9,23 +9,25 @@
 
 function getRecent()
 {
-	$displayManager = new display();
-	$display        = $displayManager->recent();
+	$galleriesManager = new galleries();
+	$recentPopular    = $galleriesManager->recent();
+
 	require("private/view/navRecentPopular.php");
 }
 
 function getPopular()
 {
-	$displayManager = new display();
-	$display        = $displayManager->popular();
+	$galleriesManager = new galleries();
+	$recentPopular    = $galleriesManager->popular();
+
 	require("private/view/navRecentPopular.php");
 }
 
 function getOne($pictureID)
 {
-	$displayManager = new display();
-	$pictureTmp     = $displayManager->focus($pictureID);
-	$picture        = $pictureTmp->fetch();
+	$galleriesManager = new galleries();
+	$pictureTmp       = $galleriesManager->focus($pictureID);
+	$picture          = $pictureTmp->fetch();
 
 	if ($picture == NULL) {
 		throw new Exception("The picture you've been looking for doesn't exist");
@@ -37,26 +39,25 @@ function getOne($pictureID)
 	$checkLikeTmp = $commentsManager->checkLike($_SESSION['userID'], $pictureID);
 	$liked        = $checkLikeTmp->fetch();
 
-	$usersManager = new user();
+	$usersManager = new users();
 	$users        = $usersManager->listUsers();
 
 	require("private/view/displayOne.php");
 }
 
-
 function getGallery($userID)
 {
-	$displayManager = new display();
+	$galleriesManager = new galleries();
 
-	$userManager = new user();
-	$userNameTmp = $userManager->getUserByID($userID);
+	$usersManager = new users();
+	$userNameTmp = $usersManager->getUserByID($userID);
 	$userName    = $userNameTmp->fetch();
 
 
-	$userPostsTmp = $displayManager->userPosts($userID);
+	$userPostsTmp = $galleriesManager->userPosts($userID);
 	$userPosts    = $userPostsTmp->fetch();
 
-	$userFavsTmp = $displayManager->userFavs($userID);
+	$userFavsTmp = $galleriesManager->userFavs($userID);
 	$userFavs    = $userFavsTmp->fetch();
 
 	if ($userPosts == NULL && $userFavs == NULL) {

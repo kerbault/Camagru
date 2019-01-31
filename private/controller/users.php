@@ -6,10 +6,10 @@
  * Time: 16:53
  */
 
-function checkDuplicate($user, $email, $passwd, $confirmpasswd, $registerManager)
+function checkDuplicate($user, $email, $passwd, $confirmpasswd, $usersManager)
 {
 	$wrong = 0;
-	$users = $registerManager->checkValidity();
+	$users = $usersManager->checkValidity();
 
 	foreach ($users as $tmp) {
 		if ($tmp['user'] == $user) {
@@ -29,7 +29,7 @@ function checkDuplicate($user, $email, $passwd, $confirmpasswd, $registerManager
 function getSettings()
 {
 	if (verifyStatus() > 1) {
-		$usersManager = new user();
+		$usersManager = new users();
 		$users        = $usersManager->listUsers();
 		require('private/view/navSettings.php');
 	} else {
@@ -39,7 +39,7 @@ function getSettings()
 
 function register()
 {
-	$registerManager = new user();
+	$usersManager = new users();
 	$user            = htmlspecialchars($_POST['user']);
 	$email           = htmlspecialchars($_POST['email']);
 	$tmpPasswd       = htmlspecialchars($_POST['passwd']);
@@ -53,10 +53,10 @@ function register()
 		throw new Exception('I know what you did there and it won\'t work');
 	}
 
-	$valid = checkDuplicate($user, $email, $tmpPasswd, $confirmPasswd, $registerManager);
+	$valid = checkDuplicate($user, $email, $tmpPasswd, $confirmPasswd, $usersManager);
 	switch ($valid) {
 		case 0:
-			$registerManager->register($user, $email, $passwd, $validkey);
+			$usersManager->register($user, $email, $passwd, $validkey);
 			verificationMail($email, $user, $validkey);
 		case 1:
 			throw new Exception('user already used');
@@ -82,8 +82,8 @@ function login($user, $passwd)
 	$passwd = htmlspecialchars($passwd);
 	$user   = htmlspecialchars($user);
 
-	$userManager = new user();
-	$user        = $userManager->login($user);
+	$usersManager = new users();
+	$user        = $usersManager->login($user);
 
 	if (password_verify($passwd, $user['password'])) {
 		if ($user['status'] < 0) {
@@ -107,26 +107,27 @@ function logout()
 
 function verifyAccount($user, $verifyKey)
 {
-	$userManager = new user();
-	$verify      = $userManager->verifyKey($user);
+	$usersManager = new users();
+	$verify      = $usersManager->verifyKey($user);
 
 	if ($verify['validkey'] == $verifyKey) {
 		if ($verify['status'] == 1) {
-			$userManager->changeStatus($verify['ID'], 2);
-			throw new Exception('Your account is now verified, you may now log in');
+			$usersManager->changeStatus($verify['ID'], 2);
+			$usersManager->changeValidKey($verify['ID'], 0);
+			message('Your account is now verified, you may now log in');
 		} else {
 			throw new Exception('Your account has been verified already');
 		}
 	} else {
-		throw new Exception('We connot verify your account, please Contact us');
+		throw new Exception('We connot verify your account or is verified already');
 	}
 }
 
 function verifyStatus()
 {
 	if ($_SESSION['userID'] > 0) {
-		$userManager = new user();
-		$status      = $userManager->verifyStatus($_SESSION['userID']);
+		$usersManager = new users();
+		$status      = $usersManager->verifyStatus($_SESSION['userID']);
 
 		return ($status['status']);
 	};
@@ -139,8 +140,8 @@ function changeStatus($userID, $status)
 			throw new Exception('You need to select valid fields');
 		}
 
-		$userManager = new user();
-		$req         = $userManager->changeStatus($userID, $status);
+		$usersManager = new users();
+		$req         = $usersManager->changeStatus($userID, $status);
 
 		if ($req) {
 			header('Location: index.php?action=getSettings');
@@ -162,14 +163,14 @@ function changePassword($oldPassword, $newPassword, $confirmPasswd)
 
 	if ($newPassword === $confirmPasswd) {
 
-		$userManager = new user();
+		$usersManager = new users();
 
-		$userTmp = $userManager->getUserByID($_SESSION['userID']);
+		$userTmp = $usersManager->getUserByID($_SESSION['userID']);
 		$user    = $userTmp->fetch();
 
 		if (password_verify($oldPassword, $user['password'])) {
 			$safePassword = password_hash($newPassword, PASSWORD_DEFAULT);
-			$userManager->changePassword($_SESSION['userID'], $safePassword);
+			$usersManager->changePassword($_SESSION['userID'], $safePassword);
 			message("Password changed with success");
 		} else {
 			throw new Exception('wrong password');
@@ -187,39 +188,38 @@ function resetPassword($userName, $verifyKey, $newPassword, $confirmPasswd)
 	$newPassword   = htmlspecialchars($newPassword);
 	$confirmPasswd = htmlspecialchars($confirmPasswd);
 
-	$userManager = new user();
-	$verify      = $userManager->verifyKey($userName);
+	$usersManager = new users();
+	$verify      = $usersManager->verifyKey($userName);
 
-	if ($verify['validkey'] == $verifyKey) {
-
-
+	if ($verify['validkey'] == $verifyKey && $verify['validkey'] != 0) {
 		if ($newPassword === $confirmPasswd) {
+			$usersManager = new users();
 
-			$userManager = new user();
-
-			$userTmp = $userManager->getUserByName($userName);
+			$userTmp = $usersManager->getUserByName($userName);
 			$user    = $userTmp->fetch();
 
 			if ($verifyKey == $user['validkey']) {
 				$safePassword = password_hash($newPassword, PASSWORD_DEFAULT);
-				$userManager->changePassword($user['ID'], $safePassword);
+
+				$usersManager->changePassword($user['ID'], $safePassword);
+				$usersManager->changeValidKey($user['ID'], 0);
+
 				message("Password changed with success");
 			} else {
 				throw new Exception('wrong password');
 			}
 		} else {
 			throw new Exception('Confirmed password is different from the new one');
-
 		}
 	} else {
-		throw new Exception('We connot verify your account, please Contact us');
+		throw new Exception('We cannot change your password, please Contact us');
 	}
 }
 
 function changeNotif($userID, $notifStatus)
 {
-	$userManager = new user();
-	$req         = $userManager->changeNotif($userID, $notifStatus);
+	$usersManager = new users();
+	$req         = $usersManager->changeNotif($userID, $notifStatus);
 
 	header('Location: index.php?action=getSettings');
 }
@@ -228,13 +228,13 @@ function forgetLogin($email)
 {
 	$email = htmlspecialchars($email);
 
-	$userManager = new user();
-	$userTmp     = $userManager->getUserByEmail($email);
+	$usersManager = new users();
+	$userTmp     = $usersManager->getUserByEmail($email);
 	$user        = $userTmp->fetch();
 	$validkey    = hash('sha1', (round(microtime(true) * 1000) . rand(100, 999)));
 
 	if ($user) {
-		$userManager->changeValidKey($user['ID'], $validkey);
+		$usersManager->changeValidKey($user['ID'], $validkey);
 		mailLogin($user['email'], $user['user'], $validkey);
 	}
 	message('A mail has been sent to reset your password if this one is found in our database');

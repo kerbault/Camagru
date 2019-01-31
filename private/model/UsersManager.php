@@ -8,7 +8,7 @@
 
 require_once('private/model/Manager.php');
 
-class user extends Manager
+class users extends Manager
 {
 	public function checkValidity()
 	{
@@ -31,7 +31,6 @@ class user extends Manager
 									   'email'    => $email,
 									   'validkey' => $validkey
 								   ));
-
 		return ($req);
 	}
 
@@ -136,14 +135,14 @@ class user extends Manager
 	}
 
 	public function getUserByName($user)
-{
-	$db = $this->dbConnect();
+	{
+		$db = $this->dbConnect();
 
-	$userNameTmp = $db->prepare('SELECT * FROM `users` WHERE `user` = ?');
-	$userNameTmp->execute(array($user));
+		$userNameTmp = $db->prepare('SELECT * FROM `users` WHERE `user` = ?');
+		$userNameTmp->execute(array($user));
 
-	return $userNameTmp;
-}
+		return $userNameTmp;
+	}
 
 	public function getUserByEmail($email)
 	{

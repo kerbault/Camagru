@@ -8,7 +8,7 @@
 
 require_once('private/model/Manager.php');
 
-class display extends Manager
+class galleries extends Manager
 {
 	public function recent()
 	{
