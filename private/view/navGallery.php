@@ -17,7 +17,9 @@ ob_start();
 			?>
 			<div class="item visually-hidden">
 				<a href="index.php?action=getOne&pictureID=<?= $userPost['ID']; ?>">
-					<img class="preview" src="public/captures/<?= $userPost['name']; ?>"
+					<img class="preview"
+						 src="public/captures/<?= $userPost["subDir"] . "/" . $userPost['name'];
+						 ?>"
 						 title="<?= $userPost['name']; ?>" alt="<?= $userPost['name']; ?>"></a>
 				<div class="likeNcomment">
 					<div class="likeCount">
@@ -53,7 +55,9 @@ ob_start();
 			?>
 			<div class="itemFav visually-hidden-fav">
 				<a href="index.php?action=getOne&pictureID=<?= $userFav['ID']; ?>">
-					<img class="preview" src="public/captures/<?= $userFav['name']; ?>"></a>
+					<img class="preview"
+						 src="public/captures/<?= $userFav['subDir'] . "/" . $userFav['name'];
+						 ?>"></a>
 				<div class="likeNcomment">
 					<div class="likeCount">
 						<img class="pLike" src="./public/images/star_Filled.png" title="Liked" alt="Liked">

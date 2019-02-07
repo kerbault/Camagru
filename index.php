@@ -58,7 +58,10 @@ try {
 				getPopular();
 				break;
 			case 'getCapture':
-				require("private/view/navCapture.php");
+				getCapture($_SESSION['userID']);
+				break;
+			case 'getUpload':
+				getUpload($_SESSION['userID']);
 				break;
 			case 'getLogin':
 				require("private/view/navLogin.php");
@@ -167,7 +170,7 @@ try {
 				}
 			case 'uploadThis':
 				if (isset($_POST['name']) && isset($_FILES['fileToUpload'])) {
-					uploadPicture($_POST['name'], $_FILES['fileToUpload']);
+					uploadPicture($_POST['name'], $_FILES['fileToUpload'], $_POST['layer']);
 					break;
 				} else {
 					throw new Exception("Some field are empty in uploadThis, please check");

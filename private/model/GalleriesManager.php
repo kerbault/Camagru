@@ -17,6 +17,7 @@ class galleries extends Manager
 		$recent = $db->query('SELECT	pictures.ID as pictureID,
 												pictures.name,
 												likeCount,
+												subDir,
 												commentCount   										
 										FROM `pictures`
 										INNER JOIN users ON users.ID = pictures.userID 
@@ -32,6 +33,7 @@ class galleries extends Manager
 		$popular = $db->query('SELECT pictures.ID as pictureID,
 												pictures.name,
 												likeCount,
+												subDir,
 												commentCount 
 										 FROM `pictures`
 										 INNER JOIN users ON users.ID = pictures.userID 
@@ -48,6 +50,7 @@ class galleries extends Manager
 													userID,
 													users.user AS user,
  													`likeCount`, 
+ 													`subDir`,
  													`commentCount`, 
  													`name`,
  													DATE_FORMAT(`date`, \'%d %M %Y at %Hh%im\') AS formatDate 

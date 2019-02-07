@@ -71,3 +71,18 @@ function getGallery($userID)
 	require("private/view/navGallery.php");
 }
 
+function getCapture($userID)
+{
+	$galleriesManager = new galleries();
+	$userPostsList = $galleriesManager->userPosts($userID);
+
+	require("private/view/navCapture.php");
+}
+
+function getUpload($userID)
+{
+	$galleriesManager = new galleries();
+	$userPostsList = $galleriesManager->userPosts($userID);
+
+	require("private/view/NavUpload.php");
+}

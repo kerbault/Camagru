@@ -3,7 +3,7 @@ html {
 	background: #eeeeee;
 	color: #333333;
 	height: 100%;
-	font-family: Helvetica;
+	font-family: 'Fira Sans', sans-serif;
 	min-width: 310px;
 }
 
@@ -141,35 +141,86 @@ img {
 
 /*---------------------------------------------------Capture----------------------------------------------------------*/
 
-#capturePage {
+[type=radio] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + img {
+	cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + img {
+	outline: 2px solid coral;
+}
+
+#active {
 	display: flex;
-	justify-content: space-around;
+	width: 100%;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
 }
 
 #video {
-	border: 1px solid #666666;
-	width: 600px;
-	height: 450px;
+	transform: scaleX(-1);
 }
 
-#photo {
+#NoneLayer, #CrownLayer, #MustacheLayer, #RaybanLayer, #SunglassesLayer, #TrollLayer,
+#NoneLayerBis, #CrownLayerBis, #MustacheLayerBis, #RaybanLayerBis, #SunglassesLayerBis, #TrollLayerBis {
+	display: none;
+}
+
+#video, #photo, #NoneLayer, #CrownLayer, #MustacheLayer, #RaybanLayer, #SunglassesLayer, #TrollLayer,
+#NoneLayerBis, #CrownLayerBis, #MustacheLayerBis, #RaybanLayerBis, #SunglassesLayerBis, #TrollLayerBis {
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	position: absolute;
+	top: -100%;
+	right: -100%;
+	bottom: -100%;
+	left: -100%;
 	object-fit: cover;
-	border: 1px solid #666666;
-	width: 600px;
-	height: 450px;
 }
 
 #canvas {
 	display: none;
 }
 
-.camera {
-	width: 600px;
+#layersList {
+	width: 100%;
+	display: inline-flex;
+	justify-content: space-between;
+	margin-top: -30px;
 }
 
-.output {
-	width: 600px;
-	object-fit: cover;
+#captureUploadLinks, #uploadInput{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 18px;
+}
+
+.layersIcon {
+	width: 50px;
+	height: 50px;
+}
+
+.captureFrame {
+	border: 1px solid #666666;
+	width: 100%;
+	padding-top: 75%;
+	overflow: hidden;
+	position: relative;
+}
+
+.camera, .output {
+	max-width: 600px;
+	width: 100%;
 }
 
 .captureButton {
@@ -227,7 +278,7 @@ img {
 }
 
 .focusCard, .commentCard {
-	max-width: 610px;
+	max-width: 600px;
 	width: 100%;
 	padding: 12px;
 }
@@ -410,4 +461,32 @@ input:checked + .slider:before {
 
 .slider.round:before {
 	border-radius: 50%;
+}
+
+/*---------------------------------------------------Pretty-switch----------------------------------------------------*/
+
+
+input[value="None"]:checked ~ #NoneLayer {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	position: absolute;
+	top: -100%;
+	right: -100%;
+	bottom: -100%;
+	left: -100%;
+	object-fit: cover;
+}
+
+input[value="Crown"]:checked ~ #CrownLayer {
+	display: flex;
+	width: 100%;
+	margin: auto;
+	position: absolute;
+	top: -100%;
+	right: -100%;
+	bottom: -100%;
+	left: -100%;
+	object-fit: cover;
 }

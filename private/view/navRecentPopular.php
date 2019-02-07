@@ -17,7 +17,10 @@ if (isset($recentPopularList)) { ?>
 			?>
 			<div class="item visually-hidden">
 				<a href="index.php?action=getOne&pictureID=<?= $picture['pictureID']; ?>">
-					<img class="preview" src="public/captures/<?= $picture['name']; ?>"></a>
+					<img class="preview"
+						 src="public/captures/<?= $picture['subDir'] . "/" . $picture['name'];
+						 ?>"
+						 title="<?= $picture['name']; ?>" alt="<?= $picture['name']; ?>"></a>
 				<div class="likeNcomment">
 					<div class="likeCount">
 						<img class="pLike" src="./public/images/star_Filled.png" title="Liked" alt="Liked">

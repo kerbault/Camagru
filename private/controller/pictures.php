@@ -6,22 +6,33 @@
  * Time: 16:54
  */
 
-function uploadPicture($fileNameBase, $fileToUpload)
+function uploadPicture($fileNameBase, $fileToUpload, $layerName)
 {
 	ob_get_contents();
 	ob_end_clean();
 
+
+	if ($layerName == "None") {
+		throw new Exception("You need to select a layer to make it happen");
+	}
+
+	$usersManager = new users();
+	$user         = $usersManager->getUserByID($_SESSION['userID']);
+	$user         = $user->fetch();
+
 	$allowedSize        = 2000000;
-	$allowed_file_types = array('.jpg', '.gif', '.png', '.jpeg');
-	$targetDir          = "public/captures/";
+	$allowed_file_types = array('.jpg', '.png', '.jpeg');
+	$targetSubDir       = $user['ID'] . "_" . $user['user'];
+	$targetDir          = "public/captures/" . $targetSubDir . "/";
 
 	if (isset($fileToUpload['error']) && $fileToUpload['error'] == 0) {
-		$picturesManager = new pictures();
-		$fileName        = $fileToUpload["name"];
-		$fileBasename    = substr($fileName, 0, strripos($fileName, '.'));
-		$fileExt         = substr($fileName, strripos($fileName, '.'));
-		$fileSize        = $fileToUpload["size"];
-		$newFileName     = $fileNameBase . $fileExt;
+		$picturesManager  = new pictures();
+		$fileName         = $fileToUpload["name"];
+		$fileBasename     = substr($fileName, 0, strripos($fileName, '.'));
+		$fileExt          = substr($fileName, strripos($fileName, '.'));
+		$sourceProperties = getimagesize($fileToUpload["tmp_name"]);
+		$fileSize         = $fileToUpload["size"];
+		$newFileName      = $fileNameBase . ".png";
 
 		if ($fileSize > $allowedSize) {
 			throw new Exception("The uploaded file exceeds the allowed limit.");
@@ -34,9 +45,54 @@ function uploadPicture($fileNameBase, $fileToUpload)
 		} elseif (file_exists($targetDir . $newFileName)) {
 			throw new Exception("You have already uploaded this file.");
 		} else {
-			move_uploaded_file($fileToUpload["tmp_name"], $targetDir . $newFileName);
-			$picturesManager->uploadPictureDb($newFileName);
-			message("File uploaded successfully.");
+			if (!file_exists('public/captures/' . $targetSubDir)) {
+				mkdir('public/captures/' . $targetSubDir);
+			}
+			switch ($fileExt) {
+				case ".png":
+					$imageResourceId = imagecreatefrompng($fileToUpload["tmp_name"]);
+					$resizedPicture  = imageResize($imageResourceId, $sourceProperties[0],
+												   $sourceProperties[1]);
+					if ($layerName == 'GreyScale') {
+						imagefilter($resizedPicture, IMG_FILTER_GRAYSCALE);
+						imagepng($resizedPicture, $targetDir . $newFileName);
+					} else {
+						mergePictures($resizedPicture, $layerName, $targetDir . $newFileName);
+					}
+					break;
+
+				case ".jpeg":
+					$imageResourceId = imagecreatefromjpeg($fileToUpload["tmp_name"]);
+					$resizedPicture  = imageResize($imageResourceId, $sourceProperties[0],
+												   $sourceProperties[1]);
+					if ($layerName == 'GreyScale') {
+						imagefilter($resizedPicture, IMG_FILTER_GRAYSCALE);
+						imagepng($resizedPicture, $targetDir . $newFileName);
+					} else {
+						mergePictures($resizedPicture, $layerName, $targetDir . $newFileName);
+					}
+					break;
+
+				case ".jpg":
+					$imageResourceId = imagecreatefromjpeg($fileToUpload["tmp_name"]);
+					$resizedPicture  = imageResize($imageResourceId, $sourceProperties[0],
+												   $sourceProperties[1]);
+					if ($layerName == 'GreyScale') {
+						imagefilter($resizedPicture, IMG_FILTER_GRAYSCALE);
+						imagepng($resizedPicture, $targetDir . $newFileName);
+					} else {
+						mergePictures($resizedPicture, $layerName, $targetDir . $newFileName);
+					}
+					break;
+
+				default:
+					echo "Invalid Image type.";
+					exit;
+					break;
+			}
+			$picturesManager->uploadPictureDb($newFileName, $targetSubDir);
+			header('location: index.php?action=getUpload');
+
 		}
 	} else {
 		switch ($fileToUpload['error']) {
@@ -58,6 +114,23 @@ function uploadPicture($fileNameBase, $fileToUpload)
 				throw new Exception("Unknown upload error");
 		}
 	}
+
+}
+
+function imageResize($imageResourceId, $width, $height)
+{
+	$targetWidth  = 600;
+	$targetHeight = 450;
+
+	$resizedPicture = imagecreatetruecolor($targetWidth, $targetHeight);
+
+	imagesavealpha($resizedPicture, true);
+	$trans_background = imagecolorallocatealpha($resizedPicture, 0, 0, 0, 127);
+	imagefill($resizedPicture, 0, 0, $trans_background);
+
+	imagecopyresampled($resizedPicture, $imageResourceId, 0, 0, 0, 0, $targetWidth, $targetHeight, $width,
+					   $height);
+	return $resizedPicture;
 }
 
 function remPicture($userID, $pictureID)
@@ -68,7 +141,7 @@ function remPicture($userID, $pictureID)
 
 		if ($deleted['name'] != "") {
 			try {
-				unlink('./public/captures/' . $deleted['name']);
+				unlink('./public/captures/' . $deleted['subDir'] . "/" . $deleted['name']);
 				header('location: index.php');
 			} catch (Exception $e) {
 				throw new Exception("Hahem problem");
@@ -77,4 +150,25 @@ function remPicture($userID, $pictureID)
 	} else {
 		throw new Exception('You don\'t have the right to remove this picture');
 	}
+}
+
+function mergePictures($base, $layerName, $destName)
+{
+	define("WIDTH", 600);
+	define("HEIGHT", 450);
+
+	$dest_image = imagecreatetruecolor(WIDTH, HEIGHT);
+	imagesavealpha($dest_image, true);
+	$trans_background = imagecolorallocatealpha($dest_image, 0, 0, 0, 127);
+	imagefill($dest_image, 0, 0, $trans_background);
+	$layer = imagecreatefrompng('public/images/layers/' . $layerName . '.png');
+
+	imagecopy($dest_image, $base, 0, 0, 0, 0, WIDTH, HEIGHT);
+	imagecopy($dest_image, $layer, 0, 0, 0, 0, WIDTH, HEIGHT);
+
+	imagepng($dest_image, $destName);
+
+	imagedestroy($base);
+	imagedestroy($layer);
+	imagedestroy($dest_image);
 }

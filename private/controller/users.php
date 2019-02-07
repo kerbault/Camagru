@@ -108,12 +108,12 @@ function verifyAccount($user, $verifyKey)
 {
 	$usersManager = new users();
 	$verify       = $usersManager->verifyKey($user);
+	$dirName      = $verify['ID'] . "_" . $verify['user'];
 
-	if ($verify['validkey'] == $verifyKey) {
+	if ($verify['validkey'] == $verifyKey && $verify['validkey'] != 0) {
 		if ($verify['status'] == 1) {
 			$usersManager->changeStatus($verify['ID'], 2);
 			$usersManager->changeValidKey($verify['ID'], 0);
-			mkdir('public/captures/' . $verify['ID'] . "_" . $verify['user']);
 			message('Your account is now verified, you may now log in');
 		} else {
 			throw new Exception('Your account has been verified already');
@@ -233,7 +233,7 @@ function forgetLogin($email)
 	$usersManager = new users();
 	$userTmp      = $usersManager->getUserByEmail($email);
 	$user         = $userTmp->fetch();
-	$validkey     = hash('sha1', (round(microtime(true) * 1000) . rand(100, 999)));
+	$validkey     = hash('sha1', (round(microtime(true) * 1000) . rand(10000000, 99999999)));
 
 	if ($user) {
 		$usersManager->changeValidKey($user['ID'], $validkey);

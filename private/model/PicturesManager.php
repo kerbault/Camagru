@@ -10,16 +10,17 @@ require_once('private/model/Manager.php');
 
 class pictures extends Manager
 {
-	public function uploadPictureDb($pictureName)
+	public function uploadPictureDb($pictureName, $subDir)
 	{
 		$db     = $this->dbConnect();
 		$userID = $_SESSION['userID'];
 
-		$newPost = $db->prepare('INSERT INTO `pictures`(`userID`,`name`,`date`)
-        VALUES(:userID, :name, NOW())');
+		$newPost = $db->prepare('INSERT INTO `pictures`(`userID`,`subDir`,`name`,`date`)
+        VALUES(:userID, :subDir, :name, NOW())');
 
 		$newPost->execute(array(
 							  'userID' => "$userID",
+							  'subDir' => "$subDir",
 							  'name'   => "$pictureName"
 						  ));
 	}
@@ -28,7 +29,7 @@ class pictures extends Manager
 	{
 		$db = $this->dbConnect();
 
-		$selected = $db->prepare('SELECT `name` FROM `pictures` WHERE `ID` = ?');
+		$selected = $db->prepare('SELECT `name`, `subDir` FROM `pictures` WHERE `ID` = ?');
 		$selected->execute(array($pictureID));
 		$deleted = $selected->fetch();
 

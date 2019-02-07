@@ -64,12 +64,13 @@ CREATE TABLE IF NOT EXISTS `likes`
 
 CREATE TABLE IF NOT EXISTS `pictures`
 (
-  `ID`           int(11)  NOT NULL AUTO_INCREMENT,
-  `userID`       int(11)  NOT NULL,
+  `ID`           int(11)      NOT NULL AUTO_INCREMENT,
+  `userID`       int(11)      NOT NULL,
   `likeCount`    int(11) DEFAULT '0',
   `commentCount` int(11) DEFAULT '0',
-  `name`         text     NOT NULL,
-  `date`         datetime NOT NULL,
+  `subDir`       varchar(100) NOT NULL,
+  `name`         text         NOT NULL,
+  `date`         datetime     NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 9

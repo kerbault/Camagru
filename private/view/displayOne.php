@@ -16,8 +16,10 @@ if (isset($picture) && isset($commentsList) && isset($liked)) {
 		<!--------------------Picture-Section------------------------------------------------------------->
 		<div class="focusCard">
 
-			<img class="focusPicture" src="public/captures/<?= $picture['name']; ?>"
-				 title="<?= $picture['name']; ?>" alt="<?= $picture['name']; ?>">
+			<img class="focusPicture"
+				 src="public/captures/<?= $picture["subDir"] . "/" . $picture['name']; ?>"
+				 title="<?= $picture['name']; ?>"
+				 alt="<?= $picture['subDir'] . "/" . $picture['name']; ?>">
 			<div class="likeNcomment">
 				<div class="likeCount">
 					<?php if ($liked) { ?>

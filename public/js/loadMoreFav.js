@@ -7,7 +7,7 @@ var parentFav = document.querySelector('div.displayFav'),
 
 [].forEach.call(itemsFav, function (itemFav, index) {
     if (index < maxItems) {
-        item.classList.remove(hiddenClassFav);
+        itemFav.classList.remove(hiddenClassFav);
     }
 });
 
