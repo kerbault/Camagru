@@ -4,7 +4,7 @@ function showNone() {
     document.getElementById('RaybanLayer').style.display = 'none';
     document.getElementById('SunglassesLayer').style.display = 'none';
     document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+    document.getElementById('video').style.filter = 'grayscale(0%)';
 
 
     document.getElementById('CrownLayerBis').style.display = 'none';
@@ -26,7 +26,7 @@ function showCrown() {
     document.getElementById('RaybanLayer').style.display = 'none';
     document.getElementById('SunglassesLayer').style.display = 'none';
     document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+    document.getElementById('video').style.filter = 'grayscale(0%)';
 
 
     document.getElementById('CrownLayerBis').style.display = 'block';
@@ -45,7 +45,7 @@ function showMustache() {
     document.getElementById('RaybanLayer').style.display = 'none';
     document.getElementById('SunglassesLayer').style.display = 'none';
     document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+    document.getElementById('video').style.filter = 'grayscale(0%)';
 
 
     document.getElementById('CrownLayerBis').style.display = 'none';
@@ -64,7 +64,7 @@ function showRayban() {
     document.getElementById('RaybanLayer').style.display = 'block';
     document.getElementById('SunglassesLayer').style.display = 'none';
     document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+    document.getElementById('video').style.filter = 'grayscale(0%)';
 
 
     document.getElementById('CrownLayerBis').style.display = 'none';
@@ -83,7 +83,7 @@ function showSunglasses() {
     document.getElementById('RaybanLayer').style.display = 'none';
     document.getElementById('SunglassesLayer').style.display = 'block';
     document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+    document.getElementById('video').style.filter = 'grayscale(0%)';
 
 
     document.getElementById('CrownLayerBis').style.display = 'none';
@@ -102,7 +102,7 @@ function showTroll() {
     document.getElementById('RaybanLayer').style.display = 'none';
     document.getElementById('SunglassesLayer').style.display = 'none';
     document.getElementById('TrollLayer').style.display = 'block';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+    document.getElementById('video').style.filter = 'grayscale(0%)';
 
 
     document.getElementById('CrownLayerBis').style.display = 'none';
