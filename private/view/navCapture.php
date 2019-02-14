@@ -28,43 +28,10 @@ if (verifyStatus() > 1) {
 				<img id="SunglassesLayer" src="./public/images/layers/Sunglasses.png">
 				<img id="TrollLayer" src="./public/images/layers/Troll.png">
 			</div>
-			<button class="captureButton" id="snap" onclick="takepicture();">Take photo</button>
-			<div id="layersList">
-				<label>
-					<input type="radio" id="None" name="layer" value="None" onclick="showNone();" checked>
-					<img class="layersIcon" src="./public/images/layers/None.png">
-				</label>
-				<label>
-					<input type="radio" id="Crown" name="layer" value="Crown" onclick="showCrown();">
-					<img class="layersIcon" src="./public/images/layers/Crownpreview.png">
-				</label>
-				<label>
-					<input type="radio" id="Mustache" name="layer" value="Mustache"
-						   onclick="showMustache();">
-					<img class="layersIcon" src="./public/images/layers/Mustachepreview.png">
-				</label>
-				<label>
-					<input type="radio" id="Rayban" name="layer" value="Rayban" onclick="showRayban();">
-					<img class="layersIcon" src="./public/images/layers/Raybanpreview.png">
-				</label>
-				<label>
-					<input type="radio" id="Sunglasses" name="layer" value="Sunglasses"
-						   onclick="showSunglasses();">
-					<img class="layersIcon" src="./public/images/layers/Sunglassespreview.png">
-				</label>
-				<label>
-					<input type="radio" id="Troll" name="layer" value="Troll" onclick="showTroll();">
-					<img class="layersIcon" src="./public/images/layers/Trollpreview.png">
-				</label>
-				<label>
-					<input type="radio" id="GreyScale" name="layer" value="GreyScale" onclick="showGreyScale
-						();">
-					<img class="layersIcon" src="./public/images/layers/GreyScalePreview.png">
-				</label>
-			</div>
+			<button class="captureButton" id="snap" onclick="takePicture();">Take photo</button>
 		</div>
 		<div class="camera">
-			<form action="./index.php?action=uploadThis" method="post"
+<!--			<form action="./index.php?action=getCapture" method="post"-->
 				  enctype="multipart/form-data">
 				<canvas id="canvas"></canvas>
 				<div class="output">
@@ -77,12 +44,47 @@ if (verifyStatus() > 1) {
 						<img id="SunglassesLayerBis" src="./public/images/layers/Sunglasses.png">
 						<img id="TrollLayerBis" src="./public/images/layers/Troll.png">
 					</div>
-					<input class="captureButton" id="save" type="submit" value="Save" name="submit"
-						   required>
+					<input class="captureButton" id="sendMontage" type="submit" value="Save" name="submit"
+						   required onclick="sendMontage();">
 					<input type="hidden" name="name"
 						   value="<?= (round(microtime(true) * 1000) . rand(100, 999)); ?>">
 				</div>
-			</form>
+				<div id="layersList">
+					<label>
+						<input type="radio" id="None" name="layer" value="None" onclick="showNone();"
+							   checked>
+						<img class="layersIcon" src="./public/images/layers/None.png">
+					</label>
+					<label>
+						<input type="radio" id="Crown" name="layer" value="Crown" onclick="showCrown();">
+						<img class="layersIcon" src="./public/images/layers/Crownpreview.png">
+					</label>
+					<label>
+						<input type="radio" id="Mustache" name="layer" value="Mustache"
+							   onclick="showMustache();">
+						<img class="layersIcon" src="./public/images/layers/Mustachepreview.png">
+					</label>
+					<label>
+						<input type="radio" id="Rayban" name="layer" value="Rayban"
+							   onclick="showRayban();">
+						<img class="layersIcon" src="./public/images/layers/Raybanpreview.png">
+					</label>
+					<label>
+						<input type="radio" id="Sunglasses" name="layer" value="Sunglasses"
+							   onclick="showSunglasses();">
+						<img class="layersIcon" src="./public/images/layers/Sunglassespreview.png">
+					</label>
+					<label>
+						<input type="radio" id="Troll" name="layer" value="Troll" onclick="showTroll();">
+						<img class="layersIcon" src="./public/images/layers/Trollpreview.png">
+					</label>
+					<label>
+						<input type="radio" id="GreyScale" name="layer" value="GreyScale" onclick="showGreyScale
+						();">
+						<img class="layersIcon" src="./public/images/layers/GreyScalePreview.png">
+					</label>
+				</div>
+<!--			</form>-->
 		</div>
 	</div>
 	<div>

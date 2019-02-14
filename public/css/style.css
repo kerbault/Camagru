@@ -165,10 +165,6 @@ img {
 	justify-content: space-evenly;
 }
 
-#video {
-	transform: scaleX(-1);
-}
-
 #NoneLayer, #CrownLayer, #MustacheLayer, #RaybanLayer, #SunglassesLayer, #TrollLayer,
 #NoneLayerBis, #CrownLayerBis, #MustacheLayerBis, #RaybanLayerBis, #SunglassesLayerBis, #TrollLayerBis {
 	display: none;

@@ -36,7 +36,7 @@ function uploadPicture($fileNameBase, $fileToUpload, $layerName)
 
 		if ($fileSize > $allowedSize) {
 			throw new Exception("The uploaded file exceeds the allowed limit.");
-		} elseif (empty($fileBasename)) {
+		} elseif ($fileBasename === NULL) {
 			throw new Exception("Please select a file to upload.");
 		} elseif (!in_array($fileExt, $allowed_file_types)) {
 			throw new Exception("Only these file typs are allowed for upload: " .
@@ -122,14 +122,28 @@ function imageResize($imageResourceId, $width, $height)
 	$targetWidth  = 600;
 	$targetHeight = 450;
 
+	$src_ratio = $width / $height;
+	if ($targetWidth / $targetHeight > $src_ratio) {
+		$new_h = $targetWidth / $src_ratio;
+		$new_w = $targetWidth;
+	} else {
+		$new_w = $targetHeight * $src_ratio;
+		$new_h = $targetHeight;
+	}
+	$x_mid = $new_w / 2;
+	$y_mid = $new_h / 2;
+
 	$resizedPicture = imagecreatetruecolor($targetWidth, $targetHeight);
 
 	imagesavealpha($resizedPicture, true);
 	$trans_background = imagecolorallocatealpha($resizedPicture, 0, 0, 0, 127);
 	imagefill($resizedPicture, 0, 0, $trans_background);
 
-	imagecopyresampled($resizedPicture, $imageResourceId, 0, 0, 0, 0, $targetWidth, $targetHeight, $width,
-					   $height);
+	$newpic = imagecreatetruecolor(round($new_w), round($new_h));
+	imagecopyresampled($newpic, $imageResourceId, 0, 0, 0, 0, $new_w, $new_h, $width, $height);
+	$resizedPicture = imagecreatetruecolor($targetWidth, $targetHeight);
+	imagecopyresampled($resizedPicture, $newpic, 0, 0, ($x_mid - ($targetWidth / 2)),
+		($y_mid - ($targetHeight / 2)), $targetWidth, $targetHeight, $targetWidth, $targetHeight);
 	return $resizedPicture;
 }
 

@@ -12,6 +12,7 @@ function showNone() {
     document.getElementById('RaybanLayerBis').style.display = 'none';
     document.getElementById('SunglassesLayerBis').style.display = 'none';
     document.getElementById('TrollLayerBis').style.display = 'none';
+    document.getElementById('photo').style.filter = 'grayscale(0%)';
 
     document.getElementById('Crown').checked = false;
     document.getElementById('Mustache').checked = false;
@@ -34,6 +35,7 @@ function showCrown() {
     document.getElementById('RaybanLayerBis').style.display = 'none';
     document.getElementById('SunglassesLayerBis').style.display = 'none';
     document.getElementById('TrollLayerBis').style.display = 'none';
+    document.getElementById('photo').style.filter = 'grayscale(0%)';
 
     document.getElementById('None').checked = false;
 
@@ -53,6 +55,7 @@ function showMustache() {
     document.getElementById('RaybanLayerBis').style.display = 'none';
     document.getElementById('SunglassesLayerBis').style.display = 'none';
     document.getElementById('TrollLayerBis').style.display = 'none';
+    document.getElementById('photo').style.filter = 'grayscale(0%)';
 
     document.getElementById('None').checked = false;
 
@@ -72,6 +75,7 @@ function showRayban() {
     document.getElementById('RaybanLayerBis').style.display = 'block';
     document.getElementById('SunglassesLayerBis').style.display = 'none';
     document.getElementById('TrollLayerBis').style.display = 'none';
+    document.getElementById('photo').style.filter = 'grayscale(0%)';
 
     document.getElementById('None').checked = false;
 
@@ -85,12 +89,12 @@ function showSunglasses() {
     document.getElementById('TrollLayer').style.display = 'none';
     document.getElementById('video').style.filter = 'grayscale(0%)';
 
-
     document.getElementById('CrownLayerBis').style.display = 'none';
     document.getElementById('MustacheLayerBis').style.display = 'none';
     document.getElementById('RaybanLayerBis').style.display = 'none';
     document.getElementById('SunglassesLayerBis').style.display = 'block';
     document.getElementById('TrollLayerBis').style.display = 'none';
+    document.getElementById('photo').style.filter = 'grayscale(0%)';
 
     document.getElementById('None').checked = false;
 
@@ -110,6 +114,7 @@ function showTroll() {
     document.getElementById('RaybanLayerBis').style.display = 'none';
     document.getElementById('SunglassesLayerBis').style.display = 'none';
     document.getElementById('TrollLayerBis').style.display = 'block';
+    document.getElementById('photo').style.filter = 'grayscale(0%)';
 
     document.getElementById('None').checked = false;
 
@@ -128,6 +133,7 @@ function showGreyScale() {
     document.getElementById('RaybanLayerBis').style.display = 'none';
     document.getElementById('SunglassesLayerBis').style.display = 'none';
     document.getElementById('TrollLayerBis').style.display = 'none';
+    document.getElementById('photo').style.filter = 'grayscale(100%)';
 
     document.getElementById('None').checked = false;
 }
