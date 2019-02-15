@@ -1,5 +1,1 @@
    Deny from all
-
-   if (document.getElementById('r1').checked) {
-     rate_value = document.getElementById('r1').value;
-   }

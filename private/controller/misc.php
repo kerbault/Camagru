@@ -47,7 +47,7 @@ function mailLogin($to, $userName, $validKey)
 {
 	$prefix  = '[Camagru]';
 	$url     = 'http://localhost:8008/';
-	$subject = $prefix . 'Your identifiants';
+	$subject = $prefix . ' Your identifiants';
 	$content = 'It seems like you forgot how to login, here is your user name "' . $userName .
 			   "\" if you need to reset your password please clic on the following link : ";
 	$link    = $url . '/index.php?action=resetAccount2nd&user=' . $userName . '&verifyKey=' . $validKey;

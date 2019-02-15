@@ -5,6 +5,8 @@ var height = 450;
 var canvas = document.getElementById('canvas');
 var photo = document.getElementById('photo');
 var video = document.getElementById('video');
+var buttonPhoto = document.getElementById('snap');
+var layer = 'none';
 
 // running the camera
 
@@ -12,13 +14,14 @@ if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({video: true})
         .then(function (stream) {
             video.srcObject = stream;
+            video.onplay = function () {
+                buttonPhoto.style.display = 'block';
+            };
         })
         .catch(function (error) {
             console.log(error);
         });
 }
-
-// capture frame
 
 function takePicture() {
     canvas.width = width;
@@ -30,10 +33,42 @@ function takePicture() {
 
 // upload the capture
 
-function sendMontage(data) {
-    canvas.getContext('2d').drawImage(canvas, 0, 0, width, height);
-    var data = canvas.toDataURL('image/png');
+function sendMontage() {
+    if (document.getElementById('None').checked) {
+        alert("You have to select a filter");
+    } else {
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(photo, 0, 0, width, height);
 
+        var data = canvas.toDataURL('image/png');
 
-    console.log(data); // CanvasRenderingContext2D { ... }
+        if (document.getElementById('Crown').checked) {
+            layer = 'Crown'
+        } else if (document.getElementById('Mustache').checked) {
+            layer = 'Mustache'
+        } else if (document.getElementById('Rayban').checked) {
+            layer = 'Rayban'
+        } else if (document.getElementById('Sunglasses').checked) {
+            layer = 'Sunglasses'
+        } else if (document.getElementById('Troll').checked) {
+            layer = 'Troll'
+        } else if (document.getElementById('GreyScale').checked) {
+            layer = 'GreyScale'
+        }
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", 'http://localhost:8008/index.php?action=uploadThat', true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send("&data=" + data + "&layer=" + layer);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0) && xhr.responseText != null && xhr.responseText != "") {
+                location.reload();
+            }
+        };
+    }
 }
+
+

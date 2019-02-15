@@ -26,7 +26,7 @@ ob_start(); ?>
 					   required>
 				<input type="hidden" name="userName" value="<?= $_GET['user'] ?>">
 				<input type="hidden" name="verifyKey" value="<?= $_GET['verifyKey'] ?>">
-				<input type="submit" class="submit" value="Register" name="Register">
+				<input type="submit" class="submit" value="Change Password" name="Change Password">
 
 			</form>
 		</div>

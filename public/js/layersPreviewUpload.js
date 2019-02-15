@@ -11,6 +11,7 @@ function showNone() {
     document.getElementById('Rayban').checked = false;
     document.getElementById('Sunglasses').checked = false;
     document.getElementById('Troll').checked = false;
+    document.getElementById('GreyScale').checked = false;
 }
 
 function showCrown() {

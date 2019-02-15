@@ -20,12 +20,13 @@ if (verifyStatus() > 1) {
 				<p style="margin: 0px 5px">|</p>
 				<a href="index.php?action=getUpload" style="align-items: center">Upload</a>
 			</div>
-			<form action="./index.php?action=uploadThis" method="post" enctype="multipart/form-data">
+			<form action="./index.php?action=uploadThis" method="post" enctype="multipart/form-data"
+				  autocomplete="off">
 				<canvas id="canvas"></canvas>
 				<div class="output">
 					<div id="uploadInput">Upload a picture to continue :
 						<input type="file" name="fileToUpload" id="fileToUpload" accept="image/*"
-							   onchange="preview_image(event)" required>
+							   onchange="preview_image(event);" required>
 					</div>
 					<input type="hidden" name="MAX_FILE_SIZE" value="30000"/>
 					<div class="captureFrame">
@@ -40,7 +41,7 @@ if (verifyStatus() > 1) {
 					<input class="captureButton" id="save" type="submit" value="Save" name="submit"
 						   required>
 					<input type="hidden" name="name"
-						   value="<?= (round(microtime(true) * 1000) . rand(100, 999)); ?>">
+						   value="<?= uniqid(); ?>">
 				</div>
 				<div id="layersList">
 					<label>

@@ -132,7 +132,7 @@ function verifyStatus()
 		return ($status['status']);
 	} else {
 		return (0);
-	};
+	}
 }
 
 function changeStatus($userID, $status)

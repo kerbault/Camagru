@@ -6,11 +6,13 @@
  * Time: 16:54
  */
 
+define("WIDTH", 600);
+define("HEIGHT", 450);
+
 function uploadPicture($fileNameBase, $fileToUpload, $layerName)
 {
-	ob_get_contents();
-	ob_end_clean();
-
+//	ob_get_contents();
+//	ob_end_clean();
 
 	if ($layerName == "None") {
 		throw new Exception("You need to select a layer to make it happen");
@@ -117,23 +119,63 @@ function uploadPicture($fileNameBase, $fileToUpload, $layerName)
 
 }
 
+function uploadCapture($fileNameBase, $fileToUpload, $layerName)
+{
+	if ($layerName == "None") {
+		throw new Exception("You need to select a layer to make it happen");
+	}
+
+	$fileToUpload = str_replace('data:image/png;base64,', '', $fileToUpload);
+	$fileToUpload = str_replace(' ', '+', $fileToUpload);
+	$data = base64_decode($fileToUpload);
+	echo ($data);
+
+
+	$usersManager = new users();
+	$user         = $usersManager->getUserByID($_SESSION['userID']);
+	$user         = $user->fetch();
+
+	$targetSubDir = $user['ID'] . "_" . $user['user'];
+	$targetDir    = "public/captures/" . $targetSubDir . "/";
+
+	$picturesManager = new pictures();
+	$newFileName     = $fileNameBase . ".png";
+
+	if (file_exists($targetDir . $newFileName)) {
+		throw new Exception("You have already uploaded this file.");
+	} else {
+		if (!file_exists('public/captures/' . $targetSubDir)) {
+			mkdir('public/captures/' . $targetSubDir);
+		}
+
+		file_put_contents($targetDir . $newFileName, $data);
+		$capture = imagecreatefrompng($targetDir . $newFileName);
+
+		if ($layerName == 'GreyScale') {
+			imagefilter($capture, IMG_FILTER_GRAYSCALE);
+			imagepng($capture, $targetDir . $newFileName);
+		} else {
+			mergePictures($capture, $layerName, $targetDir . $newFileName);
+		}
+		$picturesManager->uploadPictureDb($newFileName, $targetSubDir);
+		header('location: index.php?action=getUpload');
+	}
+}
+
 function imageResize($imageResourceId, $width, $height)
 {
-	$targetWidth  = 600;
-	$targetHeight = 450;
-
 	$src_ratio = $width / $height;
-	if ($targetWidth / $targetHeight > $src_ratio) {
-		$new_h = $targetWidth / $src_ratio;
-		$new_w = $targetWidth;
+	if (WIDTH / HEIGHT > $src_ratio) {
+		$new_h = WIDTH / $src_ratio;
+		$new_w = WIDTH;
 	} else {
-		$new_w = $targetHeight * $src_ratio;
-		$new_h = $targetHeight;
+		$new_w = HEIGHT * $src_ratio;
+		$new_h = HEIGHT;
 	}
 	$x_mid = $new_w / 2;
 	$y_mid = $new_h / 2;
 
-	$resizedPicture = imagecreatetruecolor($targetWidth, $targetHeight);
+	$resizedPicture = imagecreatetruecolor(WIDTH, HEIGHT);
 
 	imagesavealpha($resizedPicture, true);
 	$trans_background = imagecolorallocatealpha($resizedPicture, 0, 0, 0, 127);
@@ -141,9 +183,9 @@ function imageResize($imageResourceId, $width, $height)
 
 	$newpic = imagecreatetruecolor(round($new_w), round($new_h));
 	imagecopyresampled($newpic, $imageResourceId, 0, 0, 0, 0, $new_w, $new_h, $width, $height);
-	$resizedPicture = imagecreatetruecolor($targetWidth, $targetHeight);
-	imagecopyresampled($resizedPicture, $newpic, 0, 0, ($x_mid - ($targetWidth / 2)),
-		($y_mid - ($targetHeight / 2)), $targetWidth, $targetHeight, $targetWidth, $targetHeight);
+	$resizedPicture = imagecreatetruecolor(WIDTH, HEIGHT);
+	imagecopyresampled($resizedPicture, $newpic, 0, 0, ($x_mid - (WIDTH / 2)),
+		($y_mid - (HEIGHT / 2)), WIDTH, HEIGHT, WIDTH, HEIGHT);
 	return $resizedPicture;
 }
 
@@ -168,8 +210,6 @@ function remPicture($userID, $pictureID)
 
 function mergePictures($base, $layerName, $destName)
 {
-	define("WIDTH", 600);
-	define("HEIGHT", 450);
 
 	$dest_image = imagecreatetruecolor(WIDTH, HEIGHT);
 	imagesavealpha($dest_image, true);

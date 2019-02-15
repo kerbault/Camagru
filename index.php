@@ -169,8 +169,15 @@ try {
 					throw new Exception('Some field are empty in resetAccount3rd, please check');
 				}
 			case 'uploadThis':
-				if (isset($_POST['name']) && isset($_FILES['fileToUpload'])) {
+				if (isset($_POST['name']) && isset($_FILES['fileToUpload']) && isset($_POST['layer'])) {
 					uploadPicture($_POST['name'], $_FILES['fileToUpload'], $_POST['layer']);
+					break;
+				} else {
+					throw new Exception("Some field are empty in uploadThis, please check");
+				}
+			case 'uploadThat':
+				if (isset($_POST['data']) && isset($_POST['layer'])) {
+					uploadCapture(uniqid(), $_POST['data'], $_POST['layer']);
 					break;
 				} else {
 					throw new Exception("Some field are empty in uploadThis, please check");
