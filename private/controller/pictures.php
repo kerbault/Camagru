@@ -44,6 +44,9 @@ function uploadPicture($fileNameBase, $fileToUpload, $layerName)
 		} elseif (file_exists($targetDir . $newFileName)) {
 			throw new Exception("You have already uploaded this file.");
 		} else {
+			if (!file_exists('public/captures')) {
+				mkdir('public/captures');
+			}
 			if (!file_exists('public/captures/' . $targetSubDir)) {
 				mkdir('public/captures/' . $targetSubDir);
 			}
@@ -124,8 +127,8 @@ function uploadCapture($fileNameBase, $fileToUpload, $layerName)
 
 	$fileToUpload = str_replace('data:image/png;base64,', '', $fileToUpload);
 	$fileToUpload = str_replace(' ', '+', $fileToUpload);
-	$data = base64_decode($fileToUpload);
-	echo ($data);
+	$data         = base64_decode($fileToUpload);
+	echo($data);
 
 
 	$usersManager = new users();
@@ -141,6 +144,9 @@ function uploadCapture($fileNameBase, $fileToUpload, $layerName)
 	if (file_exists($targetDir . $newFileName)) {
 		throw new Exception("You have already uploaded this file.");
 	} else {
+		if (!file_exists('public/captures')) {
+			mkdir('public/captures');
+		}
 		if (!file_exists('public/captures/' . $targetSubDir)) {
 			mkdir('public/captures/' . $targetSubDir);
 		}
