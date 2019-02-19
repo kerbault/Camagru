@@ -1,141 +1,165 @@
+var crownLayer = document.getElementById('CrownLayer'),
+	mustacheLayer = document.getElementById('MustacheLayer'),
+	raybanLayer = document.getElementById('RaybanLayer'),
+	sunglassesLayer = document.getElementById('SunglassesLayer'),
+	trollLayer = document.getElementById('TrollLayer'),
+	video = document.getElementById('video'),
+
+
+	crownLayerBis = document.getElementById('CrownLayerBis'),
+	mustacheLayerBis = document.getElementById('MustacheLayerBis'),
+	raybanLayerBis = document.getElementById('RaybanLayerBis'),
+	sunglassesLayerBis = document.getElementById('SunglassesLayerBis'),
+	trollLayerBis = document.getElementById('TrollLayerBis'),
+	photo = document.getElementById('photo'),
+
+	crownIcon = document.getElementById('Crown'),
+	mustacheIcon = document.getElementById('Mustache'),
+	raybanIcon = document.getElementById('Rayban'),
+	sunglassesIcon = document.getElementById('Sunglasses'),
+	trollIcon = document.getElementById('Troll'),
+	greyScaleIcon = document.getElementById('GreyScale'),
+
+	noneIcon = document.getElementById('None');
+
 function showNone() {
-    document.getElementById('CrownLayer').style.display = 'none';
-    document.getElementById('MustacheLayer').style.display = 'none';
-    document.getElementById('RaybanLayer').style.display = 'none';
-    document.getElementById('SunglassesLayer').style.display = 'none';
-    document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('video').style.filter = 'grayscale(0%)';
+	crownLayer.style.display = 'none';
+	mustacheLayer.style.display = 'none';
+	raybanLayer.style.display = 'none';
+	sunglassesLayer.style.display = 'none';
+	trollLayer.style.display = 'none';
+	video.style.filter = 'grayscale(0%)';
 
 
-    document.getElementById('CrownLayerBis').style.display = 'none';
-    document.getElementById('MustacheLayerBis').style.display = 'none';
-    document.getElementById('RaybanLayerBis').style.display = 'none';
-    document.getElementById('SunglassesLayerBis').style.display = 'none';
-    document.getElementById('TrollLayerBis').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+	crownLayerBis.style.display = 'none';
+	mustacheLayerBis.style.display = 'none';
+	raybanLayerBis.style.display = 'none';
+	sunglassesLayerBis.style.display = 'none';
+	trollLayerBis.style.display = 'none';
+	photo.style.filter = 'grayscale(0%)';
 
-    document.getElementById('Crown').checked = false;
-    document.getElementById('Mustache').checked = false;
-    document.getElementById('Rayban').checked = false;
-    document.getElementById('Sunglasses').checked = false;
-    document.getElementById('Troll').checked = false;
-    document.getElementById('GreyScale').checked = false;
+	crownIcon.checked = false;
+	mustacheIcon.checked = false;
+	raybanIcon.checked = false;
+	sunglassesIcon.checked = false;
+	trollIcon.checked = false;
+	greyScaleIcon.checked = false;
 
 }
 
 function showCrown() {
-    document.getElementById('CrownLayer').style.display = 'block';
-    document.getElementById('MustacheLayer').style.display = 'none';
-    document.getElementById('RaybanLayer').style.display = 'none';
-    document.getElementById('SunglassesLayer').style.display = 'none';
-    document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('video').style.filter = 'grayscale(0%)';
+	crownLayer.style.display = 'block';
+	mustacheLayer.style.display = 'none';
+	raybanLayer.style.display = 'none';
+	sunglassesLayer.style.display = 'none';
+	trollLayer.style.display = 'none';
+	video.style.filter = 'grayscale(0%)';
 
 
-    document.getElementById('CrownLayerBis').style.display = 'block';
-    document.getElementById('MustacheLayerBis').style.display = 'none';
-    document.getElementById('RaybanLayerBis').style.display = 'none';
-    document.getElementById('SunglassesLayerBis').style.display = 'none';
-    document.getElementById('TrollLayerBis').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+	crownLayerBis.style.display = 'block';
+	mustacheLayerBis.style.display = 'none';
+	raybanLayerBis.style.display = 'none';
+	sunglassesLayerBis.style.display = 'none';
+	trollLayerBis.style.display = 'none';
+	photo.style.filter = 'grayscale(0%)';
 
-    document.getElementById('None').checked = false;
+	noneIcon.checked = false;
 
 }
 
 function showMustache() {
-    document.getElementById('CrownLayer').style.display = 'none';
-    document.getElementById('MustacheLayer').style.display = 'block';
-    document.getElementById('RaybanLayer').style.display = 'none';
-    document.getElementById('SunglassesLayer').style.display = 'none';
-    document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('video').style.filter = 'grayscale(0%)';
+	crownLayer.style.display = 'none';
+	mustacheLayer.style.display = 'block';
+	raybanLayer.style.display = 'none';
+	sunglassesLayer.style.display = 'none';
+	trollLayer.style.display = 'none';
+	video.style.filter = 'grayscale(0%)';
 
 
-    document.getElementById('CrownLayerBis').style.display = 'none';
-    document.getElementById('MustacheLayerBis').style.display = 'block';
-    document.getElementById('RaybanLayerBis').style.display = 'none';
-    document.getElementById('SunglassesLayerBis').style.display = 'none';
-    document.getElementById('TrollLayerBis').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+	crownLayerBis.style.display = 'none';
+	mustacheLayerBis.style.display = 'block';
+	raybanLayerBis.style.display = 'none';
+	sunglassesLayerBis.style.display = 'none';
+	trollLayerBis.style.display = 'none';
+	photo.style.filter = 'grayscale(0%)';
 
-    document.getElementById('None').checked = false;
+	noneIcon.checked = false;
 
 }
 
 function showRayban() {
-    document.getElementById('CrownLayer').style.display = 'none';
-    document.getElementById('MustacheLayer').style.display = 'none';
-    document.getElementById('RaybanLayer').style.display = 'block';
-    document.getElementById('SunglassesLayer').style.display = 'none';
-    document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('video').style.filter = 'grayscale(0%)';
+	crownLayer.style.display = 'none';
+	mustacheLayer.style.display = 'none';
+	raybanLayer.style.display = 'block';
+	sunglassesLayer.style.display = 'none';
+	trollLayer.style.display = 'none';
+	video.style.filter = 'grayscale(0%)';
 
 
-    document.getElementById('CrownLayerBis').style.display = 'none';
-    document.getElementById('MustacheLayerBis').style.display = 'none';
-    document.getElementById('RaybanLayerBis').style.display = 'block';
-    document.getElementById('SunglassesLayerBis').style.display = 'none';
-    document.getElementById('TrollLayerBis').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+	crownLayerBis.style.display = 'none';
+	mustacheLayerBis.style.display = 'none';
+	raybanLayerBis.style.display = 'block';
+	sunglassesLayerBis.style.display = 'none';
+	trollLayerBis.style.display = 'none';
+	photo.style.filter = 'grayscale(0%)';
 
-    document.getElementById('None').checked = false;
+	noneIcon.checked = false;
 
 }
 
 function showSunglasses() {
-    document.getElementById('CrownLayer').style.display = 'none';
-    document.getElementById('MustacheLayer').style.display = 'none';
-    document.getElementById('RaybanLayer').style.display = 'none';
-    document.getElementById('SunglassesLayer').style.display = 'block';
-    document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('video').style.filter = 'grayscale(0%)';
+	crownLayer.style.display = 'none';
+	mustacheLayer.style.display = 'none';
+	raybanLayer.style.display = 'none';
+	sunglassesLayer.style.display = 'block';
+	trollLayer.style.display = 'none';
+	video.style.filter = 'grayscale(0%)';
 
-    document.getElementById('CrownLayerBis').style.display = 'none';
-    document.getElementById('MustacheLayerBis').style.display = 'none';
-    document.getElementById('RaybanLayerBis').style.display = 'none';
-    document.getElementById('SunglassesLayerBis').style.display = 'block';
-    document.getElementById('TrollLayerBis').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+	crownLayerBis.style.display = 'none';
+	mustacheLayerBis.style.display = 'none';
+	raybanLayerBis.style.display = 'none';
+	sunglassesLayerBis.style.display = 'block';
+	trollLayerBis.style.display = 'none';
+	photo.style.filter = 'grayscale(0%)';
 
-    document.getElementById('None').checked = false;
+	noneIcon.checked = false;
 
 }
 
 function showTroll() {
-    document.getElementById('CrownLayer').style.display = 'none';
-    document.getElementById('MustacheLayer').style.display = 'none';
-    document.getElementById('RaybanLayer').style.display = 'none';
-    document.getElementById('SunglassesLayer').style.display = 'none';
-    document.getElementById('TrollLayer').style.display = 'block';
-    document.getElementById('video').style.filter = 'grayscale(0%)';
+	crownLayer.style.display = 'none';
+	mustacheLayer.style.display = 'none';
+	raybanLayer.style.display = 'none';
+	sunglassesLayer.style.display = 'none';
+	trollLayer.style.display = 'block';
+	video.style.filter = 'grayscale(0%)';
 
 
-    document.getElementById('CrownLayerBis').style.display = 'none';
-    document.getElementById('MustacheLayerBis').style.display = 'none';
-    document.getElementById('RaybanLayerBis').style.display = 'none';
-    document.getElementById('SunglassesLayerBis').style.display = 'none';
-    document.getElementById('TrollLayerBis').style.display = 'block';
-    document.getElementById('photo').style.filter = 'grayscale(0%)';
+	crownLayerBis.style.display = 'none';
+	mustacheLayerBis.style.display = 'none';
+	raybanLayerBis.style.display = 'none';
+	sunglassesLayerBis.style.display = 'none';
+	trollLayerBis.style.display = 'block';
+	photo.style.filter = 'grayscale(0%)';
 
-    document.getElementById('None').checked = false;
+	noneIcon.checked = false;
 
 }
 
 function showGreyScale() {
-    document.getElementById('CrownLayer').style.display = 'none';
-    document.getElementById('MustacheLayer').style.display = 'none';
-    document.getElementById('RaybanLayer').style.display = 'none';
-    document.getElementById('SunglassesLayer').style.display = 'none';
-    document.getElementById('TrollLayer').style.display = 'none';
-    document.getElementById('video').style.filter = 'grayscale(100%)';
+	crownLayer.style.display = 'none';
+	mustacheLayer.style.display = 'none';
+	raybanLayer.style.display = 'none';
+	sunglassesLayer.style.display = 'none';
+	trollLayer.style.display = 'none';
+	video.style.filter = 'grayscale(100%)';
 
-    document.getElementById('CrownLayerBis').style.display = 'none';
-    document.getElementById('MustacheLayerBis').style.display = 'none';
-    document.getElementById('RaybanLayerBis').style.display = 'none';
-    document.getElementById('SunglassesLayerBis').style.display = 'none';
-    document.getElementById('TrollLayerBis').style.display = 'none';
-    document.getElementById('photo').style.filter = 'grayscale(100%)';
+	crownLayerBis.style.display = 'none';
+	mustacheLayerBis.style.display = 'none';
+	raybanLayerBis.style.display = 'none';
+	sunglassesLayerBis.style.display = 'none';
+	trollLayerBis.style.display = 'none';
+	photo.style.filter = 'grayscale(100%)';
 
-    document.getElementById('None').checked = false;
+	noneIcon.checked = false;
 }

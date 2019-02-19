@@ -28,7 +28,6 @@ if (verifyStatus() > 1) {
 						<input type="file" name="fileToUpload" id="fileToUpload" accept="image/*"
 							   onchange="preview_image(event);" required>
 					</div>
-					<input type="hidden" name="MAX_FILE_SIZE" value="30000"/>
 					<div class="captureFrame">
 						<img src="./public/images/you_photo_here.png" id="photo" title="your picture"
 							 alt="The screen capture will appear in this box.">
@@ -39,7 +38,7 @@ if (verifyStatus() > 1) {
 						<img id="TrollLayer" src="./public/images/layers/Troll.png">
 					</div>
 					<input class="captureButton" id="save" type="submit" value="Save" name="submit"
-						   required>
+						   required onclick="rejectLayer();">
 					<input type="hidden" name="name"
 						   value="<?= uniqid(); ?>">
 				</div>

@@ -11,9 +11,6 @@ define("HEIGHT", 450);
 
 function uploadPicture($fileNameBase, $fileToUpload, $layerName)
 {
-//	ob_get_contents();
-//	ob_end_clean();
-
 	if ($layerName == "None") {
 		throw new Exception("You need to select a layer to make it happen");
 	}
@@ -41,7 +38,7 @@ function uploadPicture($fileNameBase, $fileToUpload, $layerName)
 		} elseif ($fileBasename === NULL) {
 			throw new Exception("Please select a file to upload.");
 		} elseif (!in_array($fileExt, $allowed_file_types)) {
-			throw new Exception("Only these file typs are allowed for upload: " .
+			throw new Exception("Only these file types are allowed for upload: " .
 								implode(', ', $allowed_file_types));
 			unlink($fileToUpload["tmp_name"]);
 		} elseif (file_exists($targetDir . $newFileName)) {
