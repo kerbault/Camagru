@@ -16,6 +16,7 @@ ob_start(); ?>
 			<input type="text" class="logInput" name="user" id="user"
 				   pattern="[a-zA-Z0-9]{4,25}"
 				   title="Must be alphanumeric and contain more than 3 characters"
+				   placeholder="This field is case sensitive"
 				   required>
 			<p>Password</p>
 			<input type="password" class="logInput" name="passwd" id="passwd"
