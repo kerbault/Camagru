@@ -31,7 +31,7 @@ function contactHelp($subject, $content, $from)
 function verificationMail($to, $userName, $validKey)
 {
 	$prefix  = '[Camagru]';
-	$url     = 'http://localhost:8008/';
+	$url     = $_SERVER['HTTP_HOST'].'/';
 	$subject = $prefix . ' Welcome on Camagru';
 	$content = 'Welcome on Camagru, please clic on the following link : ';
 	$link    = $url . 'index.php?action=verify&user=' . $userName . '&verifyKey=' . $validKey;
@@ -46,7 +46,7 @@ function verificationMail($to, $userName, $validKey)
 function mailLogin($to, $userName, $validKey)
 {
 	$prefix  = '[Camagru]';
-	$url     = 'http://localhost:8008/';
+	$url     = $_SERVER['HTTP_HOST'].'/';
 	$subject = $prefix . ' Your identifiants';
 	$content = 'It seems like you forgot how to login, here is your user name "' . $userName .
 			   "\" if you need to reset your password please clic on the following link : ";
@@ -66,7 +66,7 @@ function notifyComment($userID, $pictureID)
 
 	if ($user['notification'] == 1) {
 		$prefix  = '[Camagru]';
-		$url     = 'http://localhost:8008/';
+		$url     = $_SERVER['HTTP_HOST'].'/';
 		$to      = $user['email'];
 		$subject = $prefix . ' You have a notification';
 		$content = 'Someone commented the following picture :';

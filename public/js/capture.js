@@ -59,7 +59,7 @@ function sendMontage() {
 
 		var xhr = new XMLHttpRequest();
 
-		xhr.open("POST", 'http://localhost:8008/index.php?action=uploadThat', true);
+		xhr.open("POST", '../index.php?action=uploadThat', true);
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		xhr.send("&data=" + data + "&layer=" + layer);
 
