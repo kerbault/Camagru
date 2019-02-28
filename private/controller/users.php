@@ -118,7 +118,7 @@ function verifyAccount($user, $verifyKey)
             throw new Exception('Your account has been verified already');
         }
     } else {
-        throw new Exception('We connot verify your account or is verified already');
+        throw new Exception('We cannot verify your account or is verified already');
     }
 }
 
